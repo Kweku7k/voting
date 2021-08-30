@@ -1,0 +1,13 @@
+/* File: font.css */
+@font-face {
+    font-family: 'NexaBolf';
+    src: local('NexaBold'),
+         url('./fonts/NexaBold.otf') format('otf')
+         url('./fonts/NexaBold.woff2') format('otf2');
+}
+@font-face {
+    font-family: 'NexaLight';
+    src: local('NexaLight'),
+         url('./fonts/nexa/NexaLight.otf') format('otf'),
+         url('./fonts/nexa/NexaLight.otf2') format('otf2');
+}

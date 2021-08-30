@@ -15,7 +15,7 @@ const Candidates = () => {
     {
         id:2,
         name:"Ashesi Central Main",
-        candidates:['Foru,Two,Three'],
+        candidates:['Form,Two,Three'],
         organisationNickName:"legon",
         image:'https://images.unsplash.com/photo-1495216875107-c6c043eb703f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=634&q=80'
 

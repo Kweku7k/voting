@@ -11,9 +11,6 @@ import Categories from './Screens/Categories';
 import Candidates from './Screens/Candidates';
 import VoteScreen from './Screens/VoteScreen';
 
-
-
-
 function App() {
   return (
     <Router>
@@ -42,6 +39,10 @@ function App() {
             <LandingPage/>
           </Route>
 
+          <Route exact path="/vote">
+        <VoteScreen/>
+          </Route>
+
           <Route path="/:el">
           <Categories/>
           </Route>
@@ -50,9 +51,7 @@ function App() {
           <Candidates/>
           </Route>
 
-          <Route path="/vote">
-          <VoteScreen/>
-          </Route>
+         
 
         </Switch>
       </div>

@@ -4,6 +4,7 @@ html{
 
 body{
   background-color: #f4f4f4;
+  font-family: NexaBold
 }
 
 .App {
@@ -15,16 +16,41 @@ body{
   pointer-events: none;
 }
 
+.button{
+  /* width: 10%; */
+  border: none;
+  background-color: #1A357A;
+  color: white;
+  padding: 20px 60px;
+  margin-top: 20px;
+  /* border-radius: 10px; */
+  font-weight: bold;
+
+}
+/* 
+.ButtonBottom{
+  border-radius: 0;
+  background-color: transparent;
+  width: 100%;
+  position: fixed;
+  bottom: 0; 
+} */
+
 .catCard{
   padding: 10px;
   border: none;
+  background-color: white;
+  margin-bottom: 20px;
+  border-radius: 10px;
+
+
 }
 
 .ellipse{
   border-radius: 50%;
   width: 50px;
   height: 50px;
-  background-color: #282c34;
+  background-color: #1A357A;
   margin-top: auto;
   margin-bottom: auto;
   margin-right: 10px;
