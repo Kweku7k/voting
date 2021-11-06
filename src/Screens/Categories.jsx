@@ -1,9 +1,11 @@
 import React, {useState} from 'react'
 import { Container } from 'react-bootstrap'
-import { Link } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import Category from '../components/Category'
 import Header from '../components/Header'
 const Categories = () => {
+
+    let { el } = useParams();
 
     const [candidates, setcandidates] = useState([{
         id:1,
@@ -33,7 +35,7 @@ const Categories = () => {
             <Header title="Ghana Surf Club Elite Evictions" sub="Choose and election and proceed to vote for your favourite contestant"/>
         
             {/* {candidates[0].map(candidate => ( */}
-            <Link to="/vote">
+            <Link to={`/${el}/vote`}>
             <Category cname="Men"/> 
             </Link>
             <Category cname="Women"/> 

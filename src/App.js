@@ -10,6 +10,8 @@ import LandingPage from './Screens/LandingPage';
 import Categories from './Screens/Categories';
 import Candidates from './Screens/Candidates';
 import VoteScreen from './Screens/VoteScreen';
+import Instagram from './Screens/Instagram';
+import People from './Screens/People';
 
 function App() {
   return (
@@ -43,12 +45,29 @@ function App() {
         <VoteScreen/>
           </Route>
 
-          <Route path="/:el">
-          <Categories/>
+          <Route exact path="/people">
+        <People/>
           </Route>
+
+          {/* <Route path="/:el">
+          <Categories/>
+          </Route> */}
+
+
+          {/* <Route exact path="/:el/vote">
+          <People/>
+          </Route> */}
 
           <Route exact path="/candidates">
           <Candidates/>
+          </Route>
+
+          <Route path="/post/:el">
+          <Candidates/>
+          </Route>
+
+          <Route exact path="/instagram">
+          <Instagram/>
           </Route>
 
          

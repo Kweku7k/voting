@@ -15,7 +15,6 @@ const VoteScreen = () => {
         <>
         <Container>
            <h4>Candidate Name</h4>
-        
         <br/>
 
         <div style={{display:'flex', justifyContent:"space-around"}}>
