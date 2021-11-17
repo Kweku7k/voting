@@ -12,6 +12,7 @@ import Candidates from './Screens/Candidates';
 import VoteScreen from './Screens/VoteScreen';
 import Instagram from './Screens/Instagram';
 import People from './Screens/People';
+import { AddPost } from './Screens/AddPost';
 
 function App() {
   return (
@@ -19,7 +20,7 @@ function App() {
       <div>
       <Navbar bg="transparent" expand="lg">
   <Container>
-    <Navbar.Brand href="#home">VoteNow</Navbar.Brand>
+    <Navbar.Brand href="#home">Evic Store</Navbar.Brand>
     <Navbar.Toggle aria-controls="basic-navbar-nav" />
     <Navbar.Collapse id="basic-navbar-nav">
       <Nav className="me-auto">
@@ -38,7 +39,7 @@ function App() {
             renders the first one that matches the current URL. */}
         <Switch>
           <Route exact path="/">
-            <LandingPage/>
+            <Instagram/>
           </Route>
 
           <Route exact path="/vote">
@@ -49,9 +50,9 @@ function App() {
         <People/>
           </Route>
 
-          {/* <Route path="/:el">
-          <Categories/>
-          </Route> */}
+          <Route path="/addPost/:postBody">
+            <AddPost/>
+          </Route>
 
 
           {/* <Route exact path="/:el/vote">
@@ -67,7 +68,7 @@ function App() {
           </Route>
 
           <Route exact path="/instagram">
-          <Instagram/>
+          {/* <Instagram/> */}
           </Route>
 
          

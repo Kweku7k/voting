@@ -2,10 +2,17 @@ import React from 'react'
 import {Link} from 'react-router-dom'
 
 
-const Post = ({media}) => {
+const Post = ({media, wooUrl,media_type}) => {
     return (
-        <div className="col-md-4">
-            <img src={media} width='100%'/>
+        <div className={ wooUrl == "null" ? "igPost" : "activePost"}  >
+            {media_type == "VIDEO" ? 
+            <video muted loop autoPlay="true" src={media} className="igPost" width='100%' height='100%'></video>
+            // <h4>{media_type}</h4>
+            :
+            <img src={media} className="igPost" width='100%'/>
+
+        }
+        <h4>{wooUrl}</h4>
         </div>
     )
 }
