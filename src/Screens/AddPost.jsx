@@ -58,8 +58,10 @@ const db = getDatabase(app);
 const [selectedPost, setselectedPost] = useState({
     caption: "Test Caption",
     mediaUrl: "https://video.cdninstagram.com/v/t50.16885-16/255877059_1340030699750804_4020931600262146809_n.mp4?_nc_cat=100&vs=17901211139247149_25858474…",
-    wooUrl: "None Available"
+    wooUrl: "None Available default"
 })
+
+    const [input, setinput] = useState(selectedPost ? selectedPost.wooUrl : "nullaf")
 
 
     useEffect(() => {
@@ -72,11 +74,11 @@ const [selectedPost, setselectedPost] = useState({
         console.log("data")
         console.log(data)
         setselectedPost(data)
+        setinput(data.wooUrl)
 
         });
     }, [])
 
-    const [input, setinput] = useState(selectedPost ? selectedPost.wooUrl : "nullaf")
 
 
 
@@ -98,6 +100,7 @@ const [selectedPost, setselectedPost] = useState({
       }
 
     const submit = () => {
+        console.log("Clicked on submit")
         updatePost(postBody, input)
     }
 
@@ -112,7 +115,7 @@ const [selectedPost, setselectedPost] = useState({
                    <small>Woo Url</small>
                    <input type="text" onChange={(e)=> setinput(e.target.value)} value={input == "null" ? "" : input} />
                    <br/>
-                   <button className="button" onClick={()=>submit()}>Update</button>
+                   <button className="button" onClick={()=>submit()}>Update Post</button>
                    <h4 ></h4>
                </Row>
            </Container>

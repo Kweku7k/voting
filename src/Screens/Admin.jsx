@@ -10,7 +10,7 @@ import { getDatabase, ref, set, get, child, onValue } from "firebase/database";
 
 
 
-const Instagram = () => {  
+const Admin = () => {  
 
 const firebaseConfig = {
     apiKey: "AIzaSyDnvuL0QHZKLg9NAjnH86RqOtLxp03o-U0",
@@ -44,7 +44,8 @@ function updateDb(postId, mediaUrl, caption, wooUrl) {
     set(ref(db, 'post/' + postId), {
         mediaUrl: mediaUrl,
         caption: caption,
-        wooUrl: wooUrl
+        wooUrl: wooUrl,
+        
     });
     console.log("Data " + postId + " completed") 
 
@@ -52,7 +53,7 @@ function updateDb(postId, mediaUrl, caption, wooUrl) {
 
     const [gottenPosts, setgottenPosts] = useState({})
 
-    const [loading, setloading] = useState(false)
+    const [loading, setloading] = useState(true)
 
 const [postsFromDatabase, setpostsFromDatabase] = useState([])
 
@@ -65,13 +66,12 @@ let dbArray = []
     if (snapshot.exists()) {
         console.log(snapshot.val());
         // console.log(typeof(snapshot.val()))
-        // setpostsFromDatabase(snapshot.val)
         // setpostsFromDatabase([...postsFromDatabase, snapshot.val()])
         // db   Array.push(snapshot.val())
         // console.log(JSON.parse(snapshot.val()))
         console.log("snapshotToArray(snapshot.val)")
         console.log(snapshotToArray(snapshot))
-        // setposts(snapshotToArray(snapshot))
+        setpostsFromDatabase(snapshotToArray(snapshot))
         // setloading(false)  
         console.log(posts)
     } else {
@@ -172,8 +172,7 @@ let history = useHistory();
 // const access_token = 'IGQVJWTUhtQ3JoN0ViNm9IRDNwclVVT0lhQ2JnMzlpTUFzRzlaekEtMmdfcFgtc2pHR1ZADbm1HcldRT0gzdC1fQktnT0FXUENjVmFXRXRoYXJkVmJ4WWZAKRFdXU2tGdmUyTEpZAYk96b1BrY1NvQ3BlMQZDZD'
 
 // EvicStore
-// const access_token = 'IGQVJXMmJwUUR5SXdBa3ZAzdU9HNGpQUmJ2MHZAlWl9mUEdXdlhSVmV2LWdCV3dqY0R3ZAzV6aG54NWFtZAlNaOVAxdlF5Qk84MzB3UWRyZAkpsWjN2ODJyRHRsRzJEdjJqX19jTEVVcV9vWGdsV1Q1dGdNbgZDZD'
-const access_token = 'IGQVJYN0VaQ0QySFJTaUROdFV0c0hIODhzYnZAwTExOQzZA5cDVIQ1NZAUGFMM0dtWHI4X1VORy11REl4MTlRWU5vU3pkOGI0Yzk5b1dneWJ1ZAm1LTUFOcVNEQ1BGWmxYX2NUOWp2S2lma29hTjlobURxdgZDZD'
+const access_token = 'IGQVJXMmJwUUR5SXdBa3ZAzdU9HNGpQUmJ2MHZAlWl9mUEdXdlhSVmV2LWdCV3dqY0R3ZAzV6aG54NWFtZAlNaOVAxdlF5Qk84MzB3UWRyZAkpsWjN2ODJyRHRsRzJEdjJqX19jTEVVcV9vWGdsV1Q1dGdNbgZDZD'
 // const [posts, setposts] = useState([
 // {
 //     "id": "17934647698581558",
@@ -189,11 +188,11 @@ const [posts, setposts] = useState([])
 
     useEffect(() => {
 
-    axios.get(`https://graph.instagram.com/me/media?fields=id,media_url,media_type,caption&access_token=${access_token}&limit=10`)
+    axios.get(`https://graph.instagram.com/me/media?fields=id,media_url,media_type,caption&access_token=${access_token}&limit=50`)
     .then((res)=> {
         console.log(res.data.data)
         setposts(res.data.data)
-        console.log("about to overite!")
+        console.log("about to overite")
         overwriteDB()    
     })
     .finally(() => {
@@ -206,9 +205,10 @@ const [posts, setposts] = useState([])
     })
     }, [])
 
-    // useEffect(() => {
-    //     getAllPosts()
-    // }, [])
+
+    useEffect(() => {
+        getAllPosts()
+    }, [])
     const profilepic = "LOL"
 
 
@@ -227,10 +227,9 @@ const [posts, setposts] = useState([])
     }
     console.log(postId)
 }
-let igArray = []
 
 const overwriteDB = () => {
-    console.log("We are overidinggg!")
+    console.log("We are overidinggg!!")
     for (let i = 0; i < posts.length; i++) { 
         // check the snapshop object for item id with wooURL, else cast.
             console.log("Post - " + posts[i].id)
@@ -238,46 +237,41 @@ const overwriteDB = () => {
             console.log(posts[i].id)
             // const isWoo = checkForWooUrl(posts[i].id)
             const isWoo = readData(posts[i].id)
-            console.log("isWooNot!!!")
+            console.log("isWooNot!!!!!")
             console.log(isWoo)
             // checkForWooUrl(posts[i].id) !== null ? writeUserData(posts[i].id, posts[i].media_url , posts[i].caption, ) : 
-            isWoo ? writeUserData(posts[i].id, posts[i].media_url , posts[i].caption, isWoo, posts[i].media_type) : writeUserData(posts[i].id, posts[i].media_url , posts[i].caption, "null", posts[i].media_type)
-            // Append this to an array
-            isWoo && igArray.push({
-                'id': posts[i].id, 
-                "media_url":posts[i].media_url , 
-                "caption":posts[i].caption,
-                "wooUrl":isWoo, 
-                "media_type":posts[i].media_type
-            })
+            isWoo === "No Value Here" ? 
+            writeUserData(posts[i].id, posts[i].media_url , posts[i].caption, "No Value Here", posts[i].media_type)
+            : 
+            writeUserData(posts[i].id, posts[i].media_url , posts[i].caption, isWoo, posts[i].media_type) 
     }   
     console.log("postId")
-    console.log("igArray")
-    console.log(igArray)
     getAllPosts()
 }
 
+
+
 const editPost = (postId) => {
     history.push(`/addPost/${postId}`)
-
 }
-
-setTimeout(() => {
-    console.log(igArray)
-}, 5000);
 
 const readData = (postBody) => {
 console.log("READ DATA FUNCTION");
-let wooUrl = null
+let wooUrl = "null"
+console.log(typeof(postBody))
 const postRef = ref(db, 'post/' + postBody );
         onValue(postRef, (snapshot) => {
         const data = snapshot.val();
-        console.log("data")
+        console.log("data --- HEREEE!!")
         console.log(data.wooUrl)
         wooUrl = data.wooUrl
+        console.log(wooUrl)
     })
+
+    console.log(wooUrl)
     return wooUrl
 }
+
 
 const checkForWooUrl = (postId) => {
     console.log("posts")
@@ -329,6 +323,11 @@ const checkForWooUrl = (postId) => {
     },
 ])
 
+const openLink = (param) => {
+    window.location = param
+    // window.open(`/${param}`)
+}
+
 
     // {posts.map((post)=>(
     //    <h4>{post.media_url}</h4>
@@ -337,7 +336,6 @@ const checkForWooUrl = (postId) => {
         <>
            <Container style={{height:'100vh'}} >
               {
-
             loading ? 
             // <h4>Loading</h4>
             <div className="loadingPage">
@@ -347,10 +345,15 @@ const checkForWooUrl = (postId) => {
             </div>
             :
                 <Row>   
-                {posts.map((post)=>(
-                    <Col onClick={() => editPost(post.id)}  xs="4" md='4' style={{marginBottom:10}}>
-                    <Post key={post.id} media={post.media_url} wooUrl={post.wooUrl} media_type={post.media_type} />
+                {postsFromDatabase.map((post)=>(
+
+                    post.wooUrl !== 'null' && 
+                    
+                    // <Col onClick={() => editPost(post.id)}  xs="4" md='4' style={{marginBottom:10}}>
+                    <Col onClick={() => openLink(post.wooUrl)}  xs="4" md='4' style={{marginBottom:10}}>
+                    <Post media={post.mediaUrl} wooUrl={post.wooUrl} media_type={post.media_type} />   
                     </Col>
+
                 ))}
                     
                    
@@ -361,4 +364,4 @@ const checkForWooUrl = (postId) => {
     )
 }
 
-export default Instagram
+export default Admin

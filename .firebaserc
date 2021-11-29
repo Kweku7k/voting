@@ -1,6 +1,7 @@
 {
   "projects": {
-    "staging": "fir-learning-35a38"
+    "staging": "fir-learning-35a38",
+    "default": "fir-learning-35a38"
   },
   "targets": {}
 }

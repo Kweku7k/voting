@@ -10,7 +10,7 @@ import { getDatabase, ref, set, get, child, onValue } from "firebase/database";
 
 
 
-const Instagram = () => {  
+const WooCommerce = () => {  
 
 const firebaseConfig = {
     apiKey: "AIzaSyDnvuL0QHZKLg9NAjnH86RqOtLxp03o-U0",
@@ -46,13 +46,12 @@ function updateDb(postId, mediaUrl, caption, wooUrl) {
         caption: caption,
         wooUrl: wooUrl
     });
-    console.log("Data " + postId + " completed") 
-
+    console.log("Data " + postId + " completed")
     }
 
     const [gottenPosts, setgottenPosts] = useState({})
 
-    const [loading, setloading] = useState(false)
+    const [loading, setloading] = useState(true)
 
 const [postsFromDatabase, setpostsFromDatabase] = useState([])
 
@@ -187,14 +186,24 @@ const access_token = 'IGQVJYN0VaQ0QySFJTaUROdFV0c0hIODhzYnZAwTExOQzZA5cDVIQ1NZAU
 // }])
 const [posts, setposts] = useState([])
 
-    useEffect(() => {
+const uname = 'ck_2e4053609add9cc95d435743c2d518916a3bf47b'
+const pass = 'cs_1efd19b1fc8451ac8858b31d3cf26c7ba2e9527d'
 
-    axios.get(`https://graph.instagram.com/me/media?fields=id,media_url,media_type,caption&access_token=${access_token}&limit=10`)
+
+const token = Buffer.from(`${uname}:${pass}`, 'utf8').toString('base64')
+    useEffect(() => {
+    axios.get(`https://gsu.qhx.mybluehost.me/wp-json/wc/v3/products`,{
+        headers: {
+            'Authorization': `Basic ${token}`
+          },
+    })
     .then((res)=> {
-        console.log(res.data.data)
-        setposts(res.data.data)
-        console.log("about to overite!")
-        overwriteDB()    
+        console.log(res.data)
+        setposts(res.data)
+        setloading(false)
+
+        // console.log("about to overite!")
+        // overwriteDB()    
     })
     .finally(() => {
         const timer = setTimeout(() => {
@@ -258,6 +267,7 @@ const overwriteDB = () => {
 }
 
 const editPost = (postId) => {
+    console.log(postId)
     history.push(`/addPost/${postId}`)
 
 }
@@ -305,7 +315,7 @@ const checkForWooUrl = (postId) => {
 }
 
     const check = (post) => {
-        window.location.href = 'https://gsu.qhx.mybluehost.me/?product=38'; 
+        window.location.href = 'https://gsu.qhx.mybluehost.me/?product=38?per_page=200'; 
         // findPost(post.id)
         console.log(post)
         findPostByKey(post.id)
@@ -346,19 +356,21 @@ const checkForWooUrl = (postId) => {
             </Spinner>
             </div>
             :
-                <Row>   
+            <>
+
+   
                 {posts.map((post)=>(
-                    <Col onClick={() => editPost(post.id)}  xs="4" md='4' style={{marginBottom:10}}>
-                    <Post key={post.id} media={post.media_url} wooUrl={post.wooUrl} media_type={post.media_type} />
-                    </Col>
+                        post.status == 'publish'
+                        &&
+                        <Post id={post.id} xs="4" md='4' style={{marginBottom:10}} key={post.id} media={post.images[0] ? post.images[0].src : null} media_type={post.media_type} />
+                    // <Col onClick={() => editPost(post.id)}  xs="4" md='4' style={{marginBottom:10}}>
+                    // </Col>
                 ))}
-                    
-                   
-                </Row>
+                </>
                 }
            </Container>
         </>
     )
 }
 
-export default Instagram
+export default WooCommerce
