@@ -3,7 +3,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-
+// import './fonts/Goldman/Goldman-Bold.ttf';
+import './fonts/nexa/NexaBold.otf'
+import './fonts/nexa/NexaLight.otf'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(

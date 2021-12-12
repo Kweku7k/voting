@@ -171,7 +171,7 @@ let history = useHistory();
 // Nana Kweku
 // const access_token = 'IGQVJWTUhtQ3JoN0ViNm9IRDNwclVVT0lhQ2JnMzlpTUFzRzlaekEtMmdfcFgtc2pHR1ZADbm1HcldRT0gzdC1fQktnT0FXUENjVmFXRXRoYXJkVmJ4WWZAKRFdXU2tGdmUyTEpZAYk96b1BrY1NvQ3BlMQZDZD'
 
-// EvicStore
+// evicstore.com
 const access_token = 'IGQVJXMmJwUUR5SXdBa3ZAzdU9HNGpQUmJ2MHZAlWl9mUEdXdlhSVmV2LWdCV3dqY0R3ZAzV6aG54NWFtZAlNaOVAxdlF5Qk84MzB3UWRyZAkpsWjN2ODJyRHRsRzJEdjJqX19jTEVVcV9vWGdsV1Q1dGdNbgZDZD'
 // const [posts, setposts] = useState([
 // {

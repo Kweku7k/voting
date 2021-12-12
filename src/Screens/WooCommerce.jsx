@@ -7,6 +7,7 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
 import {getStorage} from "firebase/storage"
 import { getDatabase, ref, set, get, child, onValue } from "firebase/database";
+import ErrorScreen from './ErrorScreen';
 
 
 
@@ -170,7 +171,7 @@ let history = useHistory();
 // Nana Kweku
 // const access_token = 'IGQVJWTUhtQ3JoN0ViNm9IRDNwclVVT0lhQ2JnMzlpTUFzRzlaekEtMmdfcFgtc2pHR1ZADbm1HcldRT0gzdC1fQktnT0FXUENjVmFXRXRoYXJkVmJ4WWZAKRFdXU2tGdmUyTEpZAYk96b1BrY1NvQ3BlMQZDZD'
 
-// EvicStore
+// evicstore.com
 // const access_token = 'IGQVJXMmJwUUR5SXdBa3ZAzdU9HNGpQUmJ2MHZAlWl9mUEdXdlhSVmV2LWdCV3dqY0R3ZAzV6aG54NWFtZAlNaOVAxdlF5Qk84MzB3UWRyZAkpsWjN2ODJyRHRsRzJEdjJqX19jTEVVcV9vWGdsV1Q1dGdNbgZDZD'
 const access_token = 'IGQVJYN0VaQ0QySFJTaUROdFV0c0hIODhzYnZAwTExOQzZA5cDVIQ1NZAUGFMM0dtWHI4X1VORy11REl4MTlRWU5vU3pkOGI0Yzk5b1dneWJ1ZAm1LTUFOcVNEQ1BGWmxYX2NUOWp2S2lma29hTjlobURxdgZDZD'
 // const [posts, setposts] = useState([
@@ -186,13 +187,13 @@ const access_token = 'IGQVJYN0VaQ0QySFJTaUROdFV0c0hIODhzYnZAwTExOQzZA5cDVIQ1NZAU
 // }])
 const [posts, setposts] = useState([])
 
-const uname = 'ck_2e4053609add9cc95d435743c2d518916a3bf47b'
-const pass = 'cs_1efd19b1fc8451ac8858b31d3cf26c7ba2e9527d'
+const uname = 'ck_1c9fd82800542cd01838923009ea20743be2734f'
+const pass = 'cs_dc4f49dbbd4efa9f2608ad3b14daec05b0b38aa6'
 
 
 const token = Buffer.from(`${uname}:${pass}`, 'utf8').toString('base64')
     useEffect(() => {
-    axios.get(`https://gsu.qhx.mybluehost.me/wp-json/wc/v3/products`,{
+    axios.get(`https://evicstore.com/wp-json/wc/v3/products?per_page=50`,{
         headers: {
             'Authorization': `Basic ${token}`
           },
@@ -200,10 +201,12 @@ const token = Buffer.from(`${uname}:${pass}`, 'utf8').toString('base64')
     .then((res)=> {
         console.log(res.data)
         setposts(res.data)
-        setloading(false)
+        setloading(false) 
+    })
+    .catch((res)=> {
+        console.error(res)
+        seterror(true)
 
-        // console.log("about to overite!")
-        // overwriteDB()    
     })
     .finally(() => {
         const timer = setTimeout(() => {
@@ -340,34 +343,46 @@ const checkForWooUrl = (postId) => {
 ])
 
 
+    const [error, seterror] = useState(false)
+
     // {posts.map((post)=>(
     //    <h4>{post.media_url}</h4>
     // ))}
     return (
         <>
-           <Container style={{height:'100vh'}} >
+           <Container >
               {
-
-            loading ? 
-            // <h4>Loading</h4>
+            loading 
+            ? 
             <div className="loadingPage">
             <Spinner style={{margin:'auto'}} animation="border" role="status">
                 <span className="visually-hidden">Loading...</span>
             </Spinner>
             </div>
             :
+
             <>
+            {
+                error && <ErrorScreen/>
+
+            }
+            
+            <div style={{display:'flex', justifyContent:'space-between', flexWrap:'wrap'}}>
+
 
    
                 {posts.map((post)=>(
                         post.status == 'publish'
                         &&
-                        <Post id={post.id} xs="4" md='4' style={{marginBottom:10}} key={post.id} media={post.images[0] ? post.images[0].src : null} media_type={post.media_type} />
+                        <Post id={post.id} style={{marginBottom:10, marginRight:10}}  wooUrl={post.permalink} key={post.id} media={post.images[0] ? post.images[0].src : null} media_type={post.media_type} />
+                        // <Post id={post.id} xs="4" md='4' style={{marginBottom:10, marginRight:10}} key={post.id} media={post.images[0] ? post.images[0].src : null} media_type={post.media_type} />
                     // <Col onClick={() => editPost(post.id)}  xs="4" md='4' style={{marginBottom:10}}>
                     // </Col>
                 ))}
+                </div >
                 </>
                 }
+
            </Container>
         </>
     )

@@ -22,6 +22,13 @@ import Startheader from './components/Startheader';
 import Cartheader from './components/Cartheader';
 import { useLocation } from 'react-router-dom';
 import Cart from './Screens/Cart';
+import Form from './Screens/Form';
+import InputField from './components/InputField';
+import OrderForm from './components/OrderForm';
+import Orders from './Screens/Orders';
+import Order from './Screens/Order';
+import NewOrder from './Screens/NewOrder';
+import NewProduct from './Screens/NewProduct';
 
 function App(props) {
   const location = props.location;
@@ -29,12 +36,13 @@ function App(props) {
   return (
     <Router>
       <div style={{width:'100%', height:'100%'}}>
-{
+{/* {
       location === 'woo' ? <Startheader/> : <Cartheader/>
-}
+} */}
+
+<Startheader/>
        {/* <Startheader/> */}
        {/* <Cartheader/> */}
-  <Container>
     {/* <Navbar.Brand href="#home">Evic Store</Navbar.Brand> */}
     {/* <Navbar.Toggle aria-controls="basic-navbar-nav" /> */}
     {/* <Navbar.Collapse id="basic-navbar-nav">
@@ -44,7 +52,7 @@ function App(props) {
 
       </Nav>
     </Navbar.Collapse> */}
-  </Container>
+
 {/* </Navbar> */}
 
 
@@ -52,9 +60,28 @@ function App(props) {
 
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
+
+
         <Switch>
           <Route exact path="/">
             <WooCommerce/>
+          </Route>
+
+          <Route path="/input">
+            <OrderForm/>
+          </Route>
+
+          <Route path="/orders">
+            <Orders/>
+          </Route>
+
+          <Route path="/new">
+            {/* <NewOrder/> */}
+            <NewProduct/>
+          </Route>
+
+          <Route exact path="/order/:id">
+            <Order/>
           </Route>
 
           <Route exact path="/wooAdmin">
@@ -104,14 +131,14 @@ function App(props) {
           <Candidates/>
           </Route>
 
-          <Route exact path="/instagram">
-          {/* <Instagram/> */}
+          <Route exact path="/form">
+          <Form/>
           </Route>
 
          
 
         </Switch>
-      </div>
+</div>
     </Router>
   );
 }
