@@ -29,13 +29,34 @@ import Orders from './Screens/Orders';
 import Order from './Screens/Order';
 import NewOrder from './Screens/NewOrder';
 import NewProduct from './Screens/NewProduct';
+import { initializeApp } from 'firebase/app';
+import { getDatabase, ref, set, get, child, onValue } from "firebase/database";
+
+
+
 
 function App(props) {
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDnvuL0QHZKLg9NAjnH86RqOtLxp03o-U0",
+  authDomain: "fir-learning-35a38.firebaseapp.com",
+  projectId: "fir-learning-35a38",
+  storageBucket: "fir-learning-35a38.appspot.com",
+  messagingSenderId: "405512595691",
+  appId: "1:405512595691:web:7226e34538a9651a81f6ae",
+  measurementId: "G-47LJTYWD6N"
+};
+
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
   const location = props.location;
   console.log(location)
   return (
     <Router>
       <div style={{width:'100%', height:'100%'}}>
+     
 {/* {
       location === 'woo' ? <Startheader/> : <Cartheader/>
 } */}
@@ -63,6 +84,8 @@ function App(props) {
 
 
         <Switch>
+          <Container>
+
           <Route exact path="/">
             <WooCommerce/>
           </Route>
@@ -136,6 +159,7 @@ function App(props) {
           </Route>
 
          
+          </Container>
 
         </Switch>
 </div>

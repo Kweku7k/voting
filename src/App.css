@@ -79,8 +79,34 @@ body{
 .addImage{
   width: 100px;
   height: 100px;
-  background-color: #61dafb;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  /* background-color: #61dafb; */
+
 }
+
+.addImageCard{
+  object-fit: cover;
+  margin-right: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+
+}
+
+.deleteAllImages{
+  background-color: red;
+  padding: 10px;
+  border-radius: 10px;
+  border: none;
+  color: white;
+  font-weight: bold;
+}
+/* .image-item{
+background-color: #61dafb;
+
+} */
+
 
 .subbutton{
   width: 100%;
