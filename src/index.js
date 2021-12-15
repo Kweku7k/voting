@@ -6,6 +6,7 @@ import reportWebVitals from './reportWebVitals';
 // import './fonts/Goldman/Goldman-Bold.ttf';
 import './fonts/nexa/NexaBold.otf'
 import './fonts/nexa/NexaLight.otf'
+import './fonts/sf/SF-Pro-Display-Regular.otf'
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 ReactDOM.render(

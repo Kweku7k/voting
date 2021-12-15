@@ -26,11 +26,13 @@ import Form from './Screens/Form';
 import InputField from './components/InputField';
 import OrderForm from './components/OrderForm';
 import Orders from './Screens/Orders';
+import Products from './Screens/Products';
 import Order from './Screens/Order';
 import NewOrder from './Screens/NewOrder';
 import NewProduct from './Screens/NewProduct';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, set, get, child, onValue } from "firebase/database";
+import Dashboard from './Screens/Dashboard';
 
 
 
@@ -87,11 +89,18 @@ const db = getDatabase(app);
           <Container>
 
           <Route exact path="/">
+            <Dashboard/>
+          </Route>
+          <Route exact path="/evic">
             <WooCommerce/>
           </Route>
 
           <Route path="/input">
             <OrderForm/>
+          </Route>
+
+          <Route path="/products">
+            <Products/>
           </Route>
 
           <Route path="/orders">

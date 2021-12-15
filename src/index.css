@@ -11,12 +11,19 @@ body {
 code {
   /* font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace; */
-  font-family: "NexaBold"
+  font-family: "SF-Pro-Display-Regular"
 }
 
-@font-face {
+/* @font-face {
   font-family: "NexaBold";
   src: local("NexaBold"),
    url("./fonts/nexa/NexaBold.otf") format("truetype");
+  font-weight: bold;
+  } */
+  
+@font-face {
+  font-family: "SF-Pro-Display-Regular";
+  src: local("SF-Pro-Display-Regular"),
+   url("./fonts/sf/SF-Pro-Display-Regular.otf") format("truetype");
   font-weight: bold;
   }

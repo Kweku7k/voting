@@ -4,7 +4,7 @@ html{
 
 body{
   background-color: #f4f4f4;
-  font-family: NexaBold
+  font-family: SF-Pro-Display-Regular
   /* font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif */
 }
 
@@ -94,6 +94,28 @@ body{
 
 }
 
+.options{
+  width: 100%;
+}
+
+.options-card{
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background-color: white;
+  width: 100%;
+  border-radius: 20px;
+  margin-top: 20px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.ellipse{
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background-color: red;
+}
+
 .deleteAllImages{
   background-color: red;
   padding: 10px;
@@ -107,6 +129,17 @@ background-color: #61dafb;
 
 } */
 
+
+.waitButton{
+  width: 100%;
+  border: none;
+  background-color: #1a357a6c;
+  color: white;
+  padding: 20px 60px;
+  margin-top: 20px;
+  /* border-radius: 10px; */
+  font-weight: bold;
+}
 
 .subbutton{
   width: 100%;
