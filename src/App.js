@@ -7,6 +7,9 @@ import {
   Route
 } from "react-router-dom";
 import LandingPage from './Screens/LandingPage';
+import RestoreIcon from '@mui/icons-material/Apps';
+import FavoriteIcon from '@mui/icons-material/Apps';
+import LocationOnIcon from '@mui/icons-material/Apps';
 import Categories from './Screens/Categories';
 import Candidates from './Screens/Candidates';
 import VoteScreen from './Screens/VoteScreen';
@@ -20,7 +23,7 @@ import WooAdmin from './Screens/WooAdmin';
 import Product from './Screens/Product';
 import Startheader from './components/Startheader';
 import Cartheader from './components/Cartheader';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useHistory, Link } from 'react-router-dom';
 import Cart from './Screens/Cart';
 import Form from './Screens/Form';
 import InputField from './components/InputField';
@@ -33,11 +36,29 @@ import NewProduct from './Screens/NewProduct';
 import { initializeApp } from 'firebase/app';
 import { getDatabase, ref, set, get, child, onValue } from "firebase/database";
 import Dashboard from './Screens/Dashboard';
+import { BottomNavigation, BottomNavigationAction, Menu } from '@mui/material';
+import { useState } from 'react';
+import { Home, Inventory } from '@mui/icons-material';
+import AppsIcon from '@mui/icons-material/Apps';
+// import { useHistory } from 'react-router-dom';
+
 
 
 
 
 function App(props) {
+
+  const [value, setValue] = useState(null)
+
+  const history = useHistory()
+
+const routeNav = (value) => {
+  console.log("testing")
+  console.log(value)
+
+  value == 0 && history.push('/form')
+
+}
 
 const firebaseConfig = {
   apiKey: "AIzaSyDnvuL0QHZKLg9NAjnH86RqOtLxp03o-U0",
@@ -140,7 +161,7 @@ const db = getDatabase(app);
             <Instagram/>
           </Route>
 
-          <Route exact path="/evic/:id">
+          <Route exact path="/product/:id">
             <Product/>
           </Route>
 
@@ -166,6 +187,20 @@ const db = getDatabase(app);
           <Route exact path="/form">
           <Form/>
           </Route>
+          
+        {/* <BottomNavigation style={{position:'fixed', bottom:0, width:'100%'}}
+          showLabels
+          value={value}
+          onChange={(event, newValue) => {
+            setValue(newValue); 
+            routeNav(newValue)
+          }}
+        >
+
+  <BottomNavigationAction label="Home" icon={<Home/>} />
+  <BottomNavigationAction label="Products" icon={<AppsIcon/>} />
+  <BottomNavigationAction label="Orders" icon={<Inventory />} />
+</BottomNavigation> */}
 
          
           </Container>

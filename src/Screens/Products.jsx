@@ -387,7 +387,7 @@ const checkForWooUrl = (postId) => {
                 {posts.map((post)=>(
                         post.status == 'publish'
                         &&
-                        <Item id={post.id} price={post.price} name={post.name} style={{marginBottom:10, marginRight:10}}  wooUrl={post.permalink} key={post.id} media={post.images[0] ? post.images[0].src : null} media_type={post.media_type} />
+                        <Item onClick={()=>(window.location.href = post.permalink)} id={post.id} price={post.price} name={post.name} style={{marginBottom:10, marginRight:10}}  wooUrl={post.permalink} key={post.id} media={post.images[0] ? post.images[0].src : null} media_type={post.media_type} />
 
                         
                         // <Post id={post.id} xs="4" md='4' style={{marginBottom:10, marginRight:10}} key={post.id} media={post.images[0] ? post.images[0].src : null} media_type={post.media_type} />

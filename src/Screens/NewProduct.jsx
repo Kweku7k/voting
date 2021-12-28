@@ -4,13 +4,18 @@ import { faPlusCircle, faTrash } from '@fortawesome/free-solid-svg-icons'
 import { useState } from 'react'
 import axios from 'axios'
 
-import { Form, Container, FloatingLabel, Spinner, Col,Button, Row } from 'react-bootstrap'
+import { Form, Container, FloatingLabel, Spinner, Col,Button, Row, Modal } from 'react-bootstrap'
 import ImageUploading from 'react-images-uploading'
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getDatabase, set, get, child, onValue } from "firebase/database";
 import { useHistory } from 'react-router-dom';
 import { CloudinaryContext, Image } from 'cloudinary-react';
 import { useEffect } from 'react';
+import { InputTags } from 'react-bootstrap-tagsinput'
+import 'react-bootstrap-tagsinput/dist/index.css'
+import TagsInput from 'react-tagsinput';
+
+
 
 {/* <CloudinaryContext cloudName="presto-solutions">
   <div>
@@ -22,8 +27,19 @@ import { useEffect } from 'react';
 
 
 
+
+
 const NewProduct = () => {
 
+  const [show, setShow] = useState(false);
+
+  const handleClose = () => setShow(false);
+  const handleShow = () => setShow(true);
+
+  const [state, setState] = useState([])
+  // const [state, setState] = useState<string[]>([])
+  
+const [category, setcategory] = useState()
 
   const [inputList, setInputList] = useState([{ product_id: "365", quantity: 1 }]);
 
@@ -31,25 +47,52 @@ const NewProduct = () => {
   const [sizes, setsizes] = useState([4,5,6,7])
 // multiple fields
 
- // handle input change
- const handleInputChange = (e, index) => {
-  const { name, value } = e.target;
-  const list = [...inputList];
-  list[index][name] = value;
-  setInputList(list);
-};
+//  // handle input change
+//  const handleInputChange = (e, index) => {
+//   const { name, value } = e.target;
+//   const list = [...inputList];
+//   list[index][name] = value;
+//   setInputList(list);
+// };
 
-// handle click event of the Remove button
-const handleRemoveClick = index => {
-  const list = [...inputList];
-  list.splice(index, 1);
-  setInputList(list);
-};
+// // handle click event of the Remove button
+// const handleRemoveClick = index => {
+//   const list = [...inputList];
+//   list.splice(index, 1);
+//   setInputList(list);
+// };
 
-// handle click event of the Add button
-const handleAddClick = () => {
-  setInputList([...inputList, { product_id: "365", quantity: "1" }]);
-};
+// // handle click event of the Add button
+// const handleAddClick = () => {
+//   setInputList([...inputList, { product_id: "365", quantity: "1" }]);
+// };
+
+// let sizesArray = []
+const [sizesArray, setsizesArray] = useState([])
+
+const addToChecked = (value, size) => {
+  console.log(value + ' - ' + size)
+  if (value === true){
+    sizesArray.push(size)
+  }
+  else if(value === false){
+    // Delete from Array
+    // var newarray = sizesArray
+    const index = sizesArray.indexOf(size)
+    console.log(index)
+    if (index !== -1) {
+      sizesArray.splice(index, 1);
+      // console.log("newarr")
+      // console.log(newarray)
+      // setsizesArray([newarray])
+    }
+  }
+  console.log(sizesArray)
+
+
+   
+
+}
 
 
 const [categories, setcategories] = useState([])
@@ -94,7 +137,6 @@ let pushimg = []
   const [description, setdescription] = useState("")
   const [color, setcolor] = useState("")
 
-  
   const uname = 'ck_1c9fd82800542cd01838923009ea20743be2734f'
   const pass = 'cs_dc4f49dbbd4efa9f2608ad3b14daec05b0b38aa6'
   
@@ -149,26 +191,45 @@ const testAdd = () => {
 
 }
 
+
+const [tags, settags] = useState([])
+
+
   const addProduct = () => {
 
     setloading(true)
   console.log("Testing")
   axios.post('https://evicstore.com/wp-json/wc/v3/products',{
       "name": name,
-      "type": "simple",
+      "type": "variable",
       "regular_price": price,
+      "price": price,
       "description": description,
       "short_description": "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
       "categories": [
         {
-          id: 9
+          id: category
         },
-        {
-          id: 14
-        }
+        // {
+        //   id: 24
+        // }
       ],
-      images: pushimg
-  }
+      images: pushimg,
+      "attributes":[
+        // {
+        // "id":2,
+        // "variation":true,
+        // "visible":true,
+        // "options":color
+        // },
+        {
+        "id":1,
+        "variation":true,
+        "visible":true,
+        "options":sizesArray
+        }
+    ],
+  } 
   ,{
     headers: {
         'Authorization': `Basic ${token}`
@@ -176,6 +237,33 @@ const testAdd = () => {
 })
   .then((res) => {
     console.log(res.data)
+
+    const item = res.data
+    const itemId = res.data.id
+    const itemPrice = res.data.price
+
+    console.log("price")
+    console.log(price)
+
+    axios.post(`https://evicstore.com/wp-json/wc/v3/products/${itemId}/variations`,
+      {
+        "regular_price": price,
+        "image": {
+          "id": item.images[0].id
+        },
+        "attributes": [
+            {
+            "id":1,
+            "options":["state"],
+            "stock_quantity":100
+            }
+        ]
+      },{
+      headers: {
+        'Authorization': `Basic ${token}`
+      }
+    })
+
     history.push('/products')
   })
   .catch((err) => {
@@ -183,6 +271,10 @@ const testAdd = () => {
   })
 
 
+}
+
+const handleChange = (tags) => {
+  setState({tags})
 }
 
 
@@ -322,7 +414,7 @@ const onUploadProduct = () => {
             </div> */}
             &nbsp;
             <div style={{display:'flex', alignItems:'center', marginBottom:10, justifyContent:'space-between'}}>
-              <h4><b>Add A New Product</b></h4>
+              <h4><b>{ name ? name : "Add A New Product"}</b></h4>
             {/* <button className='deleteAllImages' onClick={onImageRemoveAll}>Delete all images</button> */}
             
             </div>
@@ -359,6 +451,10 @@ const onUploadProduct = () => {
     <Form.Control value={name} onChange={(e) => setname(e.target.value)} type="text" placeholder="Item Name" />
   </FloatingLabel>
 
+  
+
+    {/* <TagsInput value={tags} onChange={handleChange()}/> */}
+
   <FloatingLabel
     controlId="floatingInput"
     label="Color"
@@ -368,8 +464,10 @@ const onUploadProduct = () => {
   </FloatingLabel>
 
   <FloatingLabel controlId="floatingPrice" label="Price">
-    <Form.Control value={price} type="number" pattern="[0-9]*" onChange={(e) => setprice(e.target.value)} placeholder="Price" />
+    {/* pattern="[0-9]*" */}
+    <Form.Control value={price} type="number" onChange={(e) => setprice(e.target.value)} placeholder="Price" />
   </FloatingLabel>
+
 
 
   <FloatingLabel controlId="floatingTextarea2" label="Description">
@@ -382,14 +480,77 @@ const onUploadProduct = () => {
     />
   </FloatingLabel>
 
+
+
   <FloatingLabel style={{marginBottom:30}} controlId="floatingSelectGrid" label="Category">
-      <Form.Select name="product_id" aria-label="Floating label select example">
+      <Form.Select value={category} onChange={(e)=> setcategory(e.target.value)} name="product_id" aria-label="Floating label select example">
       {categories.map((product)=>(
         <option value={product.id}>{product.name}</option>
 ))} 
-        
       </Form.Select>
     </FloatingLabel>
+      {/* <Form.Control> */}
+
+    <h6 onClick={handleShow}>Sizes - UK</h6>
+    
+    <div className='row'>
+      {/* <div className='input-group'>
+        <InputTags values={sizesArray} onTags={(value) => settags(value.values)} />
+      </div> */}
+
+
+      {["12","13","14","15","16","17","18","19","20"].map((size) => (
+        <div className='col-sm-4'>
+        <Form.Check 
+        inline
+        type="checkbox"
+        id="default"
+        label={size}
+        onClick={(e) => {addToChecked(e.target.checked, size)}}
+      />
+        </div>
+      ))}
+
+      {/* <hr />
+      <ol>
+        {state.map((item, index) => (
+          <li key={item + index}>{item}</li>
+        ))}
+      </ol> */}
+    </div>
+
+
+
+    {/* <Modal show={show} onHide={handleClose}>
+        <Modal.Header closeButton>
+          <Modal.Title>Select Sizes - UK</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+
+
+        {[12,13,14,15,16,17,18,19,20].map((size) => (
+        <Form.Check 
+        inline
+        type="checkbox"
+        id="default"
+        label={size}
+        onClick={(e) => {addToChecked(e.target.checked, size)}}
+      />
+      ))}
+
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={handleClose}>
+            Close
+          </Button>
+          <Button variant="primary" onClick={handleClose}>
+            Save Changes
+          </Button>
+        </Modal.Footer>
+      </Modal> */}
+
+
+    {/* </Form.Control> */}
 
 
 
@@ -397,6 +558,9 @@ const onUploadProduct = () => {
 
 
 
+
+
+{/* 
 {inputList.map((x, i) => {
     return(
       <>
@@ -423,12 +587,11 @@ const onUploadProduct = () => {
   <Button variant="primary" onClick={handleAddClick}  type="submit">
     Add Item
   </Button>
-  }
+  } */}
 
-</>
-    )})}
+{/* </>
+    )})} */}
 
-   
 
 
     

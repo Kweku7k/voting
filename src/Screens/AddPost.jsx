@@ -75,7 +75,6 @@ const [selectedPost, setselectedPost] = useState({
         console.log(data)
         setselectedPost(data)
         setinput(data.wooUrl)
-
         });
     }, [])
 

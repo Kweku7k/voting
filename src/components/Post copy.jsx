@@ -10,7 +10,8 @@ const Item = ({media, name, price, wooUrl,media_type, id}) => {
     let history = useHistory();
     
     return (
-        <div className='options-card' style={{borderRadius:10}}>
+        <>
+        <div onClick={()=>(window.location.href = wooUrl)} className='options-card' style={{borderRadius:10}}>
             {/* <img onClick={()=>window.open("https://www.google.com")} src={media} className="igPost"/> */}
             <img src={media} style={{width:60, marginRight:20, height:60, objectFit:'cover'}}/>
             <div style={{marginRight:'auto'}}>
@@ -20,6 +21,7 @@ const Item = ({media, name, price, wooUrl,media_type, id}) => {
             <FontAwesomeIcon color="red" icon={faTrash}/>
 
         </div>
+        </>
 
 
         // <div style={{backgroundColor:'white', borderRadius:10}} className="col-md-4 col-sm-4"  >

@@ -16,8 +16,8 @@ const Product = () => {
 
     const history = useHistory()
 
-    const uname = 'ck_2e4053609add9cc95d435743c2d518916a3bf47b'
-    const pass = 'cs_1efd19b1fc8451ac8858b31d3cf26c7ba2e9527d'
+    const uname = 'ck_1c9fd82800542cd01838923009ea20743be2734f'
+    const pass = 'cs_dc4f49dbbd4efa9f2608ad3b14daec05b0b38aa6'
     
     let store = []
     store.push(localStorage.getItem("store"))
@@ -34,7 +34,7 @@ const Product = () => {
     }
 
     useEffect(() => {
-        axios.get(`https://gsu.qhx.mybluehost.me/wp-json/wc/v3/products/${id}`,{
+        axios.get(`https://evicstore.com/wp-json/wc/v3/products/${id}`,{
             headers: {
                 'Authorization': `Basic ${token}`
               },
@@ -63,7 +63,7 @@ const Product = () => {
             :
 
         
-        <div>
+        <div style={{width:'100%'}}>
             <div className="productImage">
             <img    className="fillImage" src={ product.images ? product.images[0].src : null}/>
             </div>
