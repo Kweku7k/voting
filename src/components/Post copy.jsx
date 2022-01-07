@@ -5,7 +5,16 @@ import React, { useState, useEffect } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 
-const Item = ({ media, name, price, wooUrl, media_type, id }) => {
+const Item = ({
+  media,
+  name,
+  price,
+  wooUrl,
+  media_type,
+  id,
+  setPosts,
+  posts,
+}) => {
   let history = useHistory();
 
   const [deleteid, setdeleteid] = useState(null);
@@ -35,7 +44,8 @@ const Item = ({ media, name, price, wooUrl, media_type, id }) => {
       })
       .then((res) => {
         console.log(res);
-        // window.location.reload();
+        const filterPosts = posts.filter((item) => item.id !== deleteid);
+        setPosts(filterPosts);
       });
   };
   const handleShow = () => setShow(true);
