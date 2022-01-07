@@ -40,6 +40,7 @@ import { BottomNavigation, BottomNavigationAction, Menu } from '@mui/material';
 import { useState } from 'react';
 import { Home, Inventory } from '@mui/icons-material';
 import AppsIcon from '@mui/icons-material/Apps';
+import EditProduct from './Screens/EditProduct';
 // import { useHistory } from 'react-router-dom';
 
 
@@ -131,6 +132,10 @@ const db = getDatabase(app);
           <Route path="/new">
             {/* <NewOrder/> */}
             <NewProduct/>
+          </Route>
+
+          <Route path="/edit/:id">
+            <EditProduct/>
           </Route>
 
           <Route exact path="/order/:id">

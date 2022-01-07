@@ -16,6 +16,7 @@ import 'react-bootstrap-tagsinput/dist/index.css'
 import TagsInput from 'react-tagsinput';
 import SuccessAlert from '../components/SuccessAlert';
 import ErrorAlert from '../components/ErrorAlert';
+import { useParams } from 'react-router-dom/cjs/react-router-dom.min';
 
 
 
@@ -31,15 +32,20 @@ import ErrorAlert from '../components/ErrorAlert';
 
 
 
-const NewProduct = () => {
+const EditProduct = () => {
 
   
+
+  let {id} = useParams()
+  console.log(id)
+
+  // const params = useParams();
+  // console.log(params)
+
 
   const [generalUploadError, setgeneralUploadError] = useState(false)
   
   const [show, setShow] = useState(false);
-
-  const [quantity, setquantity] = useState()
 
   const [imageuploaderror, setimageuploaderror] = useState(false)
 
@@ -106,9 +112,10 @@ const addToChecked = (value, size) => {
 
 
 const [categories, setcategories] = useState([])
+const [product, setproduct] = useState([])
   // Get All Categories
   useEffect(() => {
-    axios.get('https://evicstore.com/wp-json/wc/v3/products/categories',{
+    axios.get(`https://evicstore.com/wp-json/wc/v3/products/${id}`,{
       headers: {
           'Authorization': `Basic ${token}`
         }
@@ -117,15 +124,17 @@ const [categories, setcategories] = useState([])
     console.log('res')
     console.log(res)
     console.log(res.data)
-  
-    setcategories(res.data)
+    setproduct(res.data)
+    setloading(false)
+    // console.log(re)
   })
+  
   }, [])
 
 const [uploadImage, setuploadImage] = useState(false)
 
 
-const [loading, setloading] = useState(false)
+const [loading, setloading] = useState(true)
 
 const history = useHistory()
 
@@ -142,7 +151,7 @@ let pushimg = []
 
 
 
-  const [name, setname] = useState("")
+  const [name, setname] = useState(product ? product.name: "product.name")
   const [price, setprice] = useState("")
   const [description, setdescription] = useState("")
   const [color, setcolor] = useState("")
@@ -387,6 +396,8 @@ const onUploadProduct = () => {
   };
 
 
+
+
     return (
 
 
@@ -447,7 +458,7 @@ const onUploadProduct = () => {
             </div> */}
             &nbsp;
             <div style={{display:'flex', alignItems:'center', marginBottom:10, justifyContent:'space-between'}}>
-              <h4><b>{ name ? name : "Add A New Product"}</b></h4>
+              <h4><b>{ name ? name : `Product ${id}  `}</b></h4>
             {/* <button className='deleteAllImages' onClick={onImageRemoveAll}>Delete all images</button> */}
             
             </div>
@@ -498,13 +509,6 @@ const onUploadProduct = () => {
     {/* pattern="[0-9]*" */}
     <Form.Control value={price} type="number" onChange={(e) => setprice(e.target.value)} placeholder="Price" />
   </FloatingLabel>
-<br/>
-  <FloatingLabel controlId="floatingPrice" label="Quantity">
-    {/* pattern="[0-9]*" */}
-    <Form.Control value={quantity} type="number" onChange={(e) => setquantity(e.target.value)} placeholder="Quantity" />
-  </FloatingLabel>
-
-
 
 
 
@@ -517,12 +521,9 @@ const onUploadProduct = () => {
       style={{ height: '100px', margin:'20px auto' }}
     />
   </FloatingLabel>
-  
-  
 
 
 
-  
   <FloatingLabel style={{marginBottom:30}} controlId="floatingSelectGrid" label="Category">
       <Form.Select value={category} onChange={(e)=> setcategory(e.target.value)} name="product_id" aria-label="Floating label select example">
       {categories.map((product)=>(
@@ -666,4 +667,4 @@ const onUploadProduct = () => {
     )
 }
 
-export default NewProduct
+export default EditProduct

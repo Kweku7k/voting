@@ -1,7 +1,7 @@
 import React,{useEffect, useState} from 'react'
 import axios from 'axios'
 import {Link, useHistory} from 'react-router-dom'
-import { Container, Row, Col, Spinner } from 'react-bootstrap';
+import { Container, Row, Col, Spinner, Modal, Button } from 'react-bootstrap';
 import Post from '../components/Post';
 import { initializeApp } from 'firebase/app';
 import { getFirestore, collection, getDocs } from 'firebase/firestore/lite';
@@ -15,6 +15,11 @@ import { faPlusCircle } from '@fortawesome/free-solid-svg-icons';
 
 
 const Products = () => {  
+
+    const [show, setShow] = useState(false)
+    const handleClose = () => {
+        console.log("Handle")
+    }
 
 const firebaseConfig = {
     apiKey: "AIzaSyDnvuL0QHZKLg9NAjnH86RqOtLxp03o-U0",
@@ -353,7 +358,11 @@ const checkForWooUrl = (postId) => {
     //    <h4>{post.media_url}</h4>
     // ))}
     return (
+
         <>
+
+        {/* onHide={setShow(false)} */}
+
            <Container >
               {
             loading 
@@ -383,11 +392,11 @@ const checkForWooUrl = (postId) => {
             <div style={{display:'flex', justifyContent:'space-between', flexWrap:'wrap'}}>
 
 
-   
+            {/* onClick={()=>(window.location.href = post.permalink)}  */}
                 {posts.map((post)=>(
                         post.status == 'publish'
                         &&
-                        <Item onClick={()=>(window.location.href = post.permalink)} id={post.id} price={post.price} name={post.name} style={{marginBottom:10, marginRight:10}}  wooUrl={post.permalink} key={post.id} media={post.images[0] ? post.images[0].src : null} media_type={post.media_type} />
+                        <Item onClick={()=>(history.push(`/edit/${post.id}`))} id={post.id} price={post.price} name={post.name} style={{marginBottom:10, marginRight:10}}  wooUrl={post.permalink} key={post.id} media={post.images[0] ? post.images[0].src : null} media_type={post.media_type} />
 
                         
                         // <Post id={post.id} xs="4" md='4' style={{marginBottom:10, marginRight:10}} key={post.id} media={post.images[0] ? post.images[0].src : null} media_type={post.media_type} />
