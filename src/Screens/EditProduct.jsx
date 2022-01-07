@@ -199,8 +199,10 @@ const EditProduct = () => {
           });
       }
     } else {
-      setnoImagesError(true);
+      // setnoImagesError(true);
       console.log("There were no images, please add images");
+      updateWithoutImages()
+      
     }
   };
 
@@ -212,11 +214,11 @@ const EditProduct = () => {
     setloading(true);
     console.log("Testing");
     axios
-      .post(
-        "https://evicstore.com/wp-json/wc/v3/products",
+      .put(
+        `https://evicstore.com/wp-json/wc/v3/products/${id}`,
         {
           name: name,
-          type: "variable",
+          type: "simple",
           regular_price: price,
           price: price,
           description: description,
@@ -258,28 +260,6 @@ const EditProduct = () => {
         console.log("price");
         console.log(price);
 
-        axios.post(
-          `https://evicstore.com/wp-json/wc/v3/products/${itemId}/variations`,
-          {
-            regular_price: price,
-            image: {
-              id: item.images[0].id,
-            },
-            attributes: [
-              {
-                id: 1,
-                options: ["state"],
-                stock_quantity: 100,
-              },
-            ],
-          },
-          {
-            headers: {
-              Authorization: `Basic ${token}`,
-            },
-          }
-        );
-
         history.push("/products");
       })
       .catch((err) => {
@@ -287,6 +267,65 @@ const EditProduct = () => {
         setgeneralUploadError(true);
       });
   };
+
+
+  const updateWithoutImages = () => {
+    setloading(true);
+    console.log("Testing");
+    axios
+      .put(
+        `https://evicstore.com/wp-json/wc/v3/products/${id}`,
+        {
+          name: name,
+          type: "simple",
+          regular_price: price,
+          price: price,
+          description: description,
+          short_description: description,
+          categories: [
+            {
+              id: category,
+            },
+          ],
+          // images: pushimg,
+          attributes: [
+            // {
+            // "id":2,
+            // "variation":true,
+            // "visible":true,
+            // "options":color
+            // },
+            {
+              id: 1,
+              variation: true,
+              visible: true,
+              options: sizesArray,
+            },
+          ],
+        },
+        {
+          headers: {
+            Authorization: `Basic ${token}`,
+          },
+        }
+      )
+      .then((res) => {
+        console.log(res.data);
+
+        const item = res.data;
+        const itemId = res.data.id;
+        const itemPrice = res.data.price;
+
+        console.log("price");
+        console.log(price);
+
+        history.push("/products");
+      })
+      .catch((err) => {
+        console.log(err);
+        setgeneralUploadError(true);
+      });
+  }
 
   const handleChange = (tags) => {
     setState({ tags });
@@ -371,6 +410,8 @@ const EditProduct = () => {
 
     setImages(imageList);
   };
+
+const [productType, setproductType] = useState("Simple")
 
   return (
     <div style={{ width: "100%" }}>
@@ -468,6 +509,25 @@ const EditProduct = () => {
           {/* <h6 className='text-muted' style={{color:'red'}}>Please add an image</h6> */}
           <Form>
             <>
+
+            <FloatingLabel
+                style={{ marginBottom: 30 }}
+                controlId="floatingSelectGrid"
+                label="Product Type"
+              >
+                <Form.Select
+                  value={productType}
+                  onChange={(e) => setproductType(e.target.value)}
+                  name="product_type"
+                  aria-label="Floating label select example"
+                >
+
+                    <option value="simple">Simple</option>
+                    <option value="variable">Variable</option>
+
+                </Form.Select>
+              </FloatingLabel>
+
               <FloatingLabel
                 controlId="floatingInput"
                 label="Item Name"

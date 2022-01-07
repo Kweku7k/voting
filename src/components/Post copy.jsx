@@ -72,13 +72,13 @@ const Item = ({ media, name, price, wooUrl, media_type, id }) => {
             <FontAwesomeIcon color="red" icon={faTrash}/>
             </div>
 
-        <div
+        {/* <div
           onClick={() => deleteProduct(id)}
           style={{ marginLeft: "auto" }}
           className="delete"
         >
           <FontAwesomeIcon color="red" icon={faTrash} />
-        </div>
+        </div> */}
       {/* </div> */}
 </div>
 
@@ -98,7 +98,8 @@ const Item = ({ media, name, price, wooUrl, media_type, id }) => {
       </Modal>
 
 
-    </>)
+    </>
+    )
     
 };
 
