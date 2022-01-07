@@ -128,7 +128,7 @@ const EditProduct = () => {
         setproduct(res.data);
         setname(res.data.name);
         setprice(res.data.price);
-        setdescription(res.data.short_description);
+        setdescription(res.data.short_description.replace(/<p>|<\/p>/gm, ""));
         setsizesArray(res.data.attributes[0].options);
         setloading(false);
 
