@@ -113,7 +113,7 @@ const addToChecked = (value, size) => {
 
 const [categories, setcategories] = useState([])
 const [product, setproduct] = useState([])
-  // Get All Categories
+  // Get All Product
   useEffect(() => {
     axios.get(`https://evicstore.com/wp-json/wc/v3/products/${id}`,{
       headers: {

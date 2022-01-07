@@ -13,7 +13,11 @@ const Item = ({media, name, price, wooUrl,media_type, id}) => {
 
     const [deleteid, setdeleteid] = useState(null)
 
-   
+    
+
+  const truncate = (str) => {
+    return str.length > 10 ? str.substring(0, 17) + "..." : str;
+  }
 
     const uname = 'ck_1c9fd82800542cd01838923009ea20743be2734f'
     const pass = 'cs_dc4f49dbbd4efa9f2608ad3b14daec05b0b38aa6'
@@ -55,7 +59,10 @@ const Item = ({media, name, price, wooUrl,media_type, id}) => {
             <>
             <img src={media} style={{width:60, marginRight:20, height:60, objectFit:'cover'}}/>
             <div style={{width:'auto'}} onClick={()=>(history.push(`/edit/${id}`))} >
-            <h6><b>{name}</b></h6>
+            <h6><b>
+              {/* {name} */}
+              {truncate(name)}
+            </b></h6>
             <h6 className='text-muted'>Ghc {price}</h6>
             </div>
             </>

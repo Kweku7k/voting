@@ -175,6 +175,7 @@ for (let i = 0; i < images.length; i++) {
   formData.append("upload_preset", "nqmxjlpv")
   console.log("Image " + i + " uploaded")
     setloading(true)
+    setloadMessage("Uploading Images")
 axios.post('https://api.cloudinary.com/v1_1/presto-solutions/image/upload',formData)
 .then((res)=>{
   console.log(res)
@@ -199,16 +200,6 @@ axios.post('https://api.cloudinary.com/v1_1/presto-solutions/image/upload',formD
     setnoImagesError(true)
     console.log("There were no images, please add images")
   }
-  
-
-
-
-
-
-
-  
-
-
 }
 
 
@@ -219,12 +210,17 @@ const [noImagesError, setnoImagesError] = useState(false)
   const addProduct = () => {
 
     setloading(true)
+    setloadMessage("Uploading Product Information")
   console.log("Testing")
   axios.post('https://evicstore.com/wp-json/wc/v3/products',{
       "name": name,
       "type": "variable",
       "regular_price": price,
       "price": price,
+      "manage_stock": true,
+      "quantity":quantity,
+      "stock_quantity":quantity,
+      "stock_status":"instock",
       "description": description,
       "short_description": description,
       "categories": [
@@ -348,7 +344,7 @@ const onUploadProduct = () => {
 }
 
 
-
+const [loadMessage, setloadMessage] = useState("Loading")
 
     const [images, setImages] = React.useState([]);
   const maxNumber = 69;
@@ -410,9 +406,12 @@ const onUploadProduct = () => {
             loading 
             ? 
             <div className="loadingPage">
-            <Spinner style={{margin:'auto'}} animation="border" role="status">
+              <div style={{margin:'auto'}} >
+            <Spinner animation="border" role="status">
                 <span className="visually-hidden">Loading...</span>
             </Spinner>
+            <h4>{loadMessage}</h4>
+              </div>
             </div>
             :
             <>
@@ -497,7 +496,7 @@ const onUploadProduct = () => {
   <FloatingLabel controlId="floatingPrice" label="Price">
     {/* pattern="[0-9]*" */}
     <Form.Control value={price} type="number" onChange={(e) => setprice(e.target.value)} placeholder="Price" />
-  </FloatingLabel>
+  </FloatingLabel>    
 <br/>
   <FloatingLabel controlId="floatingPrice" label="Quantity">
     {/* pattern="[0-9]*" */}
