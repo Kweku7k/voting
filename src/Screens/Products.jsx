@@ -426,6 +426,7 @@ const Products = () => {
                       media_type={post.media_type}
                       setPosts={setposts}
                       posts={posts}
+                      setloading={setloading}
                     />
                   )
 

@@ -2,7 +2,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
-import { Modal, Button } from "react-bootstrap";
+import { Modal, Button, Spinner} from "react-bootstrap";
 import { Link, useHistory } from "react-router-dom";
 
 const Item = ({
@@ -13,7 +13,7 @@ const Item = ({
   media_type,
   id,
   setPosts,
-  posts,
+  posts
 }) => {
   let history = useHistory();
 
@@ -31,6 +31,7 @@ const Item = ({
   const truncate = (str) => {
     return str.length > 10 ? str.substring(0, 17) + "..." : str;
   }
+  const [loading, setloading] = useState(false)
 
   const deleteProduct = (id) => {
     console.log(id);
@@ -40,8 +41,7 @@ const Item = ({
 
   const handleClose = () => {
     console.log("deleting");
-    //setloading(true)
-    setShow(false);
+    setloading(true)
     axios
       .delete(`https://evicstore.com/wp-json/wc/v3/products/${deleteid}`, {
         headers: {
@@ -49,9 +49,12 @@ const Item = ({
         },
       })
       .then((res) => {
+        setloading(false)
+        setShow(false);
         console.log(res);
         const filterPosts = posts.filter((item) => item.id !== deleteid);
         setPosts(filterPosts);
+        setloading(false)
       });
   };
   const handleShow = () => setShow(true);
@@ -96,15 +99,27 @@ const Item = ({
         <Modal.Header closeButton>
           <Modal.Title>Delete</Modal.Title>
         </Modal.Header>
-        <Modal.Body>Are you sure you want to delete this item</Modal.Body>
-        <Modal.Footer>
+        <Modal.Body>{loading ?
+          (
+            <div style={{display:'flex'}}>
+              <Spinner
+                style={{ margin: "auto", justifyContent:'center' }}
+                animation="border"
+                role="status"
+              >
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+            </div>
+          ) 
+        : "Are you sure you want to delete this item"}</Modal.Body>
+       {!loading &&  <Modal.Footer>
           <Button variant="secondary" onClick={() => setShow(false)}>
             Close
           </Button>
           <Button variant="danger" onClick={handleClose}>
             Delete Item
           </Button>
-        </Modal.Footer>
+        </Modal.Footer>}
       </Modal>
 
 
