@@ -8,7 +8,7 @@ import { getFirestore, collection, getDocs } from "firebase/firestore/lite";
 import { getStorage } from "firebase/storage";
 import { getDatabase, ref, set, get, child, onValue } from "firebase/database";
 import ErrorScreen from "./ErrorScreen";
-import Item from "../components/Post copy";
+import Item from "../components/Item";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlusCircle } from "@fortawesome/free-solid-svg-icons";
 
