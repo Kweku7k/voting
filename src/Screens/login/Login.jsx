@@ -1,8 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Login.css";
 import logo from "../../assets/Frame.png";
 
 const Login = () => {
+  const [email, setEmail] = useState("admin@gmail.com");
+  const [password, setPassword] = useState("admin");
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log({ email });
+    console.log({ password });
+  };
   return (
     <div className="login-container">
       <div className="login-box">
@@ -24,10 +32,17 @@ const Login = () => {
             <p>choose</p>
           </div>
         </div>
-        <form className="login-box__form">
+        <form className="login-box__form" onSubmit={handleSubmit}>
           <div className="login-box__form-control">
             <i className="fa fa-envelope fa-lg" aria-hidden="true"></i>
-            <input type="email" name="email" id="email" placeholder="Email" />
+            <input
+              type="email"
+              name="email"
+              id="email"
+              placeholder="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
           </div>
           <div className="login-box__form-control">
             <i className="fa fa-lock fa-2x" aria-hidden="true"></i>
@@ -36,6 +51,8 @@ const Login = () => {
               name="password"
               id="password"
               placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
             />
           </div>
           <button className="login-box__form-button" type="submit">
