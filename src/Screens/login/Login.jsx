@@ -3,13 +3,19 @@ import "./Login.css";
 import logo from "../../assets/Frame.png";
 
 const Login = () => {
-  const [email, setEmail] = useState("admin@gmail.com");
-  const [password, setPassword] = useState("admin");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState(false);
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log({ email });
-    console.log({ password });
+
+    if (email === "admin@gmail.com" && password === "admin") {
+      console.log({ email });
+      console.log({ password });
+    } else {
+      console.log("invalid email/Password");
+    }
   };
   return (
     <div className="login-container">
@@ -17,6 +23,15 @@ const Login = () => {
         <div className="login-box__logo">
           <img src={logo} alt="logo" />
         </div>
+        {/**Error */}
+        <div className="error">
+          <div className="information">
+            <span className="material-icons"> info </span>
+            <p>invalid email/password</p>
+          </div>
+          <span className="material-icons close"> close </span>
+        </div>
+        {/**Error */}
         <div className="login-box__heading">
           <p>Join thousands of learners from</p>
           <p>around the world </p>
@@ -56,7 +71,8 @@ const Login = () => {
             />
           </div>
           <button className="login-box__form-button" type="submit">
-            Login
+            <div class="loader"></div>
+            <p>Login</p>
           </button>
         </form>
         <div className="login-box__socials">
