@@ -72,7 +72,7 @@ const Login = () => {
           </div>
           <button className="login-box__form-button" type="submit">
             <div class="loader"></div>
-            <p>Login</p>
+            {/* <p>Login</p> */}
           </button>
         </form>
         <div className="login-box__socials">
