@@ -1,20 +1,33 @@
 import React, { useState } from "react";
 import "./Login.css";
 import logo from "../../assets/Frame.png";
+import { Link, useHistory } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
+  let history = useHistory();
 
   const handleSubmit = (event) => {
     event.preventDefault();
 
     if (email === "admin@gmail.com" && password === "admin") {
-      console.log({ email });
-      console.log({ password });
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        history.push(`/`);
+      }, 2000);
     } else {
-      console.log("invalid email/Password");
+      setLoading(true);
+      setTimeout(() => {
+        setLoading(false);
+        setError(true);
+      }, 2000);
+      setTimeout(() => {
+        setError(false);
+      }, 3000);
     }
   };
   return (
@@ -24,13 +37,21 @@ const Login = () => {
           <img src={logo} alt="logo" />
         </div>
         {/**Error */}
-        <div className="error">
-          <div className="information">
-            <span className="material-icons"> info </span>
-            <p>invalid email/password</p>
+        {error && (
+          <div className="error">
+            <div className="information">
+              <span className="material-icons"> info </span>
+              <p>invalid email/password</p>
+            </div>
+            <span
+              className="material-icons close"
+              onClick={() => setError(false)}
+            >
+              {" "}
+              close{" "}
+            </span>
           </div>
-          <span className="material-icons close"> close </span>
-        </div>
+        )}
         {/**Error */}
         <div className="login-box__heading">
           <p>Join thousands of learners from</p>
@@ -71,8 +92,7 @@ const Login = () => {
             />
           </div>
           <button className="login-box__form-button" type="submit">
-            <div class="loader"></div>
-            {/* <p>Login</p> */}
+            {loading ? <div className="loader"></div> : <p>Login</p>}
           </button>
         </form>
         <div className="login-box__socials">
