@@ -26,6 +26,7 @@ import TagsInput from "react-tagsinput";
 import SuccessAlert from "../components/SuccessAlert";
 import ErrorAlert from "../components/ErrorAlert";
 import { useParams } from "react-router-dom/cjs/react-router-dom.min";
+import MultipleSelectFields from "../components/MultipleSelectFields";
 
 {
   /* <CloudinaryContext cloudName="presto-solutions">
@@ -47,6 +48,9 @@ const EditProduct = () => {
 
   const [show, setShow] = useState(false);
 
+const itemSizes = ["8","10","12","14","16","18"]
+
+
   const [imageuploaderror, setimageuploaderror] = useState(false);
 
   const handleClose = () => setShow(false);
@@ -55,7 +59,7 @@ const EditProduct = () => {
   const [state, setState] = useState([]);
   // const [state, setState] = useState<string[]>([])
 
-  const [category, setcategory] = useState();
+  const [category, setcategory] = useState("Piw");
 
   const [inputList, setInputList] = useState([
     { product_id: "365", quantity: 1 },
@@ -106,10 +110,11 @@ const EditProduct = () => {
     console.log(sizesArray);
   };
 
-  const [categories, setcategories] = useState([]);
+  const [categories, setcategories] = useState(["One"]);
   const [product, setproduct] = useState([]);
   const [name, setname] = useState(product ? product.name : "product.name");
   const [price, setprice] = useState("");
+
   const [description, setdescription] = useState("");
   const [color, setcolor] = useState("");
 
@@ -127,14 +132,35 @@ const EditProduct = () => {
         console.log(res.data);
         setproduct(res.data);
         setname(res.data.name);
+        setImages(images=>[...images, {"data_url":res.data.images[0].src}])
+        // setMyArray(oldArray => [...oldArray, newElement]);
+        // For Simple Product
+        setsizesArray([res.data.attributes[0].options[0]])
+        console.log(res.data.attributes[0].options[0])
         setprice(res.data.price);
+        setcategory(res.data.categories[0].id)
+        console.log(res.data.categories[0].id)
         setdescription(res.data.short_description.replace(/<p>|<\/p>/gm, ""));
-        setsizesArray( res.data.attributes.length > 1 ? res.data.attributes[0].options : null);
+        // setsizesArray(res.data.attributes.length > 1 ? res.data.attributes[0].options : null);
         setloading(false);
-
         // console.log(re)
       });
   }, []);
+
+
+  useEffect(() => {
+    axios.get('https://evicstore.com/wp-json/wc/v3/products/categories',{
+      headers: {
+          'Authorization': `Basic ${token}`
+        }
+  })
+  .then((res)=>{
+    console.log('res')
+    console.log(res)
+    console.log(res.data)
+    setcategories(res.data)
+  })
+  }, [])
 
   const [uploadImage, setuploadImage] = useState(false);
 
@@ -514,11 +540,13 @@ const [productType, setproductType] = useState("Simple")
                 style={{ marginBottom: 30 }}
                 controlId="floatingSelectGrid"
                 label="Product Type"
+                
               >
                 <Form.Select
                   value={productType}
                   onChange={(e) => setproductType(e.target.value)}
                   name="product_type"
+                  disabled
                   aria-label="Floating label select example"
                 >
 
@@ -543,7 +571,7 @@ const [productType, setproductType] = useState("Simple")
 
               {/* <TagsInput value={tags} onChange={handleChange()}/> */}
 
-              <FloatingLabel
+              {/* <FloatingLabel
                 controlId="floatingInput"
                 label="Color"
                 className="mb-3"
@@ -554,7 +582,7 @@ const [productType, setproductType] = useState("Simple")
                   type="text"
                   placeholder="Item Name"
                 />
-              </FloatingLabel>
+              </FloatingLabel> */}
 
               <FloatingLabel controlId="floatingPrice" label="Price">
                 {/* pattern="[0-9]*" */}
@@ -580,6 +608,7 @@ const [productType, setproductType] = useState("Simple")
                 style={{ marginBottom: 30 }}
                 controlId="floatingSelectGrid"
                 label="Category"
+                value="asdf"
               >
                 <Form.Select
                   value={category}
@@ -596,12 +625,45 @@ const [productType, setproductType] = useState("Simple")
 
               <h6 onClick={handleShow}>Sizes - UK</h6>
 
-              {/* <Container> */}
 
-              <div className="flex-two">
-                {/* <div className='input-group'>
-        <InputTags values={sizesArray} onTags={(value) => settags(value.values)} />
-      </div> */}
+              {
+          productType === "variable" 
+          ? 
+          <>
+      <h6 onClick={handleShow}>Sizes - UK</h6>
+    {/* <div className='flex-two'>
+
+
+      {itemSizes.map((size) => (
+        <div className='checkboxItem'>
+          <Form.Check 
+          inline
+          type="checkbox"
+          id="default"
+          label={size}  
+          onClick={(e) => {addToChecked(e.target.checked, size)}}
+        />
+        </div>
+      ))}
+    </div> */}
+
+      <MultipleSelectFields itemSizes={itemSizes}/>
+    </>
+    :
+    <FloatingLabel style={{marginBottom:30}} controlId="floatingSelectGrid" label="Size">
+      <Form.Select value={sizesArray ? sizesArray[0] : null} onChange={(e)=> setsizesArray([e.target.value])} name="product_id" aria-label="Floating label select example">
+      {/* <Form.Select value={size} onChange={(e)=> setsizesArray([...sizesArray, e.target.value])} name="product_id" aria-label="Floating label select example"> */}
+      {itemSizes.map((size)=>(
+        <option value={size}>{size}</option>
+))} 
+      </Form.Select>
+    </FloatingLabel>
+
+        }
+
+
+              {/* <div className="flex-two">
+
 
                 {["8", "10", "12", "14", "16", "18"].map((size) => (
                   <div className="checkboxItem">
@@ -619,13 +681,8 @@ const [productType, setproductType] = useState("Simple")
                   </div>
                 ))}
 
-                {/* <hr />
-      <ol>
-        {state.map((item, index) => (
-          <li key={item + index}>{item}</li>
-        ))}
-      </ol> */}
-              </div>
+
+              </div> */}
               {/* </Container> */}
 
               {/* <Modal show={show} onHide={handleClose}>
