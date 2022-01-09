@@ -132,11 +132,15 @@ const itemSizes = ["8","10","12","14","16","18"]
         console.log(res.data);
         setproduct(res.data);
         setname(res.data.name);
-        setImages(images=>[...images, {"data_url":res.data.images[0].src}])
+        // Write loop 
+        for (let i = 0; i < res.data.images.length; i++) { 
+          setImages(images=>[...images, {"data_url":res.data.images[i].src,"url":"yes"}])
+        }
         // setMyArray(oldArray => [...oldArray, newElement]);
         // For Simple Product
-        setsizesArray([res.data.attributes[0].options[0]])
-        console.log(res.data.attributes[0].options[0])
+        // setsizesArray([res.data.attributes[0].options[0]])
+        setsizesArray(["12","13"])
+        // console.log(res.data.attributes[0].options[0])
         setprice(res.data.price);
         setcategory(res.data.categories[0].id)
         console.log(res.data.categories[0].id)
@@ -197,9 +201,19 @@ const itemSizes = ["8","10","12","14","16","18"]
       console.log("-------");
 
       for (let i = 0; i < images.length; i++) {
+
+        let file
         console.log(images[i]);
         console.log(images[i].imageUrl);
-        let file = images[i].file;
+        {images[0].url 
+          ? 
+            // console.log("Yes images " + images[i].data_url)
+            file = images[i].data_url
+          :
+
+          file = images[i].file;
+        }
+        
         formData.append("file", file);
         formData.append("upload_preset", "nqmxjlpv");
         console.log("Image " + i + " uploaded");

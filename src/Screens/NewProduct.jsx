@@ -123,6 +123,12 @@ console.log("-------")
 
 for (let i = 0; i < images.length; i++) { 
   console.log(images[i])
+  {images.url 
+    ? 
+  console.log("Yes images")
+    :
+    console.log("No Url Found")
+  }
   console.log(images[i].imageUrl)
   let file = images[i].file
   formData.append("file", file )
