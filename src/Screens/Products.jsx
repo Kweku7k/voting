@@ -194,7 +194,7 @@ const Products = () => {
   const token = Buffer.from(`${uname}:${pass}`, "utf8").toString("base64");
   useEffect(() => {
     axios
-      .get(`https://evicstore.com/wp-json/wc/v3/products?per_page=50`, {
+      .get(`https://evicstore.com/wp-json/wc/v3/products?per_page=10`, {
         headers: {
           Authorization: `Basic ${token}`,
         },

@@ -129,7 +129,7 @@ const EditProduct = () => {
         setname(res.data.name);
         setprice(res.data.price);
         setdescription(res.data.short_description.replace(/<p>|<\/p>/gm, ""));
-        setsizesArray(res.data.attributes[0].options);
+        setsizesArray( res.data.attributes.length > 1 ? res.data.attributes[0].options : null);
         setloading(false);
 
         // console.log(re)
@@ -611,7 +611,7 @@ const [productType, setproductType] = useState("Simple")
                       type="checkbox"
                       id="default"
                       label={size}
-                      defaultChecked={sizesArray.includes(size)}
+                      defaultChecked={ sizesArray && sizesArray.includes(size)}
                       onClick={(e) => {
                         addToChecked(e.target.checked, size);
                       }}

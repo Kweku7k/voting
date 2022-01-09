@@ -16,68 +16,25 @@ import 'react-bootstrap-tagsinput/dist/index.css'
 import TagsInput from 'react-tagsinput';
 import SuccessAlert from '../components/SuccessAlert';
 import ErrorAlert from '../components/ErrorAlert';
-
-
-
-{/* <CloudinaryContext cloudName="presto-solutions">
-  <div>
-    <Image publicId="sample" width="50" />
-  </div>
-  <Image publicId="sample" width="0.5" />
-</CloudinaryContext> */}
-
-
-
-
-
+import MultipleSelectFields from '../components/MultipleSelectFields';
 
 const NewProduct = () => {
 
-  
+const [loadingMessage, setloadingMessage] = useState("Loading")
 
   const [generalUploadError, setgeneralUploadError] = useState(false)
-  
   const [show, setShow] = useState(false);
-
   const [quantity, setquantity] = useState()
-
   const [imageuploaderror, setimageuploaderror] = useState(false)
 
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
   const [state, setState] = useState([])
-  // const [state, setState] = useState<string[]>([])
-  
-const [category, setcategory] = useState()
-
+  const [category, setcategory] = useState(24)
   const [inputList, setInputList] = useState([{ product_id: "365", quantity: 1 }]);
-
-
   const [sizes, setsizes] = useState([4,5,6,7])
-// multiple fields
 
-//  // handle input change
-//  const handleInputChange = (e, index) => {
-//   const { name, value } = e.target;
-//   const list = [...inputList];
-//   list[index][name] = value;
-//   setInputList(list);
-// };
-
-// // handle click event of the Remove button
-// const handleRemoveClick = index => {
-//   const list = [...inputList];
-//   list.splice(index, 1);
-//   setInputList(list);
-// };
-
-// // handle click event of the Add button
-// const handleAddClick = () => {
-//   setInputList([...inputList, { product_id: "365", quantity: "1" }]);
-// };
-
-// let sizesArray = []
 const [sizesArray, setsizesArray] = useState([])
 
 const addToChecked = (value, size) => {
@@ -117,19 +74,16 @@ const [categories, setcategories] = useState([])
     console.log('res')
     console.log(res)
     console.log(res.data)
-  
     setcategories(res.data)
   })
   }, [])
 
 const [uploadImage, setuploadImage] = useState(false)
-
-
 const [loading, setloading] = useState(false)
 
 const history = useHistory()
-
 const storage = getStorage();
+
 const storageRef = ref(storage, `uploads/${new Date()}`);
 
 // 'file' comes from the Blob or File API
@@ -175,6 +129,7 @@ for (let i = 0; i < images.length; i++) {
   formData.append("upload_preset", "nqmxjlpv")
   console.log("Image " + i + " uploaded")
     setloading(true)
+    setloadingMessage("Uploading Your Images")
 axios.post('https://api.cloudinary.com/v1_1/presto-solutions/image/upload',formData)
 .then((res)=>{
   console.log(res)
@@ -200,15 +155,6 @@ axios.post('https://api.cloudinary.com/v1_1/presto-solutions/image/upload',formD
     console.log("There were no images, please add images")
   }
   
-
-
-
-
-
-
-  
-
-
 }
 
 
@@ -219,6 +165,7 @@ const [noImagesError, setnoImagesError] = useState(false)
   const addProduct = () => {
 
     setloading(true)
+    setloadingMessage("Uploading Your Products")
   console.log("Testing")
   axios.post('https://evicstore.com/wp-json/wc/v3/products',{
       "name": name,
@@ -228,6 +175,9 @@ const [noImagesError, setnoImagesError] = useState(false)
       "description": description,
       "short_description": description,
       "categories": [
+        // {
+        //   id: 1
+        // }
         {
           id: category
         }
@@ -349,8 +299,9 @@ const onUploadProduct = () => {
 
 
 
+const itemSizes = ["8","10","12","14","16","18"]
 
-    const [images, setImages] = React.useState([]);
+  const [images, setImages] = React.useState([]);
   const maxNumber = 69;
   const onChange = (imageList, addUpdateIndex) => {
     // data for submit
@@ -386,6 +337,8 @@ const onUploadProduct = () => {
     setImages(imageList);
   };
 
+  const [productType, setproductType] = useState("Simple")
+
 
     return (
 
@@ -410,9 +363,12 @@ const onUploadProduct = () => {
             loading 
             ? 
             <div className="loadingPage">
-            <Spinner style={{margin:'auto'}} animation="border" role="status">
+              <div style={{margin:'auto'}}>
+            <Spinner animation="border" role="status">
                 <span className="visually-hidden">Loading...</span>
             </Spinner>
+            <h4>{loadingMessage}</h4>
+              </div>
             </div>
             :
             <>
@@ -482,17 +438,35 @@ const onUploadProduct = () => {
     <Form.Control value={name} onChange={(e) => setname(e.target.value)} type="text" placeholder="Item Name" />
   </FloatingLabel>
 
+  <FloatingLabel
+    style={{ marginBottom: 30 }}
+    controlId="floatingSelectGrid"
+    label="Product Type"
+  >
+    <Form.Select
+      value={productType}
+      onChange={(e) => setproductType(e.target.value)}
+      name="product_type"
+      aria-label="Floating label select example"
+    >
+
+        <option value="simple">Simple</option>
+        <option value="variable">Variable</option>
+
+    </Form.Select>
+  </FloatingLabel>
+
   
 
     {/* <TagsInput value={tags} onChange={handleChange()}/> */}
 
-  <FloatingLabel
+  {/* <FloatingLabel
     controlId="floatingInput"
     label="Color"
     className="mb-3"
   >
     <Form.Control value={color} onChange={(e) => setcolor(e.target.value)} type="text" placeholder="Item Name" />
-  </FloatingLabel>
+  </FloatingLabel> */}
 
   <FloatingLabel controlId="floatingPrice" label="Price">
     {/* pattern="[0-9]*" */}
@@ -530,39 +504,50 @@ const onUploadProduct = () => {
 ))} 
       </Form.Select>
     </FloatingLabel>
-      {/* <Form.Control> */}
-
-    <h6 onClick={handleShow}>Sizes - UK</h6>
-    
-    {/* <Container> */}
 
 
-    <div className='flex-two'>
-      {/* <div className='input-group'>
-        <InputTags values={sizesArray} onTags={(value) => settags(value.values)} />
-      </div> */}
+  
 
 
-      {["8","10","12","14","16","18"].map((size) => (
+
+
+
+        {
+          productType === "variable" 
+          ? 
+          <>
+      <h6 onClick={handleShow}>Sizes - UK</h6>
+    {/* <div className='flex-two'>
+
+
+      {itemSizes.map((size) => (
         <div className='checkboxItem'>
-        <Form.Check 
-        inline
-        type="checkbox"
-        id="default"
-        label={size}  
-        onClick={(e) => {addToChecked(e.target.checked, size)}}
-      />
+          <Form.Check 
+          inline
+          type="checkbox"
+          id="default"
+          label={size}  
+          onClick={(e) => {addToChecked(e.target.checked, size)}}
+        />
         </div>
       ))}
+    </div> */}
 
-      {/* <hr />
-      <ol>
-        {state.map((item, index) => (
-          <li key={item + index}>{item}</li>
-        ))}
-      </ol> */}
-    </div>
-    {/* </Container> */}
+      <MultipleSelectFields itemSizes={itemSizes}/>
+    </>
+    :
+    <FloatingLabel style={{marginBottom:30}} controlId="floatingSelectGrid" label="Size">
+      <Form.Select value={sizesArray[0]} onChange={(e)=> setsizesArray([e.target.value])} name="product_id" aria-label="Floating label select example">
+      {/* <Form.Select value={size} onChange={(e)=> setsizesArray([...sizesArray, e.target.value])} name="product_id" aria-label="Floating label select example"> */}
+      {itemSizes.map((size)=>(
+        <option value={size}>{size}</option>
+))} 
+      </Form.Select>
+    </FloatingLabel>
+
+        }
+
+
 
 
 
