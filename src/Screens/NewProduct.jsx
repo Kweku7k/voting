@@ -110,6 +110,11 @@ let pushimg = []
 
 
 const testAdd = () => {
+
+  // read sizes
+  loopVariant(inputList)
+  // -----
+
   if (images.length >= 1 ){
     console.log("There are images")
 
@@ -175,15 +180,12 @@ const [noImagesError, setnoImagesError] = useState(false)
   console.log("Testing")
   axios.post('https://evicstore.com/wp-json/wc/v3/products',{
       "name": name,
-      "type": "simple",
+      "type": productType,
       "regular_price": price,
       "price": price,
       "description": description,
       "short_description": description,
       "categories": [
-        // {
-        //   id: 1
-        // }
         {
           id: category
         }
@@ -219,24 +221,24 @@ const [noImagesError, setnoImagesError] = useState(false)
     console.log("price")
     console.log(price)
 
-    // axios.post(`https://evicstore.com/wp-json/wc/v3/products/${itemId}/variations`,
-    //   {
-    //     "regular_price": price,
-    //     "image": {
-    //       "id": item.images[0].id
-    //     },
-    //     "attributes": [
-    //         {
-    //         "id":1,
-    //         "options":["state"],
-    //         "stock_quantity":100
-    //         }
-    //     ]
-    //   },{
-    //   headers: {
-    //     'Authorization': `Basic ${token}`
-    //   }
-    // })
+    axios.post(`https://evicstore.com/wp-json/wc/v3/products/${itemId}/variations`,
+      {
+        "regular_price": price,
+        "image": {
+          "id": item.images[0].id
+        },
+        "attributes": [
+            {
+            "id":1,
+            "options":loopVariant(),
+            "stock_quantity":100
+            }
+        ]
+      },{
+      headers: {
+        'Authorization': `Basic ${token}`
+      }
+    })
 
     history.push('/products')
   })
@@ -248,8 +250,24 @@ const [noImagesError, setnoImagesError] = useState(false)
 
 }
 
+// const [inputList, setInputList] = useState([{ product_id: "365", quantity: 1 }]);
+
+
 const handleChange = (tags) => {
   setState({tags})
+}
+
+
+const loopVariant = (input) => {
+  console.log(input)
+  const varSizes = [];
+  for (let i = 0; i < inputList.length; i++) { 
+  console.log(inputList[i].product_id)
+  varSizes.push(inputList[i].product_id)
+  console.log(varSizes)
+  }
+  return varSizes
+  
 }
 
 
@@ -456,8 +474,8 @@ const itemSizes = ["8","10","12","14","16","18"]
       aria-label="Floating label select example"
     >
 
-        <option value="simple">Simple</option>
-        <option value="variable">Variable</option>
+        <option key={1} value="simple">Simple</option>
+        <option key={2} value="variable">Variable</option>
 
     </Form.Select>
   </FloatingLabel>
@@ -479,10 +497,12 @@ const itemSizes = ["8","10","12","14","16","18"]
     <Form.Control value={price} type="number" onChange={(e) => setprice(e.target.value)} placeholder="Price" />
   </FloatingLabel>
 <br/>
+
+{productType == 'simple' &&
   <FloatingLabel controlId="floatingPrice" label="Quantity">
-    {/* pattern="[0-9]*" */}
     <Form.Control value={quantity} type="number" onChange={(e) => setquantity(e.target.value)} placeholder="Quantity" />
   </FloatingLabel>
+}
 
 
 
@@ -539,7 +559,7 @@ const itemSizes = ["8","10","12","14","16","18"]
       ))}
     </div> */}
 
-      <MultipleSelectFields itemSizes={itemSizes}/>
+      <MultipleSelectFields inputList={inputList} setInputList={setInputList} itemSizes={itemSizes}/>
     </>
     :
     <FloatingLabel style={{marginBottom:30}} controlId="floatingSelectGrid" label="Size">

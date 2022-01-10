@@ -2,12 +2,14 @@ import React,{useState} from 'react'
 import { Row, Button, Col, Form, FloatingLabel } from 'react-bootstrap';
 
 
-const MultipleSelectFields = ({itemSizes}) => {
+
+const MultipleSelectFields = ({itemSizes, inputList, setInputList }) => {
 
 const handleInputChange = (e, index) => {
  const { name, value } = e.target;
  const list = [...inputList];
  list[index][name] = value;
+ console.log(list)
  setInputList(list);
 };
 
@@ -23,7 +25,6 @@ const handleAddClick = () => {
  setInputList([...inputList, { product_id: "365", quantity: "1" }]);
 };
 
-const [inputList, setInputList] = useState([{ product_id: "365", quantity: 1 }]);
 
 const [products, setproducts] = useState([
     {id:1,name: "test"},{id:2,name: "two"},{id:3,name: "three"}

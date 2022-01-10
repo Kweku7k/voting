@@ -138,8 +138,10 @@ const itemSizes = ["8","10","12","14","16","18"]
         }
         // setMyArray(oldArray => [...oldArray, newElement]);
         // For Simple Product
-        // setsizesArray([res.data.attributes[0].options[0]])
-        setsizesArray(["12","13"])
+        // setsizesArray(res.data.attributes[0].options ? [res.data.attributes[0].options[0]] : "--")
+        setsizesArray(res.data.attributes[0] ? [res.data.attributes[0].options[0]] : ["--"])
+        // setsizesArray(["12","13"])
+        
         // console.log(res.data.attributes[0].options[0])
         setprice(res.data.price);
         setcategory(res.data.categories[0].id)
