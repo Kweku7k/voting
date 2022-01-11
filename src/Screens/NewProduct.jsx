@@ -361,7 +361,7 @@ const itemSizes = ["8","10","12","14","16","18"]
     setImages(imageList);
   };
 
-  const [productType, setproductType] = useState("Simple")
+  const [productType, setproductType] = useState("simple")
 
 
     return (

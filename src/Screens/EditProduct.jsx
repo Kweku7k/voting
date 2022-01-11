@@ -62,7 +62,7 @@ const itemSizes = ["8","10","12","14","16","18"]
   const [category, setcategory] = useState("Piw");
 
   const [inputList, setInputList] = useState([
-    { product_id: "365", quantity: 1 },
+    { product_id: "8", quantity: 1 },
   ]);
 
   // const [sizes, setsizes] = useState([4, 5, 6, 7]);
@@ -146,6 +146,7 @@ const itemSizes = ["8","10","12","14","16","18"]
         setprice(res.data.price);
         setcategory(res.data.categories[0].id)
         console.log(res.data.categories[0].id)
+        setproductType(res.data.type)
         setdescription(res.data.short_description.replace(/<p>|<\/p>/gm, ""));
         // setsizesArray(res.data.attributes.length > 1 ? res.data.attributes[0].options : null);
         setloading(false);
@@ -260,7 +261,7 @@ const itemSizes = ["8","10","12","14","16","18"]
         `https://evicstore.com/wp-json/wc/v3/products/${id}`,
         {
           name: name,
-          type: "simple",
+          type: productType,
           regular_price: price,
           price: price,
           description: description,
@@ -646,7 +647,7 @@ const [productType, setproductType] = useState("Simple")
           productType === "variable" 
           ? 
           <>
-      <h6 onClick={handleShow}>Sizes - UK</h6>
+      {/* <h6 onClick={handleShow}>Sizes - UK</h6> */}
     {/* <div className='flex-two'>
 
 
@@ -663,7 +664,7 @@ const [productType, setproductType] = useState("Simple")
       ))}
     </div> */}
 
-      <MultipleSelectFields itemSizes={itemSizes}/>
+      <MultipleSelectFields inputList={inputList} setInputList={setInputList}  itemSizes={itemSizes}/>
     </>
     :
     <FloatingLabel style={{marginBottom:30}} controlId="floatingSelectGrid" label="Size">
