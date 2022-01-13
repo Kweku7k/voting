@@ -226,11 +226,7 @@ const [noImagesError, setnoImagesError] = useState(false)
     console.log("price")
     console.log(price)
     console.log("atr - " + atr)
-
-    for (let index = 0; index < array.length; index++) {
-      const element = array[index];
-      
-    }
+    
 
     setloadingMessage("Creating Variants")
     axios.post(`https://evicstore.com/wp-json/wc/v3/products/${itemId}/variations`,
