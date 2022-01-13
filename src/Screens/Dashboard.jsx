@@ -15,7 +15,7 @@ const Dashboard = () => {
         DASHBOARD
       </h6>
 
-      <div className="options-header">
+      {/* <div className="options-header">
         <div className="options-info">
           <div className="iconContainer">
             <FontAwesomeIcon icon={faBox} />
@@ -37,15 +37,10 @@ const Dashboard = () => {
           <h1>32</h1>
           <h6 className="text-muted">PRODUCTS</h6>
         </div>
-      </div>
+      </div> */}
 
-      <h6 className="text-muted" style={{ margin: 20, textAlign: "center" }}>
-        ACTIONS
-      </h6>
-
-      <div className="options">
-        <Link style={{ textDecoration: "none", color: "black" }} to="/orders">
-          <div className="options-card">
+<Link style={{ textDecoration: "none", color: "black" }} to="/orders">
+          <div className="dash-options-card">
             <div className="ellipse" style={{ backgroundColor: "greenyellow" }}>
               <FontAwesomeIcon icon={faBoxOpen} />
             </div>
@@ -53,16 +48,34 @@ const Dashboard = () => {
               <h4 style={{ marginBottom: 0 }}>
                 <b>Orders</b>
               </h4>
-              <h6 style={{ opacity: 0.5, color: "green" }}>
+            </div>
+          </div>
+        </Link>
+
+      <h6 className="text-muted" style={{ margin: 20, textAlign: "center" }}>
+        ACTIONS
+      </h6>
+
+      <div className="options">
+        <Link style={{ textDecoration: "none", color: "black" }} to="/orders">
+          <div className="dash-options-card">
+            <div className="ellipse" style={{ backgroundColor: "greenyellow" }}>
+              <FontAwesomeIcon icon={faBoxOpen} />
+            </div>
+            <div>
+              <h4 style={{ marginBottom: 0 }}>
+                <b>Orders</b>
+              </h4>
+              {/* <h6 style={{ opacity: 0.5, color: "green" }}>
                 {" "}
                 12 <span style={{ color: "green" }}>pending orders</span>
-              </h6>
+              </h6> */}
             </div>
           </div>
         </Link>
 
         <Link style={{ textDecoration: "none", color: "black" }} to="/products">
-          <div className="options-card">
+          <div className="dash-options-card">
             <div className="ellipse" style={{ backgroundColor: "greenyellow" }}>
               <FontAwesomeIcon icon={faTruckLoading} />
             </div>
@@ -70,10 +83,10 @@ const Dashboard = () => {
               <h4 style={{ marginBottom: 0 }}>
                 <b>Products</b>
               </h4>
-              <h6 style={{ opacity: 0.5, color: "red" }}>
+              {/* <h6 style={{ opacity: 0.5, color: "red" }}>
                 {" "}
                 12 <span style={{ color: "red" }}>pending orders</span>
-              </h6>
+              </h6> */}
             </div>
           </div>
         </Link>

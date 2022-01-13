@@ -23,7 +23,7 @@ const token = Buffer.from(`${uname}:${pass}`, 'utf8').toString('base64')
 
 
 useEffect(() => {
-axios.get(`https://evicstore.com/wp-json/wc/v3/orders?per_page=50`,{
+axios.get(`https://evicstore.com/wp-json/wc/v3/orders?per_page=10`,{
     headers: {
         'Authorization': `Basic ${token}`
       },

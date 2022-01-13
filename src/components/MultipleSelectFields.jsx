@@ -22,7 +22,7 @@ const handleRemoveClick = index => {
 
 
 const handleAddClick = () => {
- setInputList([...inputList, { product_id: "365", quantity: "1" }]);
+ setInputList([...inputList, { product_id: "8", quantity: "1" }]);
 };
 
 
@@ -41,6 +41,7 @@ const [products, setproducts] = useState([
 
   <Col md>
     <FloatingLabel controlId="floatingSelectGrid" label="Items">
+      {/* <h6>{x.product_id}</h6> */}
       <Form.Select name="product_id" onChange={e => handleInputChange(e, i)} value={x.product_id} aria-label="Floating label select example">
       {itemSizes.map((item)=>(
         <option value={item}>{item}</option>

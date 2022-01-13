@@ -32,7 +32,7 @@ const [loadingMessage, setloadingMessage] = useState("Loading")
 
   const [state, setState] = useState([])
   const [category, setcategory] = useState(24)
-  const [inputList, setInputList] = useState([{ product_id: "365", quantity: 1 }]);
+  const [inputList, setInputList] = useState([{ product_id:"8", quantity: 1 }]);
   const [sizes, setsizes] = useState([4,5,6,7])
 
 const [sizesArray, setsizesArray] = useState([])
@@ -174,6 +174,7 @@ const [tags, settags] = useState([])
 const [noImagesError, setnoImagesError] = useState(false)
 
   const addProduct = () => {
+    const atr = loopVariant()
 
     setloading(true)
     setloadingMessage("Uploading Your Products")
@@ -184,6 +185,9 @@ const [noImagesError, setnoImagesError] = useState(false)
       "regular_price": price,
       "price": price,
       "description": description,
+      // "manage_stock":true,
+      // "stock_quantity":1,
+      // "stock_status":"instock",
       "short_description": description,
       "categories": [
         {
@@ -202,7 +206,8 @@ const [noImagesError, setnoImagesError] = useState(false)
         "id":1,
         "variation":true,
         "visible":true,
-        "options":sizesArray
+        // "options":sizesArray
+        "options":atr
         }
     ],
   } 
@@ -220,7 +225,14 @@ const [noImagesError, setnoImagesError] = useState(false)
 
     console.log("price")
     console.log(price)
+    console.log("atr - " + atr)
 
+    for (let index = 0; index < array.length; index++) {
+      const element = array[index];
+      
+    }
+
+    setloadingMessage("Creating Variants")
     axios.post(`https://evicstore.com/wp-json/wc/v3/products/${itemId}/variations`,
       {
         "regular_price": price,
@@ -231,7 +243,7 @@ const [noImagesError, setnoImagesError] = useState(false)
             {
             "id":1,
             "options":loopVariant(),
-            "stock_quantity":100
+            "stock_quantity":1
             }
         ]
       },{
@@ -239,8 +251,10 @@ const [noImagesError, setnoImagesError] = useState(false)
         'Authorization': `Basic ${token}`
       }
     })
+    .then(()=>{
+      history.push('/products')
+    })
 
-    history.push('/products')
   })
   .catch((err) => {
     console.log(err)
@@ -267,7 +281,6 @@ const loopVariant = (input) => {
   console.log(varSizes)
   }
   return varSizes
-  
 }
 
 
@@ -361,7 +374,7 @@ const itemSizes = ["8","10","12","14","16","18"]
     setImages(imageList);
   };
 
-  const [productType, setproductType] = useState("simple")
+  const [productType, setproductType] = useState("variable")
 
 
     return (

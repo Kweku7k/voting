@@ -84,6 +84,8 @@ body{
   display: flex;
   align-items: center;
   justify-content: space-around;
+  /* background-color: white; */
+
   /* background-color: #61dafb; */
 
 }
@@ -144,6 +146,17 @@ body{
   display: flex;
   align-items: center;
   /* padding: 20px; */
+  background-color: white;
+  width: 100%;
+  border-radius: 20px;
+  overflow: hidden;
+  margin-top: 20px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+.dash-options-card{
+  display: flex;
+  align-items: center;
+  padding: 20px;
   background-color: white;
   width: 100%;
   border-radius: 20px;

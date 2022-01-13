@@ -132,6 +132,30 @@ const itemSizes = ["8","10","12","14","16","18"]
         console.log(res.data);
         setproduct(res.data);
         setname(res.data.name);
+
+        // productType === "variant" &&
+        console.log(res.data.attributes[0].options)
+        console.log(inputList)
+
+        let sizeArrr = []
+        for (let i = 0; i < res.data.attributes[0].options.length; i++) {
+          // setInputList([...inputList, {product_id:res.data.attributes[0].options[i],quantity:1}])
+            sizeArrr.push({product_id:res.data.attributes[0].options[i],quantity:1})
+        }
+
+        console.log("inputlist")
+        console.log(inputList)
+        console.log(sizeArrr)
+        setInputList(sizeArrr)
+            // { product_id: res.data.attributes[i].options, quantity: 1 }
+            // setsizesArray([...sizesArray, e.target.value])}
+            // console.log("res.data.attributes[i].options")
+            // console.log(res.data.attributes[i].options)
+          // )
+          
+        // }
+      
+
         // Write loop 
         for (let i = 0; i < res.data.images.length; i++) { 
           setImages(images=>[...images, {"data_url":res.data.images[i].src,"url":"yes"}])
@@ -140,6 +164,7 @@ const itemSizes = ["8","10","12","14","16","18"]
         // For Simple Product
         // setsizesArray(res.data.attributes[0].options ? [res.data.attributes[0].options[0]] : "--")
         setsizesArray(res.data.attributes[0] ? [res.data.attributes[0].options[0]] : ["--"])
+        
         // setsizesArray(["12","13"])
         
         // console.log(res.data.attributes[0].options[0])
@@ -320,7 +345,7 @@ const itemSizes = ["8","10","12","14","16","18"]
         `https://evicstore.com/wp-json/wc/v3/products/${id}`,
         {
           name: name,
-          type: "simple",
+          type: productType,
           regular_price: price,
           price: price,
           description: description,
@@ -454,7 +479,7 @@ const itemSizes = ["8","10","12","14","16","18"]
     setImages(imageList);
   };
 
-const [productType, setproductType] = useState("Simple")
+const [productType, setproductType] = useState("variable")
 
   return (
     <div style={{ width: "100%" }}>
@@ -664,6 +689,7 @@ const [productType, setproductType] = useState("Simple")
       ))}
     </div> */}
 
+      {/* <h4>{inputList[0]}</h4> */}
       <MultipleSelectFields inputList={inputList} setInputList={setInputList}  itemSizes={itemSizes}/>
     </>
     :
