@@ -183,11 +183,8 @@ const [noImagesError, setnoImagesError] = useState(false)
       "name": name,
       "type": productType,
       "regular_price": price,
-      "price": price,
+      "status": "private",
       "description": description,
-      // "manage_stock":true,
-      // "stock_quantity":1,
-      // "stock_status":"instock",
       "short_description": description,
       "categories": [
         {
@@ -196,17 +193,10 @@ const [noImagesError, setnoImagesError] = useState(false)
       ],
       images: pushimg,
       "attributes":[
-        // {
-        // "id":2,
-        // "variation":true,
-        // "visible":true,
-        // "options":color
-        // },
         {
         "id":1,
         "variation":true,
         "visible":true,
-        // "options":sizesArray
         "options":atr
         }
     ],
@@ -227,29 +217,77 @@ const [noImagesError, setnoImagesError] = useState(false)
     console.log(price)
     console.log("atr - " + atr)
     
-
-    setloadingMessage("Creating Variants")
-    axios.post(`https://evicstore.com/wp-json/wc/v3/products/${itemId}/variations`,
-      {
-        "regular_price": price,
-        "image": {
-          "id": item.images[0].id
-        },
-        "attributes": [
+    for (let index = 0; index < atr.length; index++) {
+      
+        console.log("Running loop for variants")
+          // setloadingMessage(`Creating Variants ${i}/${atr.length}` )
+          setloadingMessage("Creating Variants" +  index +"/" + inputList.length )
+          axios.post(`https://evicstore.com/wp-json/wc/v3/products/${itemId}/variations`,
             {
-            "id":1,
-            "options":loopVariant(),
-            "stock_quantity":1
+              "regular_price": price,
+              "manage_stock":true,
+              "stock_quantity":inputList[index].quantity,
+              "image": {  
+                "id": item.images[0].id
+              },
+              "attributes": [
+                  {
+                  "id":1,
+                  // "options":loopVariant(),
+                  "option":inputList[index].product_id,
+                  }
+              ]
+            },{
+            headers: {
+              'Authorization': `Basic ${token}`
             }
-        ]
-      },{
-      headers: {
-        'Authorization': `Basic ${token}`
-      }
-    })
+          })
+      
+
+    // setloadingMessage("Creating Variants")
+    // axios.post(`https://evicstore.com/wp-json/wc/v3/products/${itemId}/variations`,
+    //   {
+    //     "regular_price": price,
+    //     "image": {
+    //       "id": item.images[0].id
+    //     },
+    //     "attributes": [
+    //         {
+    //         "id":1,
+    //         "options":loopVariant(),
+    //         "stock_quantity":1
+    //         }
+    //     ]
+    //   },{
+    //   headers: {
+    //     'Authorization': `Basic ${token}`
+    //   }
+    // })
+    
+    // setloadingMessage("Creating Variants")
+    // axios.post(`https://evicstore.com/wp-json/wc/v3/products/${itemId}/variations`,
+    //   {
+    //     "regular_price": price,
+    //     "image": {
+    //       "id": item.images[0].id
+    //     },
+    //     "attributes": [
+    //         {
+    //         "id":1,
+    //         "options":loopVariant(),
+    //         "stock_quantity":1
+    //         }
+    //     ]
+    //   },{
+    //   headers: {
+    //     'Authorization': `Basic ${token}`
+    //   }
+    // })
     .then(()=>{
       history.push('/products')
     })
+  }
+
 
   })
   .catch((err) => {

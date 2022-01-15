@@ -41,6 +41,7 @@ import { useState } from 'react';
 import { Home, Inventory } from '@mui/icons-material';
 import AppsIcon from '@mui/icons-material/Apps';
 import EditProduct from './Screens/EditProduct';
+import PrivateProducts from './Screens/PrivateProducts';
 // import { useHistory } from 'react-router-dom';
 
 
@@ -123,6 +124,10 @@ const db = getDatabase(app);
 
           <Route path="/products">
             <Products/>
+          </Route>
+
+          <Route path="/private">
+            <PrivateProducts/>
           </Route>
 
           <Route path="/orders">

@@ -165,6 +165,20 @@ body{
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
+.main-dash-options-card{
+  display: flex;
+  align-items: center;
+  padding: 20px;
+  background-color: white;
+  width: 100%;
+  text-align: center;
+  border-radius: 20px;
+  justify-content: center;
+  overflow: hidden;
+  margin-top: 20px;
+  box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
 .delete{
   background-color: rgba(255, 0, 0, 0.658);
   height: 100%;

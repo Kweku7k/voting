@@ -50,9 +50,10 @@ const getImage = (prodcuctId) => {
 
     })
     .then((res)=> {
-    console.log(res.data)
+    console.log("res")
+    console.log(res.data.images[0].src)
     // setimageUrl = res.data.images[0].src
-    return res
+    return res.data.images[0].src
 })
 
 console.log("Didnt exit")
@@ -69,7 +70,7 @@ return imageUrl
     return (
         <div>
             <h1><b>Order #{id} - {order.billing ? order.billing.first_name : null}</b></h1>
-            <h4><b>{order.fee_lines ? order.fee_lines[0].meta_data[1].value : null}</b></h4>
+            {/* <h4><b>{order.fee_lines.length < 1 ? order.fee_lines[0].meta_data[1].value : null}</b></h4> */}
 
             <div>
                 {/* <h1><a href={'tel:' + order.billing.phone}>{order.billing.phone}</a></h1> */}
