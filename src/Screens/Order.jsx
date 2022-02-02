@@ -1,105 +1,80 @@
-import axios from 'axios'
-import React,{useEffect, useState} from 'react'
-import { useParams } from 'react-router'
+import axios from "axios";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router";
+import ProductItem from "./ProductItem";
 
 const Order = () => {
+  let { id } = useParams();
+  console.log(id);
 
-    let {id} = useParams()
-    console.log(id)
+  const [order, setorder] = useState("initialState");
 
+  const uname = "ck_1c9fd82800542cd01838923009ea20743be2734f";
+  const pass = "cs_dc4f49dbbd4efa9f2608ad3b14daec05b0b38aa6";
 
-const [order, setorder] = useState("initialState")
+  const token = Buffer.from(`${uname}:${pass}`, "utf8").toString("base64");
 
-const uname = 'ck_1c9fd82800542cd01838923009ea20743be2734f'
-const pass = 'cs_dc4f49dbbd4efa9f2608ad3b14daec05b0b38aa6'
+  const [items, setitems] = useState([]);
 
-const token = Buffer.from(`${uname}:${pass}`, 'utf8').toString('base64')
-
-const [items, setitems] = useState([])
-
-const products = []
-
-useEffect(() => {
-    axios.get(`https://evicstore.com/wp-json/wc/v3/orders/${id}`,{
-        headers: {
-            'Authorization': `Basic ${token}`
+  // get the order by the Id
+  useEffect(() => {
+    const fetchOrders = async () => {
+      const res = await axios.get(
+        `https://evicstore.com/wp-json/wc/v3/orders/${id}`,
+        {
+          headers: {
+            Authorization: `Basic ${token}`,
           },
-    })
-    .then((res)=> {
-        console.log(res.data)
-        console.log(res.data)
-        setorder(res.data)
-        setitems(res.data.line_items)
-        console.log(res.data.line_items)
-    })
-    .catch((res)=> {
-        console.error(res)
-    })
-    },[])
+        }
+      );
+      setitems(res.data.line_items);
+    };
 
+    fetchOrders();
+  }, []);
 
-    const [imageUrl, setimageUrl] = useState(null)
+  const getImage = async (item) => {
+    const product = await axios.get(
+      `https://evicstore.com/wp-json/wc/v3/products/${item.product_id}/`,
+      {
+        headers: {
+          Authorization: `Basic ${token}`,
+        },
+      }
+    );
+    const image = product.data.images[0].src;
+    return image;
+  };
 
-const getImage = (prodcuctId) => {
-    
-    console.log("Start Get Image")
-    axios.get(`https://evicstore.com/wp-json/wc/v3/products/${prodcuctId}`,{
-    headers: {
-        'Authorization': `Basic ${token}`
-      },
+  return (
+    <div>
+      <h1>
+        <b>
+          Order #{id} - {order.billing ? order.billing.first_name : null}
+        </b>
+      </h1>
+      {/* <h4><b>{order.fee_lines.length < 1 ? order.fee_lines[0].meta_data[1].value : null}</b></h4> */}
 
-    })
-    .then((res)=> {
-    console.log("res")
-    console.log(res.data.images[0].src)
-    // setimageUrl = res.data.images[0].src
-    return res.data.images[0].src
-})
+      <div>
+        {/* <h1><a href={'tel:' + order.billing.phone}>{order.billing.phone}</a></h1> */}
+        <a href={order.billing ? "tel:" + order.billing.phone : null}>
+          <h1>{order.billing ? order.billing.phone : null}</h1>
+        </a>
+        <h6>Testing sub text</h6>
+      </div>
 
-console.log("Didnt exit")
-// console.log(imageUrl)
-return imageUrl
+      <div class="scrolling-wrapper-flexbox">
+        {items &&
+          items.map((item) => {
+            return <ProductItem token={token} product_id={item.product_id} />;
+          })}
+      </div>
 
-}
+      <button className="subbutton" style={{ backgroundColor: "green" }}>
+        Complete
+      </button>
+    </div>
+  );
+};
 
-
-// getImage(365)
-
-
-
-    return (
-        <div>
-            <h1><b>Order #{id} - {order.billing ? order.billing.first_name : null}</b></h1>
-            {/* <h4><b>{order.fee_lines.length < 1 ? order.fee_lines[0].meta_data[1].value : null}</b></h4> */}
-
-            <div>
-                {/* <h1><a href={'tel:' + order.billing.phone}>{order.billing.phone}</a></h1> */}
-                <a href={order.billing ? 'tel:'+order.billing.phone : null}><h1>{order.billing ? order.billing.phone : null}</h1></a>
-                <h6>Testing sub text</h6>
-            </div>
-
-
-
-            <div class="scrolling-wrapper-flexbox">
-                {items.map((item) =>{
-                    return(
-                <div key={item.id} class="scrolling-card">
-                    <img src={getImage(item.product_id)} />
-                
-                    <div style={{display:'flex',justifyContent:'space-between'}}>
-                        <h4>{item.name}</h4><span><h4>{item.quantity}</h4></span>
-                    </div>
-                    <h4>{item.product_id}</h4>
-                    </div>
-                    )
-
-                })} 
-            </div>
-
-                <button className='subbutton' style={{backgroundColor:"green"}}>Complete</button>
-
-        </div>
-    )
-}
-
-export default Order
+export default Order;
