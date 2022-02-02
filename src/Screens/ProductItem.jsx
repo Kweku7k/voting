@@ -14,11 +14,7 @@ const ProductItem = ({ product_id, token }) => {
           },
         }
       );
-      // console.log(product.data.images[0].src);
       setItem(product.data);
-      console.log("products :", product.data);
-      console.log("product item : ", item);
-      console.log("image: ", product.data.images[0].src);
     };
 
     fetchItem();
