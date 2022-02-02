@@ -4,6 +4,7 @@ import axios from "axios";
 const ProductItem = ({ product_id, token }) => {
   const [item, setItem] = useState(null);
 
+  // this hook fetches each product item  and it runs once
   useEffect(() => {
     const fetchItem = async () => {
       const product = await axios.get(
@@ -31,7 +32,7 @@ const ProductItem = ({ product_id, token }) => {
             <h4>{item.quantity}</h4>
           </span>
         </div>
-        <h4>{item.product_id}</h4>
+        <h4>{product_id}</h4>
       </div>
     )
   );

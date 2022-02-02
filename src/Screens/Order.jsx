@@ -33,19 +33,6 @@ const Order = () => {
     fetchOrders();
   }, []);
 
-  const getImage = async (item) => {
-    const product = await axios.get(
-      `https://evicstore.com/wp-json/wc/v3/products/${item.product_id}/`,
-      {
-        headers: {
-          Authorization: `Basic ${token}`,
-        },
-      }
-    );
-    const image = product.data.images[0].src;
-    return image;
-  };
-
   return (
     <div>
       <h1>
