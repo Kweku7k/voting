@@ -362,11 +362,11 @@ background-color: #61dafb;
   opacity: 1;
 }
 
-.container {
+/* .container {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-}
+} */
 
 .tile {
   /* background-image: url(https://i.mycdn.me/i?r=AyEEjNrmxSDHlzM8JxmgKLLZ2hKX-mTHVrbYKBWOz8Aftw); */

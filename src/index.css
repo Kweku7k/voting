@@ -27,7 +27,9 @@ code {
     url("./fonts/sf/SF-Pro-Display-Regular.otf") format("truetype");
   font-weight: bold;
 }
-
+.carousel .control-prev.control-arrow:before {
+  border-right: 20px solid #000000 !important;
+}
 .carousel .control-next.control-arrow:before {
   border-left: 20px solid #000000 !important;
 }
