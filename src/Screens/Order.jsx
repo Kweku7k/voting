@@ -2,6 +2,10 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import ProductItem from "./ProductItem";
+// import { Carousel } from "react-bootstrap";
+import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+// import "bootstrap/dist/css/bootstrap.min.css";
+import { Carousel } from "react-responsive-carousel";
 
 const Order = () => {
   let { id } = useParams();
@@ -50,12 +54,25 @@ const Order = () => {
         <h6>Testing sub text</h6>
       </div>
 
-      <div class="scrolling-wrapper-flexbox">
+      {/* <div class="scrolling-wrapper-flexbox"> */}
+      <Carousel autoPlay={true} infiniteLoop={true}>
         {items &&
           items.map((item) => {
-            return <ProductItem token={token} product_id={item.product_id} />;
+            return (
+              <ProductItem
+                token={token}
+                product_id={item.product_id}
+                key={item.id}
+              />
+            );
           })}
-      </div>
+      </Carousel>
+      {/* <Carousel>
+        {[1, 2, 3, 4, 5, 6].map((item) => {
+          return <ProductItem key={item} item={item} />;
+        })}
+      </Carousel> */}
+      {/* </div> */}
 
       <button className="subbutton" style={{ backgroundColor: "green" }}>
         Complete

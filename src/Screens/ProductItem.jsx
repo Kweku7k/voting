@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Carousel } from "react-bootstrap";
 import axios from "axios";
 
 const ProductItem = ({ product_id, token }) => {
@@ -16,6 +17,7 @@ const ProductItem = ({ product_id, token }) => {
         }
       );
       setItem(product.data);
+      console.log("item : ", item);
     };
 
     fetchItem();
@@ -23,16 +25,25 @@ const ProductItem = ({ product_id, token }) => {
 
   return (
     item && (
+      // <Carousel.Item>
+      //   <img src={item.images[0].src} alt="product" className="d-block w-100" />
+      //   <Carousel.Caption>
+      //     <h3>{item.name}</h3>
+      //     <p>{item.quantiy}</p>
+      //     <p>{product_id}</p>
+      //   </Carousel.Caption>
+      // </Carousel.Item>
       <div key={item.id} class="scrolling-card">
         <img src={item.images[0].src} alt="product" />
 
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        {/* <div style={{ display: "flex", justifyContent: "space-between" }}> */}
+        <div className="legend">
           <h4>{item.name}</h4>
           <span>
             <h4>{item.quantity}</h4>
           </span>
+          <h4>{product_id}</h4>
         </div>
-        <h4>{product_id}</h4>
       </div>
     )
   );
