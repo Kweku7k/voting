@@ -4,6 +4,7 @@ import { useParams } from "react-router";
 import ProductItem from "./ProductItem";
 // import { Carousel } from "react-bootstrap";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+// import "bootstrap/dist/css/bootstrap.min.css";
 import { Carousel } from "react-responsive-carousel";
 
 const Order = () => {
@@ -66,6 +67,11 @@ const Order = () => {
             );
           })}
       </Carousel>
+      {/* <Carousel>
+        {[1, 2, 3, 4, 5, 6].map((item) => {
+          return <ProductItem key={item} item={item} />;
+        })}
+      </Carousel> */}
       {/* </div> */}
 
       <button className="subbutton" style={{ backgroundColor: "green" }}>

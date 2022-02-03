@@ -26,7 +26,7 @@ const ProductItem = ({ product_id, token }) => {
   return (
     item && (
       // <Carousel.Item>
-      //   <img src={item.images[0].src} alt="product" />
+      //   <img src={item.images[0].src} alt="product" className="d-block w-100" />
       //   <Carousel.Caption>
       //     <h3>{item.name}</h3>
       //     <p>{item.quantiy}</p>
