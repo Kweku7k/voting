@@ -36,13 +36,14 @@ const ProductItem = ({ product_id, token }) => {
       <div key={item.id} class="scrolling-card">
         <img src={item.images[0].src} alt="product" />
 
-        <div style={{ display: "flex", justifyContent: "space-between" }}>
+        {/* <div style={{ display: "flex", justifyContent: "space-between" }}> */}
+        <div className="legend">
           <h4>{item.name}</h4>
           <span>
             <h4>{item.quantity}</h4>
           </span>
+          <h4>{product_id}</h4>
         </div>
-        <h4>{product_id}</h4>
       </div>
     )
   );
