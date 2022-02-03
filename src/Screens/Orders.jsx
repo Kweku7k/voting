@@ -58,6 +58,12 @@ axios.get(`https://evicstore.com/wp-json/wc/v3/orders?per_page=10`,{
         <Container>
         {/* <Container> */}
         <h4><b>All your orders</b></h4>
+        <div>
+
+        <Link style={{display:'block'}} to={`/input`}>
+        <button className='button'>Create New Order </button>
+        </Link>
+        </div>
 
         {orders.map((order)=>(
         //     <Card>

@@ -194,10 +194,7 @@ const PrivateProducts = () => {
   const token = Buffer.from(`${uname}:${pass}`, "utf8").toString("base64");
   useEffect(() => {
     axios
-      .get(`https://evicstore.com/wp-json/wc/v3/products?per_page=10`,
-      {
-        "status":"any"
-      },
+      .get(`https://evicstore.com/wp-json/wc/v3/products?status=private&per_page=20`,
       {
         headers: {
           Authorization: `Basic ${token}`,
@@ -390,8 +387,15 @@ const PrivateProducts = () => {
             {error && <ErrorScreen />}
 
             <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <Link style={{textDecoration:'none'}} to={{ 
+  pathname: `/new`, 
+  state: {
+    status: "private"
+  } 
+}}>
+
               <button
-                onClick={() => history.push("/new")}
+                // onClick={() => history.push("/new")}
                 className="button"
                 style={{
                   display: "flex",
@@ -406,6 +410,7 @@ const PrivateProducts = () => {
                 />
                 <h4>Add New Product</h4>
               </button>
+</Link>
             </div>
             <div
               style={{
@@ -417,7 +422,7 @@ const PrivateProducts = () => {
               {/* onClick={()=>(window.location.href = post.permalink)}  */}
               {posts.map(
                 (post) =>
-                  post.status == "publish" && (
+                  post.status == "private" && (
                     <Item
                       onClick={() => history.push(`/edit/${post.id}`)}
                       id={post.id}

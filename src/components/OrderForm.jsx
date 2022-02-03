@@ -131,7 +131,7 @@ const token = Buffer.from(`${uname}:${pass}`, 'utf8').toString('base64')
 
     return (
       <>
-      <SuccessAlert show={erroralert} message="Your item was uploaded successfully" />
+      {/* <SuccessAlert show={erroralert} message="Your item was uploaded successfully" /> */}
         <Container>
 
 

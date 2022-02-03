@@ -194,16 +194,19 @@ const Products = () => {
   const token = Buffer.from(`${uname}:${pass}`, "utf8").toString("base64");
   useEffect(() => {
     axios
-      .get(`https://evicstore.com/wp-json/wc/v3/products?per_page=10`, {
+      // .get(`https://evicstore.com/wp-json/wc/v3/products?per_page=10`, {
+      .get(`https://evicstore.com/wp-json/wc/v3/products?status=publish&per_page=20`, {
         headers: {
           Authorization: `Basic ${token}`,
-        },
+        },    
       })
       .then((res) => {
-        console.log(res.data);
-        console.log("Posts");
-        setposts(res.data);
-        setloading(false);
+        setTimeout(() => {
+          console.log(res.data);
+          console.log("Posts");
+          setposts(res.data);
+          setloading(false);
+        }, 5000);
       })
       .catch((res) => {
         console.error(res);
@@ -386,8 +389,15 @@ const Products = () => {
             {error && <ErrorScreen />}
 
             <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <Link style={{textDecoration:'none'}} to={{ 
+  pathname: `/new`, 
+  state: {
+    status: "publish",
+  } 
+}}>
+
               <button
-                onClick={() => history.push("/new")}
+                // onClick={() => history.push("/new")}
                 className="button"
                 style={{
                   display: "flex",
@@ -402,6 +412,8 @@ const Products = () => {
                 />
                 <h4>Add New Product</h4>
               </button>
+</Link>
+
             </div>
             <div
               style={{
@@ -413,7 +425,7 @@ const Products = () => {
               {/* onClick={()=>(window.location.href = post.permalink)}  */}
               {posts.map(
                 (post) =>
-                  post.status == "publish" && (
+                  (
                     <Item
                       onClick={() => history.push(`/edit/${post.id}`)}
                       id={post.id}

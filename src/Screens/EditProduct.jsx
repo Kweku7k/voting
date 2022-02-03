@@ -31,9 +31,9 @@ import MultipleSelectFields from "../components/MultipleSelectFields";
 {
   /* <CloudinaryContext cloudName="presto-solutions">
   <div>
-    <Image publicId="sample" width="50" />
+    <Image publishId="sample" width="50" />
   </div>
-  <Image publicId="sample" width="0.5" />
+  <Image publishId="sample" width="0.5" />d
 </CloudinaryContext> */
 }
 
@@ -118,6 +118,9 @@ const itemSizes = ["8","10","12","14","16","18"]
   const [description, setdescription] = useState("");
   const [color, setcolor] = useState("");
 
+
+  const [loadingMessage, setloadingMessage] = useState("Loading")
+
   // Get the product
   useEffect(() => {
     axios
@@ -132,6 +135,7 @@ const itemSizes = ["8","10","12","14","16","18"]
         console.log(res.data);
         setproduct(res.data);
         setname(res.data.name);
+        setstatus(res.data.status)
 
         // productType === "variant" &&
         console.log(res.data.attributes[0].options)
@@ -207,6 +211,7 @@ const itemSizes = ["8","10","12","14","16","18"]
 
   const imageUrls = [];
 
+
   const [imageUrl, setimageUrl] = useState([]);
 
   let pushimg = [];
@@ -217,6 +222,8 @@ const itemSizes = ["8","10","12","14","16","18"]
   const token = Buffer.from(`${uname}:${pass}`, "utf8").toString("base64");
 
   const formData = new FormData();
+
+  const [status, setstatus] = useState("roduct.name");
 
   const testAdd = () => {
     if (images.length >= 1) {
@@ -261,7 +268,7 @@ const itemSizes = ["8","10","12","14","16","18"]
             setimageuploaderror(true);
           })
           .finally(() => {
-            i == images.length - 1
+            i == images.length - 1 
               ? addProduct()
               : console.log("Still loading");
           });
@@ -281,6 +288,11 @@ const itemSizes = ["8","10","12","14","16","18"]
   const addProduct = () => {
     setloading(true);
     console.log("Testing");
+
+    { 
+      status === "publish" ?
+    addPrivateProduct()
+    :
     axios
       .put(
         `https://evicstore.com/wp-json/wc/v3/products/${id}`,
@@ -291,6 +303,7 @@ const itemSizes = ["8","10","12","14","16","18"]
           price: price,
           description: description,
           short_description: description,
+          status:status,
           categories: [
             {
               id: category,
@@ -334,12 +347,155 @@ const itemSizes = ["8","10","12","14","16","18"]
         console.log(err);
         setgeneralUploadError(true);
       });
+  
+  }
   };
+
+  const loopVariant = (input) => {
+    console.log(input)
+    const varSizes = [];
+    for (let i = 0; i < inputList.length; i++) { 
+    console.log(inputList[i].product_id)
+    varSizes.push(inputList[i].product_id)
+    console.log(varSizes)
+    }
+    return varSizes
+  }
+
+
+
+  const addPrivateProduct = () => {
+    const atr = loopVariant()
+    console.log("Creating a new private product")
+
+    setloading(true)
+    setloadingMessage("Uploading Your Products")
+    console.log("Status - " + status)
+  console.log("Testing")
+  axios.post('https://evicstore.com/wp-json/wc/v3/products',{
+      "name": name,
+      "type": productType,
+      "regular_price": price,
+      "description": description,
+      "short_description": description,
+      "status":status,
+      "categories": [
+        {
+          id: category
+        }
+      ],
+      images: pushimg,
+      "attributes":[
+        {
+        "id":1,
+        "variation":true,
+        "visible":true,
+        "options":atr
+        }
+    ],
+  } 
+  ,{
+    headers: {
+        'Authorization': `Basic ${token}`
+      }
+})
+  .then((res) => {
+    console.log(res.data)
+
+    const item = res.data
+    const itemId = res.data.id
+    const itemPrice = res.data.price
+
+    console.log("price")
+    console.log(price)
+    console.log("atr - " + atr)
+    
+    for (let index = 0; index < atr.length; index++) {
+      
+        console.log("Running loop for variants")
+          // setloadingMessage(`Creating Variants ${i}/${atr.length}` )
+          setloadingMessage("Creating Variants" +  index +"/" + inputList.length )
+          axios.post(`https://evicstore.com/wp-json/wc/v3/products/${itemId}/variations`,
+            {
+              "regular_price": price,
+              "manage_stock":true,
+              "stock_quantity":inputList[index].quantity,
+              "image": {  
+                "id": item.images[0].id
+              },
+              "attributes": [
+                  {
+                  "id":1,
+                  // "options":loopVariant(),
+                  "option":inputList[index].product_id,
+                  }
+              ]
+            },{
+            headers: {
+              'Authorization': `Basic ${token}`
+            }
+          })
+      
+
+    // setloadingMessage("Creating Variants")
+    // axios.post(`https://evicstore.com/wp-json/wc/v3/products/${itemId}/variations`,
+    //   {
+    //     "regular_price": price,
+    //     "image": {
+    //       "id": item.images[0].id
+    //     },
+    //     "attributes": [
+    //         {
+    //         "id":1,
+    //         "options":loopVariant(),
+    //         "stock_quantity":1
+    //         }
+    //     ]
+    //   },{
+    //   headers: {
+    //     'Authorization': `Basic ${token}`
+    //   }
+    // })
+    
+    // setloadingMessage("Creating Variants")
+    // axios.post(`https://evicstore.com/wp-json/wc/v3/products/${itemId}/variations`,
+    //   {
+    //     "regular_price": price,
+    //     "image": {
+    //       "id": item.images[0].id
+    //     },
+    //     "attributes": [
+    //         {
+    //         "id":1,
+    //         "options":loopVariant(),
+    //         "stock_quantity":1
+    //         }
+    //     ]
+    //   },{
+    //   headers: {
+    //     'Authorization': `Basic ${token}`
+    //   }
+    // })
+    .then(()=>{
+      history.push('/products')
+    })
+  }
+
+
+  })
+  .catch((err) => {
+    console.log(err)
+    setgeneralUploadError(true)
+  })
+
+
+}
 
 
   const updateWithoutImages = () => {
     setloading(true);
     console.log("Testing");
+    console.log(status)
     axios
       .put(
         `https://evicstore.com/wp-json/wc/v3/products/${id}`,
@@ -350,6 +506,7 @@ const itemSizes = ["8","10","12","14","16","18"]
           price: price,
           description: description,
           short_description: description,
+          status:status,
           categories: [
             {
               id: category,
@@ -646,6 +803,41 @@ const [productType, setproductType] = useState("variable")
                 />
               </FloatingLabel>
 
+<FloatingLabel
+  style={{ marginBottom: 30 }}
+  controlId="floatingSelectGrid"
+  label="Status"
+  value="asdf"
+>
+
+  <h4>{status}</h4>
+
+{
+  status === "private"
+  ? 
+  <Form.Select
+    value={status}
+    onChange={(e) => setstatus(e.target.value)}
+    name="status"
+    aria-label="Floating label select example"
+  >
+      <option value="private">Private</option>
+      <option value="publish">publish</option>
+  </Form.Select>
+  :
+  <Form.Select
+    value={status}
+    onChange={(e) => setstatus(e.target.value)}
+    name="status"
+    aria-label="Floating label select example"
+  >
+      <option value="publish">publish</option>
+      <option value="private">Private</option>
+  </Form.Select>
+}
+
+  </FloatingLabel>
+
               <FloatingLabel
                 style={{ marginBottom: 30 }}
                 controlId="floatingSelectGrid"
@@ -663,6 +855,8 @@ const [productType, setproductType] = useState("variable")
                   ))}
                 </Form.Select>
               </FloatingLabel>
+
+
               {/* <Form.Control> */}
 
               <h6 onClick={handleShow}>Sizes - UK</h6>

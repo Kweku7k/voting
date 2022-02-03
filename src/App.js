@@ -42,6 +42,8 @@ import { Home, Inventory } from '@mui/icons-material';
 import AppsIcon from '@mui/icons-material/Apps';
 import EditProduct from './Screens/EditProduct';
 import PrivateProducts from './Screens/PrivateProducts';
+import NewPrivateProduct from './Screens/NewPrivateProduct';
+import Upload from './components/Upload';
 // import { useHistory } from 'react-router-dom';
 
 
@@ -78,15 +80,23 @@ const db = getDatabase(app);
 
   const location = props.location;
   console.log(location)
+
+
   return (
     <Router>
       <div style={{width:'100%', height:'100%'}}>
+     
      
 {/* {
       location === 'woo' ? <Startheader/> : <Cartheader/>
 } */}
 
 <Startheader/>
+
+
+      <div>
+      <Upload/>
+      </div>
        {/* <Startheader/> */}
        {/* <Cartheader/> */}
     {/* <Navbar.Brand href="#home">Evic Store</Navbar.Brand> */}
@@ -120,6 +130,10 @@ const db = getDatabase(app);
 
           <Route path="/input">
             <OrderForm/>
+          </Route>
+
+          <Route path="/newprivate">
+            <NewPrivateProduct/>
           </Route>
 
           <Route path="/products">

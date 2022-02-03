@@ -8,7 +8,7 @@ import { Form, Container, FloatingLabel, Spinner, Col,Button, Row, Modal } from 
 import ImageUploading from 'react-images-uploading'
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { getDatabase, set, get, child, onValue } from "firebase/database";
-import { useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import { CloudinaryContext, Image } from 'cloudinary-react';
 import { useEffect } from 'react';
 import { InputTags } from 'react-bootstrap-tagsinput'
@@ -16,11 +16,11 @@ import 'react-bootstrap-tagsinput/dist/index.css'
 import TagsInput from 'react-tagsinput';
 import SuccessAlert from '../components/SuccessAlert';
 import ErrorAlert from '../components/ErrorAlert';
+
 import MultipleSelectFields from '../components/MultipleSelectFields';
-import { height } from '@mui/system';
 import { useLocation } from 'react-router-dom/cjs/react-router-dom.min';
 
-const NewProduct = () => {
+const NewPrivateProduct = () => {
 
 const [loadingMessage, setloadingMessage] = useState("Loading")
 
@@ -64,26 +64,17 @@ const addToChecked = (value, size) => {
 }
 
 
+const location = useLocation()
 const [categories, setcategories] = useState([])
   // Get All Categories
-  const location = useLocation()
-  
-
-  const [status, setstatus] = useState(null);
-
   useEffect(() => {
-
-    console.log("location.state.status")
-    console.log(location.state.status)
-    setstatus(location.state.status)
-
-
+    // console.log(location.state.status)
+    // console.log("location.state.status")
     axios.get('https://evicstore.com/wp-json/wc/v3/products/categories',{
       headers: {
           'Authorization': `Basic ${token}`
         }
   })
-
   .then((res)=>{
     console.log('res')
     console.log(res)
@@ -113,7 +104,6 @@ let pushimg = []
   const [name, setname] = useState("")
   const [price, setprice] = useState("")
   const [description, setdescription] = useState("")
-  // const [status, setstatus] = useState("publish");
   const [color, setcolor] = useState("")
 
   const uname = 'ck_1c9fd82800542cd01838923009ea20743be2734f'
@@ -128,15 +118,18 @@ const testAdd = () => {
 
   // read sizes
   loopVariant(inputList)
+  // This is an object
+  console.log("inputList")
+  console.log(inputList)
   // -----
   if (images.length >= 1 ){
     console.log("There are images")
-
   setuploadImage(true)
-  
   // Loop for images
 console.log(images)
 console.log("-------")
+ 
+
 for (let i = 0; i < images.length; i++) { 
   console.log(images[i])
   {images.url 
@@ -173,11 +166,10 @@ axios.post('https://api.cloudinary.com/v1_1/presto-solutions/image/upload',formD
 
   }
   else{
-    console.log("There were no images, please add images")
-    console.log(status)
-    { status === "publish" && setnoImagesError(true)}
-    { status === "private" && addProduct()}
-    
+    // setnoImagesError(true)
+    console.log("There were no images")
+    addProduct()
+
   }
   
 }
@@ -198,8 +190,8 @@ const [noImagesError, setnoImagesError] = useState(false)
       "type": productType,
       "regular_price": price,
       "description": description,
+      "status":"private",
       "short_description": description,
-      "status":status,
       "categories": [
         {
           id: category
@@ -230,6 +222,9 @@ const [noImagesError, setnoImagesError] = useState(false)
     console.log("price")
     console.log(price)
     console.log("atr - " + atr)
+
+    history.push('/private')
+
     
     for (let index = 0; index < atr.length; index++) {
       
@@ -240,20 +235,13 @@ const [noImagesError, setnoImagesError] = useState(false)
             {
               "regular_price": price,
               "manage_stock":true,
-              "stock_quantity":inputList[index].quantity,              
-              "image": 
-              (
-                pushimg.length <1 ?
-                []
-                :
-                {  
-                  "id":  item.images[0].id 
-                }
-                ),
+              "stock_quantity":inputList[index].quantity,
+              "image": {  
+                "id": item.images[0].id
+              },
               "attributes": [
                   {
                   "id":1,
-                  // "options":loopVariant(),
                   "option":inputList[index].product_id,
                   }
               ]
@@ -262,17 +250,9 @@ const [noImagesError, setnoImagesError] = useState(false)
               'Authorization': `Basic ${token}`
             }
           })
-    .then(()=>{
-      console.log("Done With Axios Call")
-      {
-        status === "private"
-        ?
-        history.push('/private')
-        :
-        history.push('/products')
-
-      }
-    })
+    // .then(()=>{
+    //   history.push('/private')
+    // })
   }
 
 
@@ -357,7 +337,7 @@ const onUploadProduct = () => {
 
 
 
-const itemSizes = ["8","10","12","14","16","18","20","Small", "Medium","Large","Extra Large"]
+const itemSizes = ["8","10","12","14","16","18"]
 
   const [images, setImages] = React.useState([]);
   const maxNumber = 69;
@@ -460,22 +440,8 @@ const itemSizes = ["8","10","12","14","16","18","20","Small", "Medium","Large","
                 <FontAwesomeIcon size='2x' color='grey' icon={faPlusCircle}/>
             </div> */}
             &nbsp;
-
-{
-        status === 'publish'
-?
-            <div style={{color:'white', padding:10, marginBottom:10, width:'fit-content', border:'1px solid white', borderRadius:10 , backgroundColor:'blue'}}>
-              <h6 style={{margin:0}}>PUBLIC PRODUCT</h6>
-            </div>
-:
-            <div style={{color:'white', padding:10, marginBottom:10, width:'fit-content', border:'1px solid white', borderRadius:10 , backgroundColor:'green'}}>
-              <h6 style={{margin:0}}>PRIVATE PRODUCT</h6>
-            </div>
-}
-
-
             <div style={{display:'flex', alignItems:'center', marginBottom:10, justifyContent:'space-between'}}>
-              <h4><b>{ name ? name : "Add A New Product"}</b></h4>
+              <h4><b>{ name ? name : "Add A New Private Product"}</b></h4>
             {/* <button className='deleteAllImages' onClick={onImageRemoveAll}>Delete all images</button> */}
             
             </div>
@@ -569,13 +535,6 @@ const itemSizes = ["8","10","12","14","16","18","20","Small", "Medium","Large","
   
 
 
-  <FloatingLabel style={{marginBottom:30}} controlId="floatingSelectGrid" label="Product Status">
-      <Form.Select value={status} onChange={(e)=> setstatus(e.target.value)} name="product_id" aria-label="Floating label select example">
-      {["private","publish"].map((state)=>(
-        <option value={state}>{state.charAt(0).toUpperCase() + state.slice(1)}</option>
-))} 
-      </Form.Select>
-    </FloatingLabel>
 
   
   <FloatingLabel style={{marginBottom:30}} controlId="floatingSelectGrid" label="Category">
@@ -586,12 +545,12 @@ const itemSizes = ["8","10","12","14","16","18","20","Small", "Medium","Large","
       </Form.Select>
     </FloatingLabel>
 
-    {/* <Form.Check 
-    type="switch"
-    id="custom-switch"
-    value = {false}
-    label="Public Product"
-  /> */}
+
+  
+
+
+
+
 
         {
           productType === "variable" 
@@ -713,15 +672,14 @@ const itemSizes = ["8","10","12","14","16","18","20","Small", "Medium","Large","
         {/* <div style={{ marginTop: 20 }}>{JSON.stringify(images)}</div> */}
         </Form>
 
-        {/* onClick={() => onUploadProduct()} */}
         {
-          categories.length < 1 
+          uploadImage
           ?
-          <button className="waitButton">
+          <button className="waitButton" onClick={() => onUploadProduct()}>
             <Spinner animation="border" size="sm" role="status">
               <span className="visually-hidden">Loading...</span>
             </Spinner>
-            {'   '}Getting Categories
+            {' '}Uploading Images
             </button>
           :
            <button className="subbutton" onClick={() => testAdd()}>Upload</button>
@@ -733,4 +691,4 @@ const itemSizes = ["8","10","12","14","16","18","20","Small", "Medium","Large","
     )
 }
 
-export default NewProduct
+export default NewPrivateProduct
