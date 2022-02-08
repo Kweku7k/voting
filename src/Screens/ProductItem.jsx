@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Container, Card, Row, Col } from "react-bootstrap";
-import Image from "react-bootstrap/Image";
+import { Row, Col } from "react-bootstrap";
 
 const ProductItem = ({ product_id, token }) => {
   const [item, setItem] = useState(null);
