@@ -24,8 +24,8 @@ const ProductItem = ({ product_id, token }) => {
 
   return (
     item && (
-      <Row className="p-4">
-        <Col sm={5}>
+      <Row className="p-2 p-sm-4">
+        <Col className="col-4">
           <div key={item.id} className="product-image__container">
             <img src={item.images[0].src} alt="product" className="d-block" />
           </div>
