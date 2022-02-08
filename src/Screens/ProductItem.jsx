@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Row, Col } from "react-bootstrap";
-import PreviewImage from "../assets/previewImage.jpeg";
 
 const ProductItem = ({ product_id, token }) => {
   const [item, setItem] = useState(null);
@@ -28,11 +27,7 @@ const ProductItem = ({ product_id, token }) => {
       <Row className="p-4">
         <Col sm={5}>
           <div key={item.id} className="product-image__container">
-            {item.images[0].src ? (
-              <img src={item.images[0].src} alt="product" className="d-block" />
-            ) : (
-              <img src={PreviewImage} alt="product" className="d-block" />
-            )}
+            <img src={item.images[0].src} alt="product" className="d-block" />
           </div>
         </Col>
         <Col>
