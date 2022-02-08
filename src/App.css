@@ -401,3 +401,22 @@ background-color: #61dafb;
     transform: rotate(360deg);
   }
 }
+
+.product-image__container {
+  height: 15rem;
+  max-width: 15rem;
+  width: 100%;
+}
+
+.row {
+  margin-top: 0 !important;
+  margin-right: 0 !important;
+  margin-left: 0 !important;
+}
+
+@media screen and (max-width: 574px) {
+  .product-image__container {
+    max-width: inherit;
+    margin-bottom: 2rem;
+  }
+}
