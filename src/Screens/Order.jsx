@@ -2,16 +2,12 @@ import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router";
 import ProductItem from "./ProductItem";
-// import { Carousel } from "react-bootstrap";
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
-// import "bootstrap/dist/css/bootstrap.min.css";
-import { Carousel } from "react-responsive-carousel";
+import { Container, Row, Col } from "react-bootstrap";
 
 const Order = () => {
   let { id } = useParams();
-  console.log(id);
 
-  const [order, setorder] = useState("initialState");
+  const [order, setOrder] = useState({});
 
   const uname = "ck_1c9fd82800542cd01838923009ea20743be2734f";
   const pass = "cs_dc4f49dbbd4efa9f2608ad3b14daec05b0b38aa6";
@@ -31,6 +27,7 @@ const Order = () => {
           },
         }
       );
+      setOrder(res.data);
       setitems(res.data.line_items);
     };
 
@@ -38,24 +35,17 @@ const Order = () => {
   }, []);
 
   return (
-    <div>
-      <h1>
-        <b>
-          Order #{id} - {order.billing ? order.billing.first_name : null}
-        </b>
-      </h1>
-      {/* <h4><b>{order.fee_lines.length < 1 ? order.fee_lines[0].meta_data[1].value : null}</b></h4> */}
+    <div className="my-4">
+      {order.billing && (
+        <div className="order-details shadow-sm p-3 m-4 bg-white rounded">
+          <h1>{`${order.billing.first_name} ${order.billing.last_name}`}</h1>
+          <h1>Order No: {id}</h1>
+          <h4>Phone No: {order.billing.phone}</h4>
+          <h4>Location: {order.fee_lines[0].meta_data[2].value}</h4>
+        </div>
+      )}
 
-      <div>
-        {/* <h1><a href={'tel:' + order.billing.phone}>{order.billing.phone}</a></h1> */}
-        <a href={order.billing ? "tel:" + order.billing.phone : null}>
-          <h1>{order.billing ? order.billing.phone : null}</h1>
-        </a>
-        <h6>Testing sub text</h6>
-      </div>
-
-      {/* <div class="scrolling-wrapper-flexbox"> */}
-      <Carousel autoPlay={true} infiniteLoop={true}>
+      <Container>
         {items &&
           items.map((item) => {
             return (
@@ -66,13 +56,7 @@ const Order = () => {
               />
             );
           })}
-      </Carousel>
-      {/* <Carousel>
-        {[1, 2, 3, 4, 5, 6].map((item) => {
-          return <ProductItem key={item} item={item} />;
-        })}
-      </Carousel> */}
-      {/* </div> */}
+      </Container>
 
       <button className="subbutton" style={{ backgroundColor: "green" }}>
         Complete
