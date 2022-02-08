@@ -27,14 +27,14 @@ const ProductItem = ({ product_id, token }) => {
   return (
     item && (
       // <Col>1 of 1</Col>
-      <Row style={{ height: "18rem" }}>
+      <Row className="p-4">
         <Col>
-          <div key={item.id}>
+          <div key={item.id} style={{ height: "15rem", width: "15rem" }}>
             <img
               src={item.images[0].src}
               alt="product"
               className="d-block"
-              style={{ height: "18rem", width: "18rem" }}
+              style={{ height: "100%", width: "100%" }}
             />
           </div>
         </Col>
