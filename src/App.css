@@ -403,13 +403,14 @@ background-color: #61dafb;
 }
 
 .product-image__container {
-  height: 15rem;
-  max-width: 15rem;
+  height: 9rem;
+  max-width: 9rem;
   width: 100%;
 }
 .product-image__container img {
   height: 100%;
   width: 100%;
+  object-fit: cover;
 }
 
 .row {
@@ -426,8 +427,12 @@ background-color: #61dafb;
 
 @media screen and (max-width: 574px) {
   .product-image__container {
-    max-width: inherit;
-    margin-bottom: 2rem;
+    height: 4rem;
+    max-width: 4.5rem;
+    width: 100%;
+  }
+  .product-image__details h4 {
+    font-size: 0.8rem;
   }
   .order-details {
     grid-auto-flow: row;
