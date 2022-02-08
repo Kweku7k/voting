@@ -27,7 +27,7 @@ const ProductItem = ({ product_id, token }) => {
       <Row className="p-4">
         <Col sm={5}>
           <div key={item.id} className="product-image__container">
-            <img src={item.images[0].src} alt="product" className="d-block" />
+            <img src={ item.images[0] ? item.images[0].src : `https://firebasestorage.googleapis.com/v0/b/fir-learning-35a38.appspot.com/o/evic%20LOGOo-03.png?alt=media&token=d9d6616c-b0d7-4510-9841-39c8527b8102`} alt="product" className="d-block" />
           </div>
         </Col>
         <Col>
