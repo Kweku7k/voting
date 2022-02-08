@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { Carousel } from "react-bootstrap";
 import axios from "axios";
+import { Container, Card, Row, Col } from "react-bootstrap";
+import Image from "react-bootstrap/Image";
 
 const ProductItem = ({ product_id, token }) => {
   const [item, setItem] = useState(null);
@@ -25,26 +26,56 @@ const ProductItem = ({ product_id, token }) => {
 
   return (
     item && (
-      // <Carousel.Item>
-      //   <img src={item.images[0].src} alt="product" className="d-block w-100" />
-      //   <Carousel.Caption>
-      //     <h3>{item.name}</h3>
-      //     <p>{item.quantiy}</p>
-      //     <p>{product_id}</p>
-      //   </Carousel.Caption>
-      // </Carousel.Item>
-      <div key={item.id} class="scrolling-card">
-        <img src={item.images[0].src} alt="product" />
-
-        {/* <div style={{ display: "flex", justifyContent: "space-between" }}> */}
-        <div className="legend">
-          <h4>{item.name}</h4>
-          <span>
-            <h4>{item.quantity}</h4>
-          </span>
-          <h4>{product_id}</h4>
-        </div>
-      </div>
+      // <Col>1 of 1</Col>
+      <Row style={{ height: "18rem" }}>
+        <Col>
+          <div key={item.id}>
+            <img
+              src={item.images[0].src}
+              alt="product"
+              className="d-block"
+              style={{ height: "18rem", width: "18rem" }}
+            />
+          </div>
+        </Col>
+        <Col>
+          <div>
+            <h4>{item.name}</h4>
+            <span>
+              <h4>{item.quantity}</h4>
+            </span>
+            <h4>{product_id}</h4>
+          </div>
+        </Col>
+        {/* <Col>
+          <Card style={{ height: "18rem" }}>
+            <Card.Img
+              variant="top"
+              src={item.images[0].src}
+              style={{ height: "100%", width: "18rem" }}
+            />
+            <Card.Body>
+              <Card.Title>{item.name}</Card.Title>
+              <Card.Text>{item.quantity}</Card.Text>
+              <Card.Text>{product_id}</Card.Text>
+            </Card.Body>
+          </Card>
+        </Col>
+        <Col>
+          <Card style={{ height: "18rem" }}>
+            <Card.Img
+              variant="top"
+              src={item.images[0].src}
+              style={{ height: "100%", width: "18rem" }}
+            />
+            <Card.Body>
+              <Card.Title>{item.name}</Card.Title>
+              <Card.Text>{item.quantity}</Card.Text>
+              <Card.Text>{product_id}</Card.Text>
+            </Card.Body>
+          </Card>
+        </Col> */}
+      </Row>
     )
   );
 };
