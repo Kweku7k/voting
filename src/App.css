@@ -417,10 +417,24 @@ background-color: #61dafb;
   margin-right: 0 !important;
   margin-left: 0 !important;
 }
+.order-details {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 1fr);
+  gap: 1rem;
+  margin: 1rem;
+  background-color: #ffffff;
+  box-shadow: 10px 10px 55px -7px rgb(204 204 204 / 75%);
+  padding: 0.5rem;
+}
 
 @media screen and (max-width: 574px) {
   .product-image__container {
     max-width: inherit;
     margin-bottom: 2rem;
+  }
+  .order-details {
+    grid-auto-flow: row;
+    grid-template-columns: auto;
   }
 }
