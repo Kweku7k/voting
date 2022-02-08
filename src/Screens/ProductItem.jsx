@@ -34,10 +34,7 @@ const ProductItem = ({ product_id, token }) => {
         <Col>
           <div className="product-image__details">
             <h4>{item.name}</h4>
-            <span>
-              <h4>{item.quantity}</h4>
-            </span>
-            <h4>{product_id}</h4>
+            <h4>{`GHS: ${parseFloat(item.price).toFixed(2)}`}</h4>
           </div>
         </Col>
       </Row>
