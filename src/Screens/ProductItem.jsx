@@ -26,7 +26,6 @@ const ProductItem = ({ product_id, token }) => {
 
   return (
     item && (
-      // <Col>1 of 1</Col>
       <Row className="p-4">
         <Col>
           <div key={item.id} style={{ height: "15rem", width: "15rem" }}>
@@ -47,34 +46,6 @@ const ProductItem = ({ product_id, token }) => {
             <h4>{product_id}</h4>
           </div>
         </Col>
-        {/* <Col>
-          <Card style={{ height: "18rem" }}>
-            <Card.Img
-              variant="top"
-              src={item.images[0].src}
-              style={{ height: "100%", width: "18rem" }}
-            />
-            <Card.Body>
-              <Card.Title>{item.name}</Card.Title>
-              <Card.Text>{item.quantity}</Card.Text>
-              <Card.Text>{product_id}</Card.Text>
-            </Card.Body>
-          </Card>
-        </Col>
-        <Col>
-          <Card style={{ height: "18rem" }}>
-            <Card.Img
-              variant="top"
-              src={item.images[0].src}
-              style={{ height: "100%", width: "18rem" }}
-            />
-            <Card.Body>
-              <Card.Title>{item.name}</Card.Title>
-              <Card.Text>{item.quantity}</Card.Text>
-              <Card.Text>{product_id}</Card.Text>
-            </Card.Body>
-          </Card>
-        </Col> */}
       </Row>
     )
   );
