@@ -28,12 +28,7 @@ const ProductItem = ({ product_id, token }) => {
       <Row className="p-4">
         <Col sm={5}>
           <div key={item.id} className="product-image__container">
-            <img
-              src={item.images[0].src}
-              alt="product"
-              className="d-block"
-              style={{ height: "100%", width: "100%" }}
-            />
+            <img src={item.images[0].src} alt="product" className="d-block" />
           </div>
         </Col>
         <Col>

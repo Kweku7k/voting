@@ -407,6 +407,10 @@ background-color: #61dafb;
   max-width: 15rem;
   width: 100%;
 }
+.product-image__container img {
+  height: 100%;
+  width: 100%;
+}
 
 .row {
   margin-top: 0 !important;
