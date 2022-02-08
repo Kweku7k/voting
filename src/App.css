@@ -403,13 +403,14 @@ background-color: #61dafb;
 }
 
 .product-image__container {
-  height: 15rem;
-  max-width: 15rem;
+  height: 9rem;
+  max-width: 9rem;
   width: 100%;
 }
 .product-image__container img {
   height: 100%;
   width: 100%;
+  object-fit: cover;
 }
 
 .row {
