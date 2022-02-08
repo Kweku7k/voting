@@ -138,7 +138,7 @@ const itemSizes = ["8","10","12","14","16","18"]
         setstatus(res.data.status)
 
         // productType === "variant" &&
-        console.log(res.data.attributes[0].options)
+        // console.log(res.data.attributes[0].options)
         console.log(inputList)
 
         let sizeArrr = []
@@ -276,7 +276,10 @@ const itemSizes = ["8","10","12","14","16","18"]
     } else {
       // setnoImagesError(true);
       console.log("There were no images, please add images");
-      updateWithoutImages()
+
+      { status === "publish" && setnoImagesError(true)}
+      { status === "private" && updateWithoutImages()}
+      // updateWithoutImages()
       
     }
   };
