@@ -107,7 +107,6 @@ const OrderForm = () => {
         }
       )
       .then((res) => {
-        console.log(res.data);
         setloading(false);
         history.push("/orders");
       });
@@ -125,7 +124,6 @@ const OrderForm = () => {
         },
       })
       .then((res) => {
-        console.log(res.data);
         setproducts(res.data);
         setloading(false);
       })

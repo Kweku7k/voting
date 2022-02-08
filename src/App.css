@@ -422,10 +422,6 @@ background-color: #61dafb;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(2, 1fr);
   gap: 1rem;
-  margin: 1rem;
-  background-color: #ffffff;
-  box-shadow: 10px 10px 55px -7px rgb(204 204 204 / 75%);
-  padding: 0.5rem;
 }
 
 @media screen and (max-width: 574px) {
