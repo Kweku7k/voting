@@ -22,6 +22,7 @@ const OrderForm = () => {
   const [customerName, setCustomerName] = useState("");
 
   const [items, setitems] = useState();
+  const [selectedProduct, setSelectedProduct] = useState("");
 
   const productRow = {
     marginBottom: 20,
@@ -125,6 +126,7 @@ const OrderForm = () => {
       })
       .then((res) => {
         setproducts(res.data);
+        console.log("data: ", res.data);
         setloading(false);
       })
       .catch((err) => {
@@ -155,6 +157,82 @@ const OrderForm = () => {
             </Spinner>
           </div>
         ) : (
+          // <Form>
+          //   <br />
+          //   <h4>
+          //     <b>Create a new order</b>
+          //   </h4>
+          //   <Form.Group className="mb-3" controlId="formBasicEmail">
+          //     <Form.Label>Customer Name</Form.Label>
+          //     <Form.Control
+          //       required
+          //       value={customerName}
+          //       onChange={(e) => setCustomerName(e.target.value)}
+          //       type="text"
+          //       placeholder="Enter Customer Name"
+          //     />
+          //   </Form.Group>
+
+          //   <Form.Group className="mb-3" controlId="formBasicNumber">
+          //     <Form.Label>Phone Number</Form.Label>
+          //     <Form.Control
+          //       required
+          //       value={phoneNumber}
+          //       onChange={(e) => setphoneNumber(e.target.value)}
+          //       type="number"
+          //       placeholder="Enter Phone Number"
+          //     />
+          //   </Form.Group>
+
+          //   <Form.Label>Items</Form.Label>
+
+          //   {inputList.map((x, i) => {
+          //     return (
+          //       <>
+          //         <Row className="g-2 mb-2" key={x.product_id}>
+          //           <Col md>
+          //             <FloatingLabel
+          //               controlId="floatingSelectGrid"
+          //               label="Items"
+          //             >
+          //               <Form.Select
+          //                 name="product_id"
+          //                 onChange={(e) => handleInputChange(e, i)}
+          //                 value={x.product_id}
+          //                 aria-label="Floating label select example"
+          //               >
+          //                 {products.map((product) => (
+          //                   <option value={product.id}>{product.name}</option>
+          //                 ))}
+          //               </Form.Select>
+          //             </FloatingLabel>
+          //           </Col>
+
+          //           <Col md>
+          //             <FloatingLabel
+          //               controlId="floatingInputGrid"
+          //               label="Quantity"
+          //             >
+          //               <Form.Control
+          //                 name="quantity"
+          //                 type="number"
+          //                 placeholder=""
+          //                 value={x.quantity ? x.quantity : 1}
+          //                 onChange={(e) => handleInputChange(e, i)}
+          //               />
+          //             </FloatingLabel>
+          //           </Col>
+          //         </Row>
+
+          //         {inputList.length - 1 === i && (
+          //           <Button
+          //             variant="primary"
+          //             onClick={handleAddClick}
+          //             type="submit"
+          //           >
+          //             Add Item
+          //           </Button>
+          //         )}
           <Form>
             <br />
             <h4>
@@ -193,7 +271,7 @@ const OrderForm = () => {
                         controlId="floatingSelectGrid"
                         label="Items"
                       >
-                        <Form.Select
+                        {/* <Form.Select
                           name="product_id"
                           onChange={(e) => handleInputChange(e, i)}
                           value={x.product_id}
@@ -202,7 +280,17 @@ const OrderForm = () => {
                           {products.map((product) => (
                             <option value={product.id}>{product.name}</option>
                           ))}
-                        </Form.Select>
+                        </Form.Select> */}
+                        <Form.Control
+                          required
+                          value={selectedProduct}
+                          onChange={(e) => {
+                            setSelectedProduct(e.target.value);
+                            console.log(selectedProduct);
+                          }}
+                          type="text"
+                          placeholder="Enter Customer Name"
+                        />
                       </FloatingLabel>
                     </Col>
 
@@ -222,6 +310,30 @@ const OrderForm = () => {
                     </Col>
                   </Row>
 
+                  {products.map((product) => {
+                    return (
+                      <Row className="p-2" key={product.id}>
+                        <Col md>
+                          <div className="addItem__image">
+                            {product.images.length > 0 && (
+                              <img src={product.images[0].src} alt="" />
+                            )}
+                          </div>
+                        </Col>
+
+                        <Col md>
+                          <Button
+                            variant="primary"
+                            onClick={handleAddClick}
+                            type="submit"
+                            className="float-right mt-1"
+                          >
+                            Add Item
+                          </Button>
+                        </Col>
+                      </Row>
+                    );
+                  })}
                   {inputList.length - 1 === i && (
                     <Button
                       variant="primary"
