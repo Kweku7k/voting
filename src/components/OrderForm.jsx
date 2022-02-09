@@ -281,22 +281,12 @@ const OrderForm = () => {
                 <>
                   <Row className="g-2 mb-2" key={x.product_id}>
                     <Col md>
-                      {/* <Form.Select
-                          name="product_id"
-                          onChange={(e) => handleInputChange(e, i)}
-                          value={x.product_id}
-                          aria-label="Floating label select example"
-                        >
-                          {products.map((product) => (
-                            <option value={product.id}>{product.name}</option>
-                          ))}
-                        </Form.Select> */}
                       <Form.Control
                         required
                         value={selectedProduct}
                         onChange={(e) => {
                           setSelectedProduct(e.target.value);
-                          handleSearchProducts(selectedProduct);
+                          handleSearchProducts(e.target.value);
                         }}
                         type="text"
                         placeholder="search for a product"
