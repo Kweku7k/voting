@@ -26,6 +26,9 @@ const OrderForm = () => {
   const [selectedProduct, setSelectedProduct] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
   const [productid, setproductid] = useState();
+  const [addedItems, setAddedItems] = useState([]);
+  const [quantity, setQuantity] = useState("1");
+  const [addedProducts, setAddedProducts] = useState([]);
 
   const productRow = {
     marginBottom: 20,
@@ -50,6 +53,7 @@ const OrderForm = () => {
 
   // filters the products when the user types a product name
   const handleSearchProducts = (text) => {
+    console.log(products);
     if (text === "") {
       setFilteredProducts([]);
     } else {
@@ -63,6 +67,20 @@ const OrderForm = () => {
   // handle click event of the Add button
   const handleAddClick = () => {
     setInputList([...inputList, { product_id: "365", quantity: "1" }]);
+  };
+
+  // handle click event of the Add button
+  const handleAddProduct = (product, quantity) => {
+    // setInputList([...inputList, { product_id: "365", quantity: "1" }]);
+    console.log({ quantity });
+    const remainingProducts = products.filter((item) => item.id !== product.id);
+    console.log(remainingProducts);
+    setproducts(remainingProducts);
+
+    setAddedProducts((prev) => [
+      ...prev,
+      { product: product, quantity: quantity },
+    ]);
   };
 
   const addOrder = () => {
@@ -130,6 +148,7 @@ const OrderForm = () => {
   const [erroralert, seterroralert] = useState(false);
 
   const [products, setproducts] = useState([]);
+
   const token = Buffer.from(`${uname}:${pass}`, "utf8").toString("base64");
   useEffect(() => {
     axios
@@ -275,7 +294,31 @@ const OrderForm = () => {
             </Form.Group>
 
             <Form.Label>Items</Form.Label>
+            {addedProducts.map(({ product, quantity }, index) => {
+              return (
+                <Row className="p-2" key={index}>
+                  <Col md>
+                    <div className="addItem__image">
+                      <img
+                        src={
+                          product.images.length > 0
+                            ? product.images[0].src
+                            : "https://firebasestorage.googleapis.com/v0/b/fir-learning-35a38.appspot.com/o/evic%20LOGOo-03.png?alt=media&token=d9d6616c-b0d7-4510-9841-39c8527b8102"
+                        }
+                        alt={product.name}
+                      />
+                    </div>
+                  </Col>
+                  <Col md>
+                    <p>{product.name}</p>
+                  </Col>
 
+                  <Col md>
+                    <p>quantity: {quantity}</p>
+                  </Col>
+                </Row>
+              );
+            })}
             {inputList.map((x, i) => {
               return (
                 <>
@@ -302,8 +345,13 @@ const OrderForm = () => {
                           name="quantity"
                           type="number"
                           placeholder=""
-                          value={x.quantity ? x.quantity : 1}
-                          onChange={(e) => handleInputChange(e, i)}
+                          min={1}
+                          value={quantity}
+                          onChange={(e) => {
+                            handleInputChange(e, i);
+                            setQuantity(e.target.value);
+                            console.log(e.target.value);
+                          }}
                         />
                       </FloatingLabel>
                     </Col>
@@ -331,7 +379,10 @@ const OrderForm = () => {
                         <Col md>
                           <Button
                             variant="primary"
-                            onClick={handleAddClick}
+                            // onClick={handleAddClick}
+                            onClick={() => {
+                              handleAddProduct(product, quantity);
+                            }}
                             type="submit"
                             className="float-right mt-1"
                           >
