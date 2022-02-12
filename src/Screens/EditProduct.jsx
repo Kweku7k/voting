@@ -185,7 +185,7 @@ const itemSizes = ["8","10","12","14","16","18"]
 
 
   useEffect(() => {
-    axios.get('https://evicstore.com/wp-json/wc/v3/products/categories',{
+    axios.get('https://evicstore.com/wp-json/wc/v3/products/categories?per_page=20',{
       headers: {
           'Authorization': `Basic ${token}`
         }

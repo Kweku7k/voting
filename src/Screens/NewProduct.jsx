@@ -78,12 +78,12 @@ const [categories, setcategories] = useState([])
     setstatus(location.state.status)
 
 
-    axios.get('https://evicstore.com/wp-json/wc/v3/products/categories',{
+    axios.get('https://evicstore.com/wp-json/wc/v3/products/categories?per_page=50',{
       headers: {
           'Authorization': `Basic ${token}`
         }
   })
-
+ 
   .then((res)=>{
     console.log('res')
     console.log(res)
