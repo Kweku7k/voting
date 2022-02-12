@@ -72,15 +72,22 @@ const OrderForm = () => {
   // handle click event of the Add button
   const handleAddProduct = (product, quantity) => {
     // setInputList([...inputList, { product_id: "365", quantity: "1" }]);
-    console.log({ quantity });
-    const remainingProducts = products.filter((item) => item.id !== product.id);
-    console.log(remainingProducts);
-    setproducts(remainingProducts);
+    // console.log({ quantity });
+    // const remainingProducts = products.filter((item) => item.id !== product.id);
+    // console.log(remainingProducts);
+    // setproducts(remainingProducts);
 
     setAddedProducts((prev) => [
       ...prev,
       { product: product, quantity: quantity },
     ]);
+    console.log(addedProducts);
+    console.log(
+      "list items: ",
+      addedProducts.map(({ product, quantity }) => {
+        return { product_id: product.product_id, quantity: quantity };
+      })
+    );
   };
 
   const addOrder = () => {
