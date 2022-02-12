@@ -81,7 +81,7 @@ const OrderForm = () => {
 
   const addOrder = (e) => {
     e.preventDefault();
-    showModal(true);
+    setShowModal(true);
     setModalSpinner(true);
     const items = addedProducts.map(({ product, quantity }) => {
       return { product_id: product.id, quantity: quantity };
