@@ -54,7 +54,7 @@ const OrderForm = () => {
   // filters the products when the user types a product name
   const handleSearchProducts = (text) => {
     if (text === "") {
-      setFilteredProducts([]);
+      setFilteredProducts(products.slice(0, 11));
     } else {
       const filterArr = products.filter((item) =>
         item.name.toLowerCase().includes(text.toLowerCase()) ? true : false
@@ -318,92 +318,71 @@ const OrderForm = () => {
                 </Row>
               );
             })}
-            {inputList.map((x, i) => {
+
+            <Row className="g-2 mb-2">
+              <Col md>
+                <Form.Control
+                  required
+                  value={selectedProduct}
+                  onChange={(e) => {
+                    setSelectedProduct(e.target.value);
+                    handleSearchProducts(e.target.value);
+                  }}
+                  type="text"
+                  placeholder="search for a product"
+                />
+              </Col>
+
+              <Col md>
+                <FloatingLabel controlId="floatingInputGrid" label="Quantity">
+                  <Form.Control
+                    name="quantity"
+                    type="number"
+                    placeholder=""
+                    min={1}
+                    value={quantity}
+                    onChange={(e) => {
+                      setQuantity(e.target.value);
+                    }}
+                  />
+                </FloatingLabel>
+              </Col>
+            </Row>
+            {/**displays the search results */}
+            {filteredProducts.map((product) => {
               return (
-                <>
-                  <Row className="g-2 mb-2" key={x.product_id}>
-                    <Col md>
-                      <Form.Control
-                        required
-                        value={selectedProduct}
-                        onChange={(e) => {
-                          setSelectedProduct(e.target.value);
-                          handleSearchProducts(e.target.value);
-                        }}
-                        type="text"
-                        placeholder="search for a product"
+                <Row className="p-2" key={product.id}>
+                  <Col md>
+                    <div className="addItem__image">
+                      <img
+                        src={
+                          product.images.length > 0
+                            ? product.images[0].src
+                            : "https://firebasestorage.googleapis.com/v0/b/fir-learning-35a38.appspot.com/o/evic%20LOGOo-03.png?alt=media&token=d9d6616c-b0d7-4510-9841-39c8527b8102"
+                        }
+                        alt=""
                       />
-                    </Col>
+                    </div>
+                  </Col>
+                  <Col md>
+                    <p>{product.name}</p>
+                  </Col>
 
-                    <Col md>
-                      <FloatingLabel
-                        controlId="floatingInputGrid"
-                        label="Quantity"
-                      >
-                        <Form.Control
-                          name="quantity"
-                          type="number"
-                          placeholder=""
-                          min={1}
-                          value={quantity}
-                          onChange={(e) => {
-                            handleInputChange(e, i);
-                            setQuantity(e.target.value);
-                          }}
-                        />
-                      </FloatingLabel>
-                    </Col>
-                  </Row>
-                  {/**displays the search results */}
-                  {filteredProducts.map((product) => {
-                    return (
-                      <Row className="p-2" key={product.id}>
-                        <Col md>
-                          <div className="addItem__image">
-                            <img
-                              src={
-                                product.images.length > 0
-                                  ? product.images[0].src
-                                  : "https://firebasestorage.googleapis.com/v0/b/fir-learning-35a38.appspot.com/o/evic%20LOGOo-03.png?alt=media&token=d9d6616c-b0d7-4510-9841-39c8527b8102"
-                              }
-                              alt=""
-                            />
-                          </div>
-                        </Col>
-                        <Col md>
-                          <p>{product.name}</p>
-                        </Col>
-
-                        <Col md>
-                          <Button
-                            variant="primary"
-                            // onClick={handleAddClick}
-                            onClick={() => {
-                              handleAddProduct(product, quantity);
-                            }}
-                            className="float-right mt-1"
-                          >
-                            Add Item
-                          </Button>
-                        </Col>
-                      </Row>
-                    );
-                  })}
-                  {/* {inputList.length - 1 === i && (
+                  <Col md>
                     <Button
                       variant="primary"
-                      onClick={handleAddClick}
-                      type="submit"
+                      // onClick={handleAddClick}
+                      onClick={() => {
+                        handleAddProduct(product, quantity);
+                      }}
+                      className="float-right mt-1"
                     >
                       Add Item
                     </Button>
-                  )} */}
-                </>
+                  </Col>
+                </Row>
               );
             })}
-
-            {/* onClick={() => addOrder()} */}
-            {/* onClick={()=>addOrder()}  */}
 
             <Button
               className="subbutton my-4"
