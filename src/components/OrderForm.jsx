@@ -78,12 +78,11 @@ const OrderForm = () => {
 
   const addOrder = (e) => {
     e.preventDefault();
-    // setloading(true);
+    setloading(true);
     const items = addedProducts.map(({ product, quantity }) => {
       return { product_id: product.id, quantity: quantity };
     });
-    console.log("list items: ", items);
-    return;
+
     axios
       .post(
         `https://evicstore.com/wp-json/wc/v3/orders`,
