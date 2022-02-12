@@ -41,7 +41,12 @@ const Order = () => {
           <h1>{`${order.billing.first_name} ${order.billing.last_name}`}</h1>
           <h1>Order No: {id}</h1>
           <h4>Phone No: {order.billing.phone}</h4>
-          <h4>Location: {order.fee_lines[0].meta_data[2].value}</h4>
+          <h4>
+            Location:
+            {order.fee_lines[0]
+              ? order.fee_lines[0].meta_data[2].value
+              : "location unknown"}
+          </h4>
         </div>
       )}
 
