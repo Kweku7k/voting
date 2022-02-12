@@ -53,7 +53,6 @@ const OrderForm = () => {
 
   // filters the products when the user types a product name
   const handleSearchProducts = (text) => {
-    console.log(products);
     if (text === "") {
       setFilteredProducts([]);
     } else {
@@ -71,27 +70,20 @@ const OrderForm = () => {
 
   // handle click event of the Add button
   const handleAddProduct = (product, quantity) => {
-    // setInputList([...inputList, { product_id: "365", quantity: "1" }]);
-    // console.log({ quantity });
-    // const remainingProducts = products.filter((item) => item.id !== product.id);
-    // console.log(remainingProducts);
-    // setproducts(remainingProducts);
-
     setAddedProducts((prev) => [
       ...prev,
       { product: product, quantity: quantity },
     ]);
-    console.log(addedProducts);
-    console.log(
-      "list items: ",
-      addedProducts.map(({ product, quantity }) => {
-        return { product_id: product.product_id, quantity: quantity };
-      })
-    );
   };
 
-  const addOrder = () => {
-    setloading(true);
+  const addOrder = (e) => {
+    e.preventDefault();
+    // setloading(true);
+    const items = addedProducts.map(({ product, quantity }) => {
+      return { product_id: product.id, quantity: quantity };
+    });
+    console.log("list items: ", items);
+    return;
     axios
       .post(
         `https://evicstore.com/wp-json/wc/v3/orders`,
@@ -121,7 +113,7 @@ const OrderForm = () => {
             postcode: "404",
             country: "GH",
           },
-          line_items: inputList,
+          line_items: items,
           // "line_items": [
           //   {
           //     "product_id": p1,
@@ -166,7 +158,7 @@ const OrderForm = () => {
       })
       .then((res) => {
         setproducts(res.data);
-        console.log("data: ", res.data);
+        setFilteredProducts(res.data.slice(0, 11)); // shows the first 10 products
         setloading(false);
       })
       .catch((err) => {
@@ -301,6 +293,7 @@ const OrderForm = () => {
             </Form.Group>
 
             <Form.Label>Items</Form.Label>
+            {/* Displays the products the user adds after searching */}
             {addedProducts.map(({ product, quantity }, index) => {
               return (
                 <Row className="p-2" key={index}>
@@ -357,13 +350,12 @@ const OrderForm = () => {
                           onChange={(e) => {
                             handleInputChange(e, i);
                             setQuantity(e.target.value);
-                            console.log(e.target.value);
                           }}
                         />
                       </FloatingLabel>
                     </Col>
                   </Row>
-
+                  {/**displays the search results */}
                   {filteredProducts.map((product) => {
                     return (
                       <Row className="p-2" key={product.id}>
@@ -390,7 +382,6 @@ const OrderForm = () => {
                             onClick={() => {
                               handleAddProduct(product, quantity);
                             }}
-                            type="submit"
                             className="float-right mt-1"
                           >
                             Add Item
@@ -399,7 +390,7 @@ const OrderForm = () => {
                       </Row>
                     );
                   })}
-                  {inputList.length - 1 === i && (
+                  {/* {inputList.length - 1 === i && (
                     <Button
                       variant="primary"
                       onClick={handleAddClick}
@@ -407,7 +398,7 @@ const OrderForm = () => {
                     >
                       Add Item
                     </Button>
-                  )}
+                  )} */}
                 </>
               );
             })}
@@ -416,9 +407,9 @@ const OrderForm = () => {
             {/* onClick={()=>addOrder()}  */}
 
             <Button
-              className="subbutton"
+              className="subbutton my-4"
               variant="primary"
-              onClick={phoneNumber ? () => addOrder() : null}
+              onClick={phoneNumber ? (e) => addOrder(e) : null}
               type="submit"
             >
               Submit
