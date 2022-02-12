@@ -9,6 +9,7 @@ import {
   FloatingLabel,
   Container,
   Button,
+  Modal,
 } from "react-bootstrap";
 import SuccessAlert from "./SuccessAlert";
 import { useHistory } from "react-router";
@@ -21,6 +22,8 @@ const OrderForm = () => {
 
   const [phoneNumber, setphoneNumber] = useState("");
   const [customerName, setCustomerName] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [modalSpinner, setModalSpinner] = useState(true);
 
   const [items, setitems] = useState();
   const [selectedProduct, setSelectedProduct] = useState("");
@@ -78,7 +81,8 @@ const OrderForm = () => {
 
   const addOrder = (e) => {
     e.preventDefault();
-    setloading(true);
+    showModal(true);
+    setModalSpinner(true);
     const items = addedProducts.map(({ product, quantity }) => {
       return { product_id: product.id, quantity: quantity };
     });
@@ -138,7 +142,7 @@ const OrderForm = () => {
         }
       )
       .then((res) => {
-        setloading(false);
+        setModalSpinner(false);
         history.push("/orders");
       });
   };
@@ -396,6 +400,33 @@ const OrderForm = () => {
         )}
         {/* <div style={{ marginTop: 20 }}>{JSON.stringify(inputList)}</div> */}
       </Container>
+      {/**Modal to show when the user is submitting the form */}
+      <Modal
+        size="lg"
+        aria-labelledby="contained-modal-title-vcenter"
+        centered
+        show={showModal}
+      >
+        <Modal.Body className="d-flex flex-column">
+          <h4 className="text-center my-3">processing order</h4>
+          {modalSpinner ? (
+            <Spinner
+              style={{ margin: "auto" }}
+              animation="border"
+              role="status"
+            >
+              <span className="visually-hidden">Loading...</span>
+            </Spinner>
+          ) : (
+            <p className="text-center">Order submitted succesfully</p>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          {!setModalSpinner && (
+            <Button onClick={() => setShowModal(false)}>Close</Button>
+          )}
+        </Modal.Footer>
+      </Modal>
     </>
   );
 };
