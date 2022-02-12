@@ -425,6 +425,18 @@ background-color: #61dafb;
   gap: 1rem;
 }
 
+.addItem__image {
+  height: 3rem;
+  max-width: 3.5rem;
+  width: 100%;
+}
+
+.addItem__image img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+
 @media screen and (max-width: 574px) {
   .product-image__container {
     height: 4rem;
