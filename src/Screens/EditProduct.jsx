@@ -48,7 +48,7 @@ const EditProduct = () => {
 
   const [show, setShow] = useState(false);
 
-const itemSizes = ["8","10","12","14","16","18"]
+const itemSizes = ["8","10","12","14","16","18","20","Small", "Medium","Large","Extra Large","Free Size"]
 
 
   const [imageuploaderror, setimageuploaderror] = useState(false);

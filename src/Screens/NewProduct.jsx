@@ -357,7 +357,7 @@ const onUploadProduct = () => {
 
 
 
-const itemSizes = ["8","10","12","14","16","18","20","Small", "Medium","Large","Extra Large"]
+const itemSizes = ["8","10","12","14","16","18","20","Small", "Medium","Large","Extra Large","Free Size"]
 
   const [images, setImages] = React.useState([]);
   const maxNumber = 69;
