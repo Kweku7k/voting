@@ -274,8 +274,7 @@ const OrderForm = () => {
               <div className="d-flex justify-content-center">
                 <Spinner animation="border" role="status"></Spinner>
               </div>
-            ) : (
-              showSearchItems &&
+            ) : showSearchItems && products.length > 0 ? (
               products.map((product) => {
                 return (
                   <Row className="p-2" key={product.id}>
@@ -310,6 +309,10 @@ const OrderForm = () => {
                   </Row>
                 );
               })
+            ) : (
+              <div className="d-flex justify-content-center">
+                <p>your search did not match any products</p>
+              </div>
             )}
             <Button
               className="subbutton my-4"
