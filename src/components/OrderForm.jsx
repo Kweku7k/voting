@@ -137,10 +137,6 @@ const OrderForm = () => {
       });
   }, []);
 
-  const [inputList, setInputList] = useState([
-    { product_id: "365", quantity: 1 },
-  ]);
-
   return (
     <>
       <SuccessAlert
@@ -204,7 +200,7 @@ const OrderForm = () => {
                     </div>
                   </Col>
                   <Col className="col-4">
-                    <p>{product.name}</p>
+                    <p className=" text-truncate">{product.name}</p>
                   </Col>
 
                   <Col className="col-4">
@@ -219,6 +215,8 @@ const OrderForm = () => {
                 <Form.Control
                   required
                   value={selectedProduct}
+                  // onBlur={() => setShowSearchItems(false)}
+                  onFocus={() => setShowSearchItems(true)}
                   onChange={(e) => {
                     setSelectedProduct(e.target.value);
                     handleSearchProducts(e.target.value);
@@ -236,8 +234,6 @@ const OrderForm = () => {
                     placeholder=""
                     min={1}
                     value={quantity}
-                    onBlur={() => setShowSearchItems(false)}
-                    onFocus={() => setShowSearchItems(true)}
                     onChange={(e) => {
                       setQuantity(e.target.value);
                     }}
@@ -250,7 +246,7 @@ const OrderForm = () => {
               filteredProducts.map((product) => {
                 return (
                   <Row className="p-2" key={product.id}>
-                    <Col md>
+                    <Col className="col-4">
                       <div className="addItem__image">
                         <img
                           src={
@@ -262,18 +258,18 @@ const OrderForm = () => {
                         />
                       </div>
                     </Col>
-                    <Col md>
-                      <p>{product.name}</p>
+                    <Col className="col-4">
+                      <p className="text-truncate">{product.name}</p>
                     </Col>
 
-                    <Col md>
+                    <Col className="col-4">
                       <Button
                         variant="primary"
                         // onClick={handleAddClick}
                         onClick={() => {
                           handleAddProduct(product, quantity);
                         }}
-                        className="float-right mt-1"
+                        className="float-right mt-1 add-btn"
                       >
                         Add Item
                       </Button>
