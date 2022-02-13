@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import InputField from "../components/InputField";
 import {
   Form,
   Row,
@@ -14,31 +13,10 @@ import {
 import SuccessAlert from "./SuccessAlert";
 import { useHistory } from "react-router";
 
-export function SearchItem(value) {
-  if (cancel != undefined) {
-    cancel();
-  }
-  return axios
-    .get(`https://evicstore.com/wp-json/wc/v3/products?search=${value}`, {
-      cancelToken: new CancelToken(function executor(c) {
-        // An executor function receives a cancel function as a parameter
-        cancel = c;
-      }),
-    })
-    .then((response) => {
-      return response.data.response;
-    })
-    .catch((error) => {
-      const result = error.response;
-      return Promise.reject(result);
-    });
-}
-
 let CancelToken = axios.CancelToken;
 let cancel;
 
 const OrderForm = () => {
-  let cancelToken;
   const uname = "ck_1c9fd82800542cd01838923009ea20743be2734f";
   const pass = "cs_dc4f49dbbd4efa9f2608ad3b14daec05b0b38aa6";
 
@@ -54,6 +32,7 @@ const OrderForm = () => {
   const [showSearchItems, setShowSearchItems] = useState(false);
   const [erroralert, seterroralert] = useState(false);
   const [products, setproducts] = useState([]);
+  const [searchLoader, setSearchLoader] = useState(false);
 
   const history = useHistory();
 
@@ -61,10 +40,12 @@ const OrderForm = () => {
 
   const handleSearchProducts = async (text) => {
     const searchTerm = text;
+    setSearchLoader(true);
 
     //Check if there are any previous pending requests
     if (cancel !== undefined) {
       cancel("Operation canceled due to new request.");
+      setSearchLoader(true);
     }
 
     //Save the cancel token for the current request
@@ -79,7 +60,6 @@ const OrderForm = () => {
     //   );
     //   setFilteredProducts(filterArr);
     // }
-    console.log("cancel : ", cancel);
     try {
       const results = await axios.get(
         `https://evicstore.com/wp-json/wc/v3/products?search=${searchTerm}`,
@@ -89,14 +69,14 @@ const OrderForm = () => {
           },
           cancelToken: new CancelToken(function executor(c) {
             // An executor function receives a cancel function as a parameter
-            cancel = c;
+            cancel = c; // Save the cancel token for the current request
           }),
         } //Pass the cancel token to the current request
       );
-      console.log("Results for " + searchTerm + ": ", results.data);
+      setSearchLoader(false);
       setFilteredProducts(results.data);
     } catch (error) {
-      console.log(error);
+      // console.log(error);
     }
   };
 
@@ -222,7 +202,6 @@ const OrderForm = () => {
                 placeholder="Enter Customer Name"
               />
             </Form.Group>
-
             <Form.Group className="mb-3" controlId="formBasicNumber">
               <Form.Label>Phone Number</Form.Label>
               <Form.Control
@@ -233,7 +212,6 @@ const OrderForm = () => {
                 placeholder="Enter Phone Number"
               />
             </Form.Group>
-
             <Form.Label>Items</Form.Label>
             {/* Displays the products the user adds after searching */}
             {addedProducts.map(({ product, quantity }, index) => {
@@ -261,7 +239,6 @@ const OrderForm = () => {
                 </Row>
               );
             })}
-
             <Row className="g-2 mb-2">
               <Col md>
                 <Form.Control
@@ -294,7 +271,16 @@ const OrderForm = () => {
               </Col>
             </Row>
             {/**displays the search results */}
-            {showSearchItems &&
+            {searchLoader ? (
+              <Spinner
+                style={{ margin: "auto" }}
+                animation="border"
+                role="status"
+              >
+                <span className="visually-hidden">Loading...</span>
+              </Spinner>
+            ) : (
+              showSearchItems &&
               filteredProducts.map((product) => {
                 return (
                   <Row className="p-2" key={product.id}>
@@ -328,8 +314,8 @@ const OrderForm = () => {
                     </Col>
                   </Row>
                 );
-              })}
-
+              })
+            )}
             <Button
               className="subbutton my-4"
               variant="primary"
