@@ -36,21 +36,6 @@ const OrderForm = () => {
 
   const history = useHistory();
 
-  // handle input change
-  const handleInputChange = (e, index) => {
-    const { name, value } = e.target;
-    const list = [...inputList];
-    list[index][name] = value;
-    setInputList(list);
-  };
-
-  // handle click event of the Remove button
-  const handleRemoveClick = (index) => {
-    const list = [...inputList];
-    list.splice(index, 1);
-    setInputList(list);
-  };
-
   // filters the products when the user types a product name
   const handleSearchProducts = (text) => {
     if (text === "") {
@@ -63,12 +48,7 @@ const OrderForm = () => {
     }
   };
 
-  // handle click event of the Add button
-  const handleAddClick = () => {
-    setInputList([...inputList, { product_id: "365", quantity: "1" }]);
-  };
-
-  // handle click event of the Add button
+  // adds a product to the items section
   const handleAddProduct = (product, quantity) => {
     setAddedProducts((prev) => [
       ...prev,
@@ -211,7 +191,7 @@ const OrderForm = () => {
             {addedProducts.map(({ product, quantity }, index) => {
               return (
                 <Row className="p-2" key={index}>
-                  <Col md>
+                  <Col className="col-4">
                     <div className="addItem__image">
                       <img
                         src={
@@ -223,11 +203,11 @@ const OrderForm = () => {
                       />
                     </div>
                   </Col>
-                  <Col md>
+                  <Col className="col-4">
                     <p>{product.name}</p>
                   </Col>
 
-                  <Col md>
+                  <Col className="col-4">
                     <p>quantity: {quantity}</p>
                   </Col>
                 </Row>
