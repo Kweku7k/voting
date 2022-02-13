@@ -26,7 +26,7 @@ const OrderForm = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalSpinner, setModalSpinner] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState("");
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  // const [filteredProducts, setFilteredProducts] = useState([]);
   const [quantity, setQuantity] = useState("1");
   const [addedProducts, setAddedProducts] = useState([]);
   const [showSearchItems, setShowSearchItems] = useState(false);
@@ -74,7 +74,7 @@ const OrderForm = () => {
         } //Pass the cancel token to the current request
       );
       setSearchLoader(false);
-      setFilteredProducts(results.data);
+      setproducts(results.data);
     } catch (error) {
       // console.log(error);
     }
@@ -158,9 +158,8 @@ const OrderForm = () => {
         }
       )
       .then((res) => {
-        setproducts(res.data);
-        console.log("data: ", res.data);
-        setFilteredProducts(res.data.slice(0, 11)); // shows the first 10 products
+        setproducts(res.data.slice(0, 11));
+        // setFilteredProducts(res.data.slice(0, 11)); // shows the first 10 products
         setloading(false);
       })
       .catch((err) => {
@@ -272,16 +271,12 @@ const OrderForm = () => {
             </Row>
             {/**displays the search results */}
             {searchLoader ? (
-              <Spinner
-                style={{ margin: "auto" }}
-                animation="border"
-                role="status"
-              >
-                <span className="visually-hidden">Loading...</span>
-              </Spinner>
+              <div className="d-flex justify-content-center">
+                <Spinner animation="border" role="status"></Spinner>
+              </div>
             ) : (
               showSearchItems &&
-              filteredProducts.map((product) => {
+              products.map((product) => {
                 return (
                   <Row className="p-2" key={product.id}>
                     <Col className="col-4">
