@@ -14,7 +14,31 @@ import {
 import SuccessAlert from "./SuccessAlert";
 import { useHistory } from "react-router";
 
+export function SearchItem(value) {
+  if (cancel != undefined) {
+    cancel();
+  }
+  return axios
+    .get(`https://evicstore.com/wp-json/wc/v3/products?search=${value}`, {
+      cancelToken: new CancelToken(function executor(c) {
+        // An executor function receives a cancel function as a parameter
+        cancel = c;
+      }),
+    })
+    .then((response) => {
+      return response.data.response;
+    })
+    .catch((error) => {
+      const result = error.response;
+      return Promise.reject(result);
+    });
+}
+
+let CancelToken = axios.CancelToken;
+let cancel;
+
 const OrderForm = () => {
+  let cancelToken;
   const uname = "ck_1c9fd82800542cd01838923009ea20743be2734f";
   const pass = "cs_dc4f49dbbd4efa9f2608ad3b14daec05b0b38aa6";
 
@@ -34,14 +58,45 @@ const OrderForm = () => {
   const history = useHistory();
 
   // filters the products when the user types a product name
-  const handleSearchProducts = (text) => {
-    if (text === "") {
-      setFilteredProducts(products.slice(0, 11));
-    } else {
-      const filterArr = products.filter((item) =>
-        item.name.toLowerCase().includes(text.toLowerCase()) ? true : false
+
+  const handleSearchProducts = async (text) => {
+    const searchTerm = text;
+
+    //Check if there are any previous pending requests
+    if (cancel !== undefined) {
+      cancel("Operation canceled due to new request.");
+    }
+
+    //Save the cancel token for the current request
+    // cancelToken = axios.CancelToken.source();
+    // console.log("axios cancelToken: ", cancelToken);
+
+    // if (text === "") {
+    //   setFilteredProducts(products.slice(0, 11));
+    // } else {
+    //   const filterArr = products.filter((item) =>
+    //     item.name.toLowerCase().includes(text.toLowerCase()) ? true : false
+    //   );
+    //   setFilteredProducts(filterArr);
+    // }
+    console.log("cancel : ", cancel);
+    try {
+      const results = await axios.get(
+        `https://evicstore.com/wp-json/wc/v3/products?search=${searchTerm}`,
+        {
+          headers: {
+            Authorization: `Basic ${token}`,
+          },
+          cancelToken: new CancelToken(function executor(c) {
+            // An executor function receives a cancel function as a parameter
+            cancel = c;
+          }),
+        } //Pass the cancel token to the current request
       );
-      setFilteredProducts(filterArr);
+      console.log("Results for " + searchTerm + ": ", results.data);
+      setFilteredProducts(results.data);
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -114,13 +169,17 @@ const OrderForm = () => {
   const token = Buffer.from(`${uname}:${pass}`, "utf8").toString("base64");
   useEffect(() => {
     axios
-      .get(`https://evicstore.com/wp-json/wc/v3/products`, {
-        headers: {
-          Authorization: `Basic ${token}`,
-        },
-      })
+      .get(
+        `https://evicstore.com/wp-json/wc/v3/products?search=${selectedProduct}`,
+        {
+          headers: {
+            Authorization: `Basic ${token}`,
+          },
+        }
+      )
       .then((res) => {
         setproducts(res.data);
+        console.log("data: ", res.data);
         setFilteredProducts(res.data.slice(0, 11)); // shows the first 10 products
         setloading(false);
       })
