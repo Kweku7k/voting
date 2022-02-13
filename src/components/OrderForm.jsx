@@ -44,8 +44,7 @@ const OrderForm = () => {
 
     //Check if there are any previous pending requests
     if (cancel !== undefined) {
-      cancel("Operation canceled due to new request.");
-      setSearchLoader(true);
+      cancel();
     }
 
     //Save the cancel token for the current request
