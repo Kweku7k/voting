@@ -19,40 +19,19 @@ const OrderForm = () => {
   const pass = "cs_dc4f49dbbd4efa9f2608ad3b14daec05b0b38aa6";
 
   const [loading, setloading] = useState(true);
-
   const [phoneNumber, setphoneNumber] = useState("");
   const [customerName, setCustomerName] = useState("");
   const [showModal, setShowModal] = useState(false);
   const [modalSpinner, setModalSpinner] = useState(true);
-
-  const [items, setitems] = useState();
   const [selectedProduct, setSelectedProduct] = useState("");
   const [filteredProducts, setFilteredProducts] = useState([]);
-  const [productid, setproductid] = useState();
-  const [addedItems, setAddedItems] = useState([]);
   const [quantity, setQuantity] = useState("1");
   const [addedProducts, setAddedProducts] = useState([]);
-
-  const productRow = {
-    marginBottom: 20,
-  };
+  const [showSearchItems, setShowSearchItems] = useState(false);
+  const [erroralert, seterroralert] = useState(false);
+  const [products, setproducts] = useState([]);
 
   const history = useHistory();
-
-  // handle input change
-  const handleInputChange = (e, index) => {
-    const { name, value } = e.target;
-    const list = [...inputList];
-    list[index][name] = value;
-    setInputList(list);
-  };
-
-  // handle click event of the Remove button
-  const handleRemoveClick = (index) => {
-    const list = [...inputList];
-    list.splice(index, 1);
-    setInputList(list);
-  };
 
   // filters the products when the user types a product name
   const handleSearchProducts = (text) => {
@@ -66,12 +45,7 @@ const OrderForm = () => {
     }
   };
 
-  // handle click event of the Add button
-  const handleAddClick = () => {
-    setInputList([...inputList, { product_id: "365", quantity: "1" }]);
-  };
-
-  // handle click event of the Add button
+  // adds a product to the items section
   const handleAddProduct = (product, quantity) => {
     setAddedProducts((prev) => [
       ...prev,
@@ -117,16 +91,6 @@ const OrderForm = () => {
             country: "GH",
           },
           line_items: items,
-          // "line_items": [
-          //   {
-          //     "product_id": p1,
-          //     "quantity": p1val
-          //   },
-          //   {
-          //     "product_id": p2,
-          //     "quantity": p2val
-          //   },
-          // ],
           shipping_lines: [
             {
               method_id: "flat_rate",
@@ -147,10 +111,6 @@ const OrderForm = () => {
       });
   };
 
-  const [erroralert, seterroralert] = useState(false);
-
-  const [products, setproducts] = useState([]);
-
   const token = Buffer.from(`${uname}:${pass}`, "utf8").toString("base64");
   useEffect(() => {
     axios
@@ -170,10 +130,6 @@ const OrderForm = () => {
       });
   }, []);
 
-  const [inputList, setInputList] = useState([
-    { product_id: "365", quantity: 1 },
-  ]);
-
   return (
     <>
       <SuccessAlert
@@ -192,82 +148,6 @@ const OrderForm = () => {
             </Spinner>
           </div>
         ) : (
-          // <Form>
-          //   <br />
-          //   <h4>
-          //     <b>Create a new order</b>
-          //   </h4>
-          //   <Form.Group className="mb-3" controlId="formBasicEmail">
-          //     <Form.Label>Customer Name</Form.Label>
-          //     <Form.Control
-          //       required
-          //       value={customerName}
-          //       onChange={(e) => setCustomerName(e.target.value)}
-          //       type="text"
-          //       placeholder="Enter Customer Name"
-          //     />
-          //   </Form.Group>
-
-          //   <Form.Group className="mb-3" controlId="formBasicNumber">
-          //     <Form.Label>Phone Number</Form.Label>
-          //     <Form.Control
-          //       required
-          //       value={phoneNumber}
-          //       onChange={(e) => setphoneNumber(e.target.value)}
-          //       type="number"
-          //       placeholder="Enter Phone Number"
-          //     />
-          //   </Form.Group>
-
-          //   <Form.Label>Items</Form.Label>
-
-          //   {inputList.map((x, i) => {
-          //     return (
-          //       <>
-          //         <Row className="g-2 mb-2" key={x.product_id}>
-          //           <Col md>
-          //             <FloatingLabel
-          //               controlId="floatingSelectGrid"
-          //               label="Items"
-          //             >
-          //               <Form.Select
-          //                 name="product_id"
-          //                 onChange={(e) => handleInputChange(e, i)}
-          //                 value={x.product_id}
-          //                 aria-label="Floating label select example"
-          //               >
-          //                 {products.map((product) => (
-          //                   <option value={product.id}>{product.name}</option>
-          //                 ))}
-          //               </Form.Select>
-          //             </FloatingLabel>
-          //           </Col>
-
-          //           <Col md>
-          //             <FloatingLabel
-          //               controlId="floatingInputGrid"
-          //               label="Quantity"
-          //             >
-          //               <Form.Control
-          //                 name="quantity"
-          //                 type="number"
-          //                 placeholder=""
-          //                 value={x.quantity ? x.quantity : 1}
-          //                 onChange={(e) => handleInputChange(e, i)}
-          //               />
-          //             </FloatingLabel>
-          //           </Col>
-          //         </Row>
-
-          //         {inputList.length - 1 === i && (
-          //           <Button
-          //             variant="primary"
-          //             onClick={handleAddClick}
-          //             type="submit"
-          //           >
-          //             Add Item
-          //           </Button>
-          //         )}
           <Form>
             <br />
             <h4>
@@ -300,7 +180,7 @@ const OrderForm = () => {
             {addedProducts.map(({ product, quantity }, index) => {
               return (
                 <Row className="p-2" key={index}>
-                  <Col md>
+                  <Col className="col-4">
                     <div className="addItem__image">
                       <img
                         src={
@@ -312,11 +192,11 @@ const OrderForm = () => {
                       />
                     </div>
                   </Col>
-                  <Col md>
-                    <p>{product.name}</p>
+                  <Col className="col-4">
+                    <p className=" text-truncate">{product.name}</p>
                   </Col>
 
-                  <Col md>
+                  <Col className="col-4">
                     <p>quantity: {quantity}</p>
                   </Col>
                 </Row>
@@ -328,6 +208,8 @@ const OrderForm = () => {
                 <Form.Control
                   required
                   value={selectedProduct}
+                  // onBlur={() => setShowSearchItems(false)}
+                  onFocus={() => setShowSearchItems(true)}
                   onChange={(e) => {
                     setSelectedProduct(e.target.value);
                     handleSearchProducts(e.target.value);
@@ -353,40 +235,41 @@ const OrderForm = () => {
               </Col>
             </Row>
             {/**displays the search results */}
-            {filteredProducts.map((product) => {
-              return (
-                <Row className="p-2" key={product.id}>
-                  <Col md>
-                    <div className="addItem__image">
-                      <img
-                        src={
-                          product.images.length > 0
-                            ? product.images[0].src
-                            : "https://firebasestorage.googleapis.com/v0/b/fir-learning-35a38.appspot.com/o/evic%20LOGOo-03.png?alt=media&token=d9d6616c-b0d7-4510-9841-39c8527b8102"
-                        }
-                        alt=""
-                      />
-                    </div>
-                  </Col>
-                  <Col md>
-                    <p>{product.name}</p>
-                  </Col>
+            {showSearchItems &&
+              filteredProducts.map((product) => {
+                return (
+                  <Row className="p-2" key={product.id}>
+                    <Col className="col-4">
+                      <div className="addItem__image">
+                        <img
+                          src={
+                            product.images.length > 0
+                              ? product.images[0].src
+                              : "https://firebasestorage.googleapis.com/v0/b/fir-learning-35a38.appspot.com/o/evic%20LOGOo-03.png?alt=media&token=d9d6616c-b0d7-4510-9841-39c8527b8102"
+                          }
+                          alt=""
+                        />
+                      </div>
+                    </Col>
+                    <Col className="col-4">
+                      <p className="text-truncate">{product.name}</p>
+                    </Col>
 
-                  <Col md>
-                    <Button
-                      variant="primary"
-                      // onClick={handleAddClick}
-                      onClick={() => {
-                        handleAddProduct(product, quantity);
-                      }}
-                      className="float-right mt-1"
-                    >
-                      Add Item
-                    </Button>
-                  </Col>
-                </Row>
-              );
-            })}
+                    <Col className="col-4">
+                      <Button
+                        variant="primary"
+                        // onClick={handleAddClick}
+                        onClick={() => {
+                          handleAddProduct(product, quantity);
+                        }}
+                        className="float-right mt-1 add-btn"
+                      >
+                        Add Item
+                      </Button>
+                    </Col>
+                  </Row>
+                );
+              })}
 
             <Button
               className="subbutton my-4"

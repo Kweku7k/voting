@@ -450,4 +450,7 @@ background-color: #61dafb;
     grid-auto-flow: row;
     grid-template-columns: auto;
   }
+  .add-btn {
+    font-size: 0.8rem !important;
+  }
 }
