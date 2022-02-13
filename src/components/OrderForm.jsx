@@ -19,7 +19,6 @@ const OrderForm = () => {
   const pass = "cs_dc4f49dbbd4efa9f2608ad3b14daec05b0b38aa6";
 
   const [loading, setloading] = useState(true);
-
   const [phoneNumber, setphoneNumber] = useState("");
   const [customerName, setCustomerName] = useState("");
   const [showModal, setShowModal] = useState(false);
@@ -29,10 +28,8 @@ const OrderForm = () => {
   const [quantity, setQuantity] = useState("1");
   const [addedProducts, setAddedProducts] = useState([]);
   const [showSearchItems, setShowSearchItems] = useState(false);
-
-  const productRow = {
-    marginBottom: 20,
-  };
+  const [erroralert, seterroralert] = useState(false);
+  const [products, setproducts] = useState([]);
 
   const history = useHistory();
 
@@ -113,10 +110,6 @@ const OrderForm = () => {
         history.push("/orders");
       });
   };
-
-  const [erroralert, seterroralert] = useState(false);
-
-  const [products, setproducts] = useState([]);
 
   const token = Buffer.from(`${uname}:${pass}`, "utf8").toString("base64");
   useEffect(() => {
