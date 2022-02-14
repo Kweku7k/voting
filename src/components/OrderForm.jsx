@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import InputField from "../components/InputField";
 import {
   Form,
   Row,
@@ -14,6 +13,9 @@ import {
 import SuccessAlert from "./SuccessAlert";
 import { useHistory } from "react-router";
 
+let CancelToken = axios.CancelToken;
+let cancel;
+
 const OrderForm = () => {
   const uname = "ck_1c9fd82800542cd01838923009ea20743be2734f";
   const pass = "cs_dc4f49dbbd4efa9f2608ad3b14daec05b0b38aa6";
@@ -24,24 +26,56 @@ const OrderForm = () => {
   const [showModal, setShowModal] = useState(false);
   const [modalSpinner, setModalSpinner] = useState(true);
   const [selectedProduct, setSelectedProduct] = useState("");
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  // const [filteredProducts, setFilteredProducts] = useState([]);
   const [quantity, setQuantity] = useState("1");
   const [addedProducts, setAddedProducts] = useState([]);
   const [showSearchItems, setShowSearchItems] = useState(false);
   const [erroralert, seterroralert] = useState(false);
   const [products, setproducts] = useState([]);
+  const [searchLoader, setSearchLoader] = useState(false);
 
   const history = useHistory();
 
   // filters the products when the user types a product name
-  const handleSearchProducts = (text) => {
-    if (text === "") {
-      setFilteredProducts(products.slice(0, 11));
-    } else {
-      const filterArr = products.filter((item) =>
-        item.name.toLowerCase().includes(text.toLowerCase()) ? true : false
+
+  const handleSearchProducts = async (text) => {
+    const searchTerm = text;
+    setSearchLoader(true);
+
+    //Check if there are any previous pending requests
+    if (cancel !== undefined) {
+      cancel();
+    }
+
+    //Save the cancel token for the current request
+    // cancelToken = axios.CancelToken.source();
+    // console.log("axios cancelToken: ", cancelToken);
+
+    // if (text === "") {
+    //   setFilteredProducts(products.slice(0, 11));
+    // } else {
+    //   const filterArr = products.filter((item) =>
+    //     item.name.toLowerCase().includes(text.toLowerCase()) ? true : false
+    //   );
+    //   setFilteredProducts(filterArr);
+    // }
+    try {
+      const results = await axios.get(
+        `https://evicstore.com/wp-json/wc/v3/products?search=${searchTerm}`,
+        {
+          headers: {
+            Authorization: `Basic ${token}`,
+          },
+          cancelToken: new CancelToken(function executor(c) {
+            // An executor function receives a cancel function as a parameter
+            cancel = c; // Save the cancel token for the current request
+          }),
+        } //Pass the cancel token to the current request
       );
-      setFilteredProducts(filterArr);
+      setSearchLoader(false);
+      setproducts(results.data);
+    } catch (error) {
+      // console.log(error);
     }
   };
 
@@ -114,14 +148,17 @@ const OrderForm = () => {
   const token = Buffer.from(`${uname}:${pass}`, "utf8").toString("base64");
   useEffect(() => {
     axios
-      .get(`https://evicstore.com/wp-json/wc/v3/products`, {
-        headers: {
-          Authorization: `Basic ${token}`,
-        },
-      })
+      .get(
+        `https://evicstore.com/wp-json/wc/v3/products?search=${selectedProduct}`,
+        {
+          headers: {
+            Authorization: `Basic ${token}`,
+          },
+        }
+      )
       .then((res) => {
-        setproducts(res.data);
-        setFilteredProducts(res.data.slice(0, 11)); // shows the first 10 products
+        setproducts(res.data.slice(0, 11));
+        // setFilteredProducts(res.data.slice(0, 11)); // shows the first 10 products
         setloading(false);
       })
       .catch((err) => {
@@ -163,7 +200,6 @@ const OrderForm = () => {
                 placeholder="Enter Customer Name"
               />
             </Form.Group>
-
             <Form.Group className="mb-3" controlId="formBasicNumber">
               <Form.Label>Phone Number</Form.Label>
               <Form.Control
@@ -174,7 +210,6 @@ const OrderForm = () => {
                 placeholder="Enter Phone Number"
               />
             </Form.Group>
-
             <Form.Label>Items</Form.Label>
             {/* Displays the products the user adds after searching */}
             {addedProducts.map(({ product, quantity }, index) => {
@@ -202,7 +237,6 @@ const OrderForm = () => {
                 </Row>
               );
             })}
-
             <Row className="g-2 mb-2">
               <Col md>
                 <Form.Control
@@ -235,8 +269,12 @@ const OrderForm = () => {
               </Col>
             </Row>
             {/**displays the search results */}
-            {showSearchItems &&
-              filteredProducts.map((product) => {
+            {searchLoader ? (
+              <div className="d-flex justify-content-center">
+                <Spinner animation="border" role="status"></Spinner>
+              </div>
+            ) : showSearchItems && products.length > 0 ? (
+              products.map((product) => {
                 return (
                   <Row className="p-2" key={product.id}>
                     <Col className="col-4">
@@ -269,8 +307,12 @@ const OrderForm = () => {
                     </Col>
                   </Row>
                 );
-              })}
-
+              })
+            ) : (
+              <div className="d-flex justify-content-center">
+                <p>your search did not match any products</p>
+              </div>
+            )}
             <Button
               className="subbutton my-4"
               variant="primary"
