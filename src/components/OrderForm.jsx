@@ -157,6 +157,7 @@ const OrderForm = () => {
         }
       )
       .then((res) => {
+        console.log(res.data);
         setproducts(res.data.slice(0, 11));
         // setFilteredProducts(res.data.slice(0, 11)); // shows the first 10 products
         setloading(false);
