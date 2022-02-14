@@ -5,16 +5,28 @@ import { Form, Row, Col, Button, FloatingLabel } from "react-bootstrap";
 const SearchItem = ({ handleAddProduct, product }) => {
   const [size, setSize] = useState("");
   const [quantity, setQuantity] = useState("1");
+  const [variationId, setVariationId] = useState(0);
+
+  const handleSizeSelection = (size) => {
+    setVariationId(product.variations[[size.split("-")[1]]]);
+  };
 
   return (
     <div className="bg-white rounded shadow-sm p-2 search-item">
       <Row className="g-2">
         <Col>
-          <Form.Select aria-label="Default select example">
+          <Form.Select
+            aria-label="select a size"
+            onChange={(e) => handleSizeSelection(e.target.value)}
+          >
             <option>Open this select menu</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
+            {product.attributes[0].options.map((size, i) => {
+              return (
+                <option key={size} value={`${size}-${i}`}>
+                  {size}
+                </option>
+              );
+            })}
           </Form.Select>
         </Col>
         <Col>
@@ -53,7 +65,7 @@ const SearchItem = ({ handleAddProduct, product }) => {
           <Button
             variant="primary"
             onClick={() => {
-              handleAddProduct(product, quantity);
+              handleAddProduct(product, quantity, variationId);
             }}
             className="float-right mt-1 add-btn"
           >
