@@ -12,6 +12,7 @@ import {
 } from "react-bootstrap";
 import SuccessAlert from "./SuccessAlert";
 import { useHistory } from "react-router";
+import SearchItem from "../components/SearchItem";
 
 let CancelToken = axios.CancelToken;
 let cancel;
@@ -80,10 +81,10 @@ const OrderForm = () => {
   };
 
   // adds a product to the items section
-  const handleAddProduct = (product, quantity) => {
+  const handleAddProduct = (product, quantity, variationId) => {
     setAddedProducts((prev) => [
       ...prev,
-      { product: product, quantity: quantity },
+      { product: product, quantity: quantity, variation_id: variationId },
     ]);
   };
 
@@ -91,8 +92,12 @@ const OrderForm = () => {
     e.preventDefault();
     setShowModal(true);
     setModalSpinner(true);
-    const items = addedProducts.map(({ product, quantity }) => {
-      return { product_id: product.id, quantity: quantity };
+    const items = addedProducts.map(({ product, quantity, variation_id }) => {
+      return {
+        product_id: product.id,
+        quantity: parseInt(quantity),
+        variation_id: variation_id,
+      };
     });
 
     axios
@@ -157,6 +162,7 @@ const OrderForm = () => {
         }
       )
       .then((res) => {
+        console.log(res.data);
         setproducts(res.data.slice(0, 11));
         // setFilteredProducts(res.data.slice(0, 11)); // shows the first 10 products
         setloading(false);
@@ -237,7 +243,7 @@ const OrderForm = () => {
                 </Row>
               );
             })}
-            <Row className="g-2 mb-2">
+            <Row className="g-2 mb-4">
               <Col md>
                 <Form.Control
                   required
@@ -253,7 +259,7 @@ const OrderForm = () => {
                 />
               </Col>
 
-              <Col md>
+              {/* <Col md>
                 <FloatingLabel controlId="floatingInputGrid" label="Quantity">
                   <Form.Control
                     name="quantity"
@@ -266,7 +272,7 @@ const OrderForm = () => {
                     }}
                   />
                 </FloatingLabel>
-              </Col>
+              </Col> */}
             </Row>
             {/**displays the search results */}
             {searchLoader ? (
@@ -276,36 +282,72 @@ const OrderForm = () => {
             ) : showSearchItems && products.length > 0 ? (
               products.map((product) => {
                 return (
-                  <Row className="p-2" key={product.id}>
-                    <Col className="col-4">
-                      <div className="addItem__image">
-                        <img
-                          src={
-                            product.images.length > 0
-                              ? product.images[0].src
-                              : "https://firebasestorage.googleapis.com/v0/b/fir-learning-35a38.appspot.com/o/evic%20LOGOo-03.png?alt=media&token=d9d6616c-b0d7-4510-9841-39c8527b8102"
-                          }
-                          alt=""
-                        />
-                      </div>
-                    </Col>
-                    <Col className="col-4">
-                      <p className="text-truncate">{product.name}</p>
-                    </Col>
+                  // <Row>
+                  //   <Row className="g-1">
+                  //     <Col>
+                  //       <Form.Select aria-label="Default select example">
+                  //         <option>Open this select menu</option>
+                  //         <option value="1">One</option>
+                  //         <option value="2">Two</option>
+                  //         <option value="3">Three</option>
+                  //       </Form.Select>
+                  //     </Col>
 
-                    <Col className="col-4">
-                      <Button
-                        variant="primary"
-                        // onClick={handleAddClick}
-                        onClick={() => {
-                          handleAddProduct(product, quantity);
-                        }}
-                        className="float-right mt-1 add-btn"
-                      >
-                        Add Item
-                      </Button>
-                    </Col>
-                  </Row>
+                  //     <Col>
+                  //       <FloatingLabel
+                  //         controlId="floatingInputGrid"
+                  //         label="Quantity"
+                  //       >
+                  //         <Form.Control
+                  //           name="quantity"
+                  //           type="number"
+                  //           placeholder=""
+                  //           min={1}
+                  //           value={quantity}
+                  //           onChange={(e) => {
+                  //             setQuantity(e.target.value);
+                  //           }}
+                  //         />
+                  //       </FloatingLabel>
+                  //     </Col>
+                  //   </Row>
+
+                  //   <Row className="p-2" key={product.id}>
+                  //     <Col className="col-4">
+                  //       <div className="addItem__image">
+                  //         <img
+                  //           src={
+                  //             product.images.length > 0
+                  //               ? product.images[0].src
+                  //               : "https://firebasestorage.googleapis.com/v0/b/fir-learning-35a38.appspot.com/o/evic%20LOGOo-03.png?alt=media&token=d9d6616c-b0d7-4510-9841-39c8527b8102"
+                  //           }
+                  //           alt=""
+                  //         />
+                  //       </div>
+                  //     </Col>
+                  //     <Col className="col-4">
+                  //       <p className="text-truncate">{product.name}</p>
+                  //     </Col>
+
+                  //     <Col className="col-4">
+                  //       <Button
+                  //         variant="primary"
+                  //         // onClick={handleAddClick}
+                  //         onClick={() => {
+                  //           handleAddProduct(product, quantity);
+                  //         }}
+                  //         className="float-right mt-1 add-btn"
+                  //       >
+                  //         Add Item
+                  //       </Button>
+                  //     </Col>
+                  //   </Row>
+                  // </Row>
+                  <SearchItem
+                    handleAddProduct={handleAddProduct}
+                    product={product}
+                    key={product.id}
+                  />
                 );
               })
             ) : (

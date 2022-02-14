@@ -437,6 +437,13 @@ background-color: #61dafb;
   object-fit: cover;
 }
 
+.search-item {
+  margin-bottom: 1.4rem;
+}
+.search-item .row {
+  margin-bottom: 5px !important;
+}
+
 @media screen and (max-width: 574px) {
   .product-image__container {
     height: 4rem;
