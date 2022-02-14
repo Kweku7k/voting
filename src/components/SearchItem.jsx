@@ -7,9 +7,9 @@ const SearchItem = ({ handleAddProduct, product }) => {
   const [quantity, setQuantity] = useState("1");
 
   return (
-    <div>
-      <Row className="g-1">
-        <Col className="col-4">
+    <div className="bg-white rounded shadow-sm p-2 search-item">
+      <Row className="g-2">
+        <Col>
           <Form.Select aria-label="Default select example">
             <option>Open this select menu</option>
             <option value="1">One</option>
@@ -17,7 +17,7 @@ const SearchItem = ({ handleAddProduct, product }) => {
             <option value="3">Three</option>
           </Form.Select>
         </Col>
-        <Col className="col-4">
+        <Col>
           <FloatingLabel controlId="floatingInputGrid" label="Quantity">
             <Form.Control
               name="quantity"
@@ -52,7 +52,6 @@ const SearchItem = ({ handleAddProduct, product }) => {
         <Col className="col-4">
           <Button
             variant="primary"
-            // onClick={handleAddClick}
             onClick={() => {
               handleAddProduct(product, quantity);
             }}
