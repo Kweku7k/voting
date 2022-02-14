@@ -240,7 +240,7 @@ const OrderForm = () => {
                 </Row>
               );
             })}
-            <Row className="g-2 mb-2">
+            <Row className="g-2 mb-4">
               <Col md>
                 <Form.Control
                   required
