@@ -8,7 +8,7 @@ const SearchItem = ({ handleAddProduct, product, quantity }) => {
 
   return (
     <div>
-      <Row className="p-2" key={product.id}>
+      <Row className="p-2">
         <Col className="col-4">
           <div className="addItem__image">
             <img
