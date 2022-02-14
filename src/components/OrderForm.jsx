@@ -12,6 +12,7 @@ import {
 } from "react-bootstrap";
 import SuccessAlert from "./SuccessAlert";
 import { useHistory } from "react-router";
+import SearchItem from "../components/SearchItem";
 
 let CancelToken = axios.CancelToken;
 let cancel;
@@ -277,36 +278,41 @@ const OrderForm = () => {
             ) : showSearchItems && products.length > 0 ? (
               products.map((product) => {
                 return (
-                  <Row className="p-2" key={product.id}>
-                    <Col className="col-4">
-                      <div className="addItem__image">
-                        <img
-                          src={
-                            product.images.length > 0
-                              ? product.images[0].src
-                              : "https://firebasestorage.googleapis.com/v0/b/fir-learning-35a38.appspot.com/o/evic%20LOGOo-03.png?alt=media&token=d9d6616c-b0d7-4510-9841-39c8527b8102"
-                          }
-                          alt=""
-                        />
-                      </div>
-                    </Col>
-                    <Col className="col-4">
-                      <p className="text-truncate">{product.name}</p>
-                    </Col>
+                  // <Row className="p-2" key={product.id}>
+                  //   <Col className="col-4">
+                  //     <div className="addItem__image">
+                  //       <img
+                  //         src={
+                  //           product.images.length > 0
+                  //             ? product.images[0].src
+                  //             : "https://firebasestorage.googleapis.com/v0/b/fir-learning-35a38.appspot.com/o/evic%20LOGOo-03.png?alt=media&token=d9d6616c-b0d7-4510-9841-39c8527b8102"
+                  //         }
+                  //         alt=""
+                  //       />
+                  //     </div>
+                  //   </Col>
+                  //   <Col className="col-4">
+                  //     <p className="text-truncate">{product.name}</p>
+                  //   </Col>
 
-                    <Col className="col-4">
-                      <Button
-                        variant="primary"
-                        // onClick={handleAddClick}
-                        onClick={() => {
-                          handleAddProduct(product, quantity);
-                        }}
-                        className="float-right mt-1 add-btn"
-                      >
-                        Add Item
-                      </Button>
-                    </Col>
-                  </Row>
+                  //   <Col className="col-4">
+                  //     <Button
+                  //       variant="primary"
+                  //       // onClick={handleAddClick}
+                  //       onClick={() => {
+                  //         handleAddProduct(product, quantity);
+                  //       }}
+                  //       className="float-right mt-1 add-btn"
+                  //     >
+                  //       Add Item
+                  //     </Button>
+                  //   </Col>
+                  // </Row>
+                  <SearchItem
+                    handleAddProduct={handleAddProduct}
+                    product={product}
+                    qunatity={quantity}
+                  />
                 );
               })
             ) : (
