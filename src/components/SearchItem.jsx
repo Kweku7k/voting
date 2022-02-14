@@ -3,23 +3,29 @@ import axios from "axios";
 import { Form, Row, Col, Button, FloatingLabel } from "react-bootstrap";
 
 const SearchItem = ({ handleAddProduct, product }) => {
-  const [size, setSize] = useState("");
   const [quantity, setQuantity] = useState("1");
   const [variationId, setVariationId] = useState(0);
+  const [invalid, setInvalid] = useState(false);
 
   const handleSizeSelection = (size) => {
-    setVariationId(product.variations[[size.split("-")[1]]]);
+    if (size === "sizes") setInvalid(true);
+    else {
+      setVariationId(product.variations[[size.split("-")[1]]]);
+      setInvalid(false);
+    }
   };
 
   return (
     <div className="bg-white rounded shadow-sm p-2 search-item">
+      <p className="text-center text-danger">select a valid size</p>
       <Row className="g-2">
         <Col>
           <Form.Select
+            isInvalid={invalid}
             aria-label="select a size"
             onChange={(e) => handleSizeSelection(e.target.value)}
           >
-            <option>Open this select menu</option>
+            <option disabled>sizes</option>
             {product.attributes[0].options.map((size, i) => {
               return (
                 <option key={size} value={`${size}-${i}`}>
@@ -63,6 +69,7 @@ const SearchItem = ({ handleAddProduct, product }) => {
 
         <Col className="col-4">
           <Button
+            disabled={invalid}
             variant="primary"
             onClick={() => {
               handleAddProduct(product, quantity, variationId);

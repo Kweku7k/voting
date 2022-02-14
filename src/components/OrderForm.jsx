@@ -81,11 +81,12 @@ const OrderForm = () => {
   };
 
   // adds a product to the items section
-  const handleAddProduct = (product, quantity) => {
+  const handleAddProduct = (product, quantity, variationId) => {
+    console.log(variationId);
     console.log(quantity);
     setAddedProducts((prev) => [
       ...prev,
-      { product: product, quantity: quantity },
+      { product: product, quantity: quantity, variation_id: variationId },
     ]);
   };
 
