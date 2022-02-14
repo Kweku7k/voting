@@ -1,13 +1,37 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Form, Row, Col, Button } from "react-bootstrap";
+import { Form, Row, Col, Button, FloatingLabel } from "react-bootstrap";
 
-const SearchItem = ({ handleAddProduct, product, quantity }) => {
+const SearchItem = ({ handleAddProduct, product }) => {
   const [size, setSize] = useState("");
-  const [showSizeSelector, setShowSizeSelector] = useState(false);
+  const [quantity, setQuantity] = useState("1");
 
   return (
     <div>
+      <Row className="g-1">
+        <Col className="col-4">
+          <Form.Select aria-label="Default select example">
+            <option>Open this select menu</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </Form.Select>
+        </Col>
+        <Col className="col-4">
+          <FloatingLabel controlId="floatingInputGrid" label="Quantity">
+            <Form.Control
+              name="quantity"
+              type="number"
+              placeholder=""
+              min={1}
+              value={quantity}
+              onChange={(e) => {
+                setQuantity(e.target.value);
+              }}
+            />
+          </FloatingLabel>
+        </Col>
+      </Row>
       <Row className="p-2">
         <Col className="col-4">
           <div className="addItem__image">
@@ -30,7 +54,7 @@ const SearchItem = ({ handleAddProduct, product, quantity }) => {
             variant="primary"
             // onClick={handleAddClick}
             onClick={() => {
-              handleAddProduct(product, quantity, size);
+              handleAddProduct(product, quantity);
             }}
             className="float-right mt-1 add-btn"
           >
@@ -38,12 +62,6 @@ const SearchItem = ({ handleAddProduct, product, quantity }) => {
           </Button>
         </Col>
       </Row>
-      <Form.Select aria-label="Default select example">
-        <option>Open this select menu</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-      </Form.Select>
     </div>
   );
 };
