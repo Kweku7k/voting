@@ -4,36 +4,30 @@ import { Form, Row, Col, Button, FloatingLabel } from "react-bootstrap";
 
 const SearchItem = ({ handleAddProduct, product }) => {
   const [quantity, setQuantity] = useState("1");
-  const [variationId, setVariationId] = useState(0);
-  const [invalid, setInvalid] = useState(false);
+  const [variationId, setVariationId] = useState(product.variations[0]);
 
   const handleSizeSelection = (size) => {
-    if (size === "sizes") setInvalid(true);
-    else {
-      setVariationId(product.variations[[size.split("-")[1]]]);
-      setInvalid(false);
-    }
+    setVariationId(product.variations[[size.split("-")[1]]]);
   };
 
   return (
     <div className="bg-white rounded shadow-sm p-2 search-item">
-      <p className="text-center text-danger">select a valid size</p>
       <Row className="g-2">
         <Col>
-          <Form.Select
-            isInvalid={invalid}
-            aria-label="select a size"
-            onChange={(e) => handleSizeSelection(e.target.value)}
-          >
-            <option disabled>sizes</option>
-            {product.attributes[0].options.map((size, i) => {
-              return (
-                <option key={size} value={`${size}-${i}`}>
-                  {size}
-                </option>
-              );
-            })}
-          </Form.Select>
+          <FloatingLabel controlId="floatingInputGrid" label="size">
+            <Form.Select
+              aria-label="select a size"
+              onChange={(e) => handleSizeSelection(e.target.value)}
+            >
+              {product.attributes[0].options.map((size, i) => {
+                return (
+                  <option key={size} value={`${size}-${i}`}>
+                    {size}
+                  </option>
+                );
+              })}
+            </Form.Select>
+          </FloatingLabel>
         </Col>
         <Col>
           <FloatingLabel controlId="floatingInputGrid" label="Quantity">
@@ -69,7 +63,6 @@ const SearchItem = ({ handleAddProduct, product }) => {
 
         <Col className="col-4">
           <Button
-            disabled={invalid}
             variant="primary"
             onClick={() => {
               handleAddProduct(product, quantity, variationId);
