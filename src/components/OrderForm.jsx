@@ -82,8 +82,6 @@ const OrderForm = () => {
 
   // adds a product to the items section
   const handleAddProduct = (product, quantity, variationId) => {
-    console.log("variation id from order component: ", variationId);
-    console.log(quantity);
     setAddedProducts((prev) => [
       ...prev,
       { product: product, quantity: quantity, variation_id: variationId },
@@ -94,8 +92,12 @@ const OrderForm = () => {
     e.preventDefault();
     setShowModal(true);
     setModalSpinner(true);
-    const items = addedProducts.map(({ product, quantity }) => {
-      return { product_id: product.id, quantity: quantity };
+    const items = addedProducts.map(({ product, quantity, variation_id }) => {
+      return {
+        product_id: product.id,
+        quantity: parseInt(quantity),
+        variation_id: variation_id,
+      };
     });
 
     axios
