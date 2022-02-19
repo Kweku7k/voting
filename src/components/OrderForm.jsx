@@ -134,7 +134,7 @@ const OrderForm = () => {
             {
               method_id: "flat_rate",
               method_title: "Flat Rate",
-              total: "10.00",
+              // total: "10.00",
             },
           ],
         },

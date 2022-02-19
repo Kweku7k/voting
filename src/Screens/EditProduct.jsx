@@ -226,6 +226,7 @@ const EditProduct = () => {
 
   const testAdd = () => {
     if (images.length >= 1) {
+      // If there is an image appended
       console.log("There are images");
 
       setuploadImage(true);
@@ -278,7 +279,6 @@ const EditProduct = () => {
 
       { status === "publish" && setnoImagesError(true)}
       { status === "private" && updateWithoutImages()}
-      // updateWithoutImages()
       
     }
   };
@@ -367,6 +367,9 @@ const EditProduct = () => {
 
 
   const addPrivateProduct = () => {
+
+    // axios.delete
+
     const atr = loopVariant()
     console.log("Creating a new private product")
 
@@ -479,6 +482,12 @@ const EditProduct = () => {
     //   }
     // })
     .then(()=>{
+      // Delete old product after 
+      axios.delete(`https://evicstore.com/wp-json/wc/v3/products/${id}`,{
+        headers: {
+          Authorization: `Basic ${token}`,
+        },
+      })
       history.push('/products')
     })
   }
